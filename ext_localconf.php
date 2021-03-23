@@ -13,7 +13,7 @@ call_user_func(
             ],
             // non-cacheable actions
             [
-                \Stackfactory\SfSeolighthouse\Controller\LighthouseStatisticsController::class => 'delete, '
+                \Stackfactory\SfSeolighthouse\Controller\LighthouseStatisticsController::class => 'delete'
             ]
         );
 

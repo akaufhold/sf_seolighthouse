@@ -72,8 +72,9 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $langCode = $language->getLocale();
         return $langCode;
     }
+    
     public function getStoragePid(){
-        $configurationManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Configuration\\BackendConfigurationManager');
+        $configurationManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Configuration\\BackendConfigurationManager');
         //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($configurationManager);
         $configurationManager->getDefaultBackendStoragePid(); 
         $extbaseFrameworkConfiguration = $configurationManager->getTypoScriptSetup();
