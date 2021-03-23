@@ -8,6 +8,7 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Page\PageRenderer;
 
 /**
  *
@@ -78,6 +79,20 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $extbaseFrameworkConfiguration = $configurationManager->getTypoScriptSetup();
         $storagePid = $extbaseFrameworkConfiguration["module."]["tx_sfseolighthouse."]["persistence."]["storagePid"];
         return $storagePid;
+    }
+
+    public function includeJSLibs(){
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer->addRequireJsConfiguration(
+        [
+            'paths' => [
+                'chartsJS' => 'https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js',
+            ],
+            'shim' => [
+                'deps' => ['chartsJS'],
+            ],
+        ]
+        );
     }
 
     public function postlighthouse(){
