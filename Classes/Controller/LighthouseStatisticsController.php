@@ -73,12 +73,11 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     }
     public function getStoragePid(){
         $configurationManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Configuration\\BackendConfigurationManager');
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($configurationManager);
+        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($configurationManager);
         $configurationManager->getDefaultBackendStoragePid(); 
         $extbaseFrameworkConfiguration = $configurationManager->getTypoScriptSetup();
-
-        //Following will be resultant array, find your required stuff from it
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($extbaseFrameworkConfiguration);
+        $storagePid = $extbaseFrameworkConfiguration["module."]["tx_sfseolighthouse."]["persistence."]["storagePid"];
+        return $storagePid;
     }
     /**
      * action list
@@ -94,6 +93,7 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $this->view->assign('locale', $locale);
 
         $storagePid = $this->getStoragePid();
+        $this->view->assign('storagePid', $storagePid);
         \TYPO3\CMS\Core\Utility\DebugUtility::debug($storagePid);
 
         $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
