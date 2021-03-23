@@ -79,6 +79,32 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $storagePid = $extbaseFrameworkConfiguration["module."]["tx_sfseolighthouse."]["persistence."]["storagePid"];
         return $storagePid;
     }
+
+    private function postlighthouse(){
+        $this->url = $this->settings['url'];
+        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($this->url);
+    }
+    /**
+     * action analyse
+     * 
+     * @return string|object|null|void
+     */
+    public function analyseAction()
+    {
+        $this->getTargetUrl()
+        postlighthouse();
+    }
+
+    /**
+     * lighthouse target page url
+     * 
+     * @return string|object|null|void
+     */
+    public function getTargetUrl()
+    {
+        
+    }
+
     /**
      * action list
      * 
@@ -94,7 +120,6 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
 
         $storagePid = $this->getStoragePid();
         $this->view->assign('storagePid', $storagePid);
-        \TYPO3\CMS\Core\Utility\DebugUtility::debug($storagePid);
 
         $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $baseUrl = $protocol."/".$_SERVER["HTTP_HOST"];
@@ -125,20 +150,6 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $this->redirect('list');
     }
 
-    private function postlighthouse(){
-        $this->url = $this->settings['url'];
-        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($this->url);
-    }
-    /**
-     * action analyse
-     * 
-     * @return string|object|null|void
-     */
-    public function analyseAction()
-    {
-        postlighthouse();
-    }
-
     /**
      * action create
      * 
@@ -151,20 +162,6 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $this->lighthouseStatisticsRepository->add($newTest);
         $this->redirect('list');
     }
-
-    /**
-     * action page url
-     * 
-     * @return string|object|null|void
-     */
-    /*public function getUrl()
-    {
-        return $uriBuilder->request->getBaseUrl().$uriBuilder->uriBuilder
-            ->reset()
-            ->setTargetPageUid(1)
-            ->setArguments(self::ABSOLUTE_PATH)
-            ->buildFrontendUri();
-    }*/
     
 }
 
