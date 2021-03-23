@@ -80,7 +80,7 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         return $storagePid;
     }
 
-    private function postlighthouse(){
+    public function postlighthouse(){
         $this->url = $this->settings['url'];
         //\TYPO3\CMS\Core\Utility\DebugUtility::debug($this->url);
     }
@@ -91,8 +91,8 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
      */
     public function analyseAction()
     {
-        $this->getTargetUrl()
-        postlighthouse();
+        $this->getTargetUrl();
+        $this->postlighthouse();
     }
 
     /**
@@ -115,8 +115,8 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $lighthouseStatistics = $this->lighthouseStatisticsRepository->findAll();
         $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
         /* GET URL PARAMS FOR GENERATING LIGHTHOUSE AJAX GET*/
-        $locale = $this->getLocale();
-        $this->view->assign('locale', $locale);
+        $this->locale = $this->getLocale();
+        $this->view->assign('locale', $this->locale);
 
         $storagePid = $this->getStoragePid();
         $this->view->assign('storagePid', $storagePid);
@@ -151,15 +151,24 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     }
 
     /**
-     * action create
+     * action new
      * 
-     * @param \Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $lighthouseStatistics
      * @return string|object|null|void
      */
-    public function createAction(\Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $lighthouseStatistics)
+    public function newAction()
+    {
+    }
+
+    /**
+     * action create
+     * 
+     * @param \Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $newlighthouseStatistics
+     * @return string|object|null|void
+     */
+    public function createAction(\Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $newlighthouseStatistics)
     {
         $this->addFlashMessage('The object was created. Please be aware that this action is publicly accessible unless you implement an access check. See https://docs.typo3.org/typo3cms/extensions/extension_builder/User/Index.html', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
-        $this->lighthouseStatisticsRepository->add($newTest);
+        $this->lighthouseStatisticsRepository->add($newlighthouseStatistics);
         $this->redirect('list');
     }
     
