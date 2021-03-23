@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:sf_seolighthouse/Resources/Private/Language/locallang_db" date="2021-03-21T21:33:18Z" product-name="sf_seolighthouse">
+		<header/>
+		<body>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics" resname="tx_sfseolighthouse_domain_model_lighthousestatistics">
+				<source>Lighthouse Statistics</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp">
+				<source>First Contentful Paint</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.si" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.si">
+				<source>Speed Index</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.lcp" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.lcp">
+				<source>Largest Contentful Paint</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.tti" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.tti">
+				<source>Time To Interactive</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.tbt" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.tbt">
+				<source>Total Blocking Time</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.cls" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.cls">
+				<source>Cumulative Layout Shift</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.description" resname="tx_sf_seolighthouse_showlighthouse.description">
+				<source></source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.description" resname="tx_sf_seolighthouse_showlighthouse.name">
+				<source>lighthouse</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

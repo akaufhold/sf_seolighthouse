@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:sf_seolighthouse/Resources/Private/Language/locallang_csh" date="2021-03-21T21:33:18Z" product-name="sf_seolighthouse">
+		<header/>
+		<body>
+			<trans-unit id="fcp.description" resname="fcp.description">
+				<source>First Contentful Paint</source>
+			</trans-unit>
+			<trans-unit id="si.description" resname="si.description">
+				<source>Speed Index</source>
+			</trans-unit>
+			<trans-unit id="lcp.description" resname="lcp.description">
+				<source>Largest Contentful Paint</source>
+			</trans-unit>
+			<trans-unit id="tti.description" resname="tti.description">
+				<source>Time to Interactive</source>
+			</trans-unit>
+			<trans-unit id="tbt.description" resname="tbt.description">
+				<source>Total Blocking Time</source>
+			</trans-unit>
+			<trans-unit id="cls.description" resname="cls.description">
+				<source>Cumulative Layout Shift</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

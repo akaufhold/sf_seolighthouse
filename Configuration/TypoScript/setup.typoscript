@@ -1,0 +1,74 @@
+plugin.tx_sfseolighthouse_showlighthouse {
+    view {
+        templateRootPaths.0 = EXT:sf_seolighthouse/Resources/Private/Templates/
+        templateRootPaths.1 = {$plugin.tx_sfseolighthouse_showlighthouse.view.templateRootPath}
+        partialRootPaths.0 = EXT:sf_seolighthouse/Resources/Private/Partials/
+        partialRootPaths.1 = {$plugin.tx_sfseolighthouse_showlighthouse.view.partialRootPath}
+        layoutRootPaths.0 = EXT:sf_seolighthouse/Resources/Private/Layouts/
+        layoutRootPaths.1 = {$plugin.tx_sfseolighthouse_showlighthouse.view.layoutRootPath}
+    }
+    persistence {
+        storagePid = {$plugin.tx_sfseolighthouse_showlighthouse.persistence.storagePid}
+        #recursive = 1
+    }
+    features {
+        #skipDefaultArguments = 1
+        # if set to 1, the enable fields are ignored in BE context
+        ignoreAllEnableFieldsInBe = 0
+        # Should be on by default, but can be disabled if all action in the plugin are uncached
+        requireCHashArgumentForActionArguments = 1
+    }
+    mvc {
+        #callDefaultActionIfActionCantBeResolved = 1
+    }
+}
+
+# these classes are only used in auto-generated templates
+plugin.tx_sfseolighthouse._CSS_DEFAULT_STYLE (
+    textarea.f3-form-error {
+        background-color:#FF9F9F;
+        border: 1px #FF0000 solid;
+    }
+
+    input.f3-form-error {
+        background-color:#FF9F9F;
+        border: 1px #FF0000 solid;
+    }
+
+    .tx-sf-seolighthouse table {
+        border-collapse:separate;
+        border-spacing:10px;
+    }
+
+    .tx-sf-seolighthouse table th {
+        font-weight:bold;
+    }
+
+    .tx-sf-seolighthouse table td {
+        vertical-align:top;
+    }
+
+    .typo3-messages .message-error {
+        color:red;
+    }
+
+    .typo3-messages .message-ok {
+        color:green;
+    }
+)
+
+# Module configuration
+module.tx_sfseolighthouse {
+    persistence {
+        storagePid  = {$module.tx_sfseolighthouse_lighthouse.persistence.storagePid}
+        url         = {$module.tx_sfseolighthouse_lighthouse.persistence.url}
+    }
+    view {
+        templateRootPaths.0 = EXT:sf_seolighthouse/Resources/Private/Backend/Templates/
+        templateRootPaths.1 = {$module.tx_sfseolighthouse_lighthouse.view.templateRootPath}
+        partialRootPaths.0 = EXT:sf_seolighthouse/Resources/Private/Backend/Partials/
+        partialRootPaths.1 = {$module.tx_sfseolighthouse_lighthouse.view.partialRootPath}
+        layoutRootPaths.0 = EXT:sf_seolighthouse/Resources/Private/Backend/Layouts/
+        layoutRootPaths.1 = {$module.tx_sfseolighthouse_lighthouse.view.layoutRootPath}
+    }
+}
