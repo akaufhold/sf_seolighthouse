@@ -56,23 +56,30 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
 
     public function getLangId(){
         $context = GeneralUtility::makeInstance(Context::class);
-    
         /** @var TYPO3\CMS\Core\Site\Entity\Site */
         $site = $GLOBALS['TYPO3_REQUEST']->getAttribute('site');
         $langId = $context->getPropertyFromAspect('language', 'id');#
         return $langId;
     }
 
-    public function getLocale($langId){
+    public function getLocale(){
         /** @var TYPO3\CMS\Core\Site\Entity\Site */
         $site = $GLOBALS['TYPO3_REQUEST']->getAttribute('site');
         /** @var TYPO3\CMS\Core\Site\Entity\SiteLanguage */
+        $langId = $this->getLangId();
         $language = $site->getLanguageById($langId);
         $langCode = $language->getLocale();
         return $langCode;
     }
+    public function getStoragePid(){
+        $configurationManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Configuration\\BackendConfigurationManager');
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($configurationManager);
+        $configurationManager->getDefaultBackendStoragePid(); 
+        $extbaseFrameworkConfiguration = $configurationManager->getTypoScriptSetup();
 
-
+        //Following will be resultant array, find your required stuff from it
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($extbaseFrameworkConfiguration);
+    }
     /**
      * action list
      * 
@@ -83,9 +90,12 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $lighthouseStatistics = $this->lighthouseStatisticsRepository->findAll();
         $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
         /* GET URL PARAMS FOR GENERATING LIGHTHOUSE AJAX GET*/
-        $langId = $this->getLangId();
-        $locale = $this->getLocale($langId);
-        \TYPO3\CMS\Core\Utility\DebugUtility::debug($locale); 
+        $locale = $this->getLocale();
+        $this->view->assign('locale', $locale);
+
+        $storagePid = $this->getStoragePid();
+        \TYPO3\CMS\Core\Utility\DebugUtility::debug($storagePid);
+
         $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $baseUrl = $protocol."/".$_SERVER["HTTP_HOST"];
         $this->view->assign('baseUrl', $baseUrl);
