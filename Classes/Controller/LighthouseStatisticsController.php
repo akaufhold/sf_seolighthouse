@@ -75,7 +75,6 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     
     public function getStoragePid(){
         $configurationManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Configuration\\BackendConfigurationManager');
-        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($configurationManager);
         $configurationManager->getDefaultBackendStoragePid(); 
         $extbaseFrameworkConfiguration = $configurationManager->getTypoScriptSetup();
         $storagePid = $extbaseFrameworkConfiguration["module."]["tx_sfseolighthouse."]["persistence."]["storagePid"];
@@ -93,9 +92,10 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
      */
     public function analyseAction()
     {
-        \TYPO3\CMS\Core\Utility\DebugUtility::debug($_POST);
-        //$this->getTargetUrl($this->locale,);
+        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($_POST);
+        $this->getTargetUrl($this->locale,"https://www.stackfactory.de","mobile");
         //$this->postlighthouse();
+        return $this->getTargetUrl;
     }
 
     /**
