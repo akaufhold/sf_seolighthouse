@@ -52,7 +52,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
       </f:then>
       <f:else>
         <h2><f:translate key="tx_sf_seolighthouse_showlighthouse.name"/></h2>
-        <form object="{sfseolighthouse}" objectName="analyse" class="form container-fluid">
+        <form class="form container-fluid" controller="" action="analyse>
           <div class="row">
             <div class="col-md-12">
               <label class="custom-control-label">
@@ -68,7 +68,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
           <div class="row">
             <div class="col-md-2">
                 <div class="custom-control custom-radio" >
-                  <f:form.radio property="device" id="device1" class="custom-control-input" value="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.formDesktop')}" />
+                  <f:form.radio name="device" id="device1" class="custom-control-input" value="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.formDesktop')}" />
                   <label class="custom-control-label" for="device1">
                       <f:translate key="tx_sf_seolighthouse_showlighthouse.formDesktop" />
                   </label>
@@ -76,7 +76,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
             </div>
             <div class="col-md-2">
                 <div class="custom-control custom-radio" >
-                  <f:form.radio property="device" id="device2" class="custom-control-input" value="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.formMobile')}" />
+                  <f:form.radio name="device" id="device2" class="custom-control-input" value="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.formMobile')}" />
                   <label class="custom-control-label" for="device2">
                     <f:translate key="tx_sf_seolighthouse_showlighthouse.formMobile" />
                   </label>
