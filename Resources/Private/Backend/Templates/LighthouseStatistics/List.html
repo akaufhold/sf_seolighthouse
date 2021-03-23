@@ -13,6 +13,10 @@ in /Configuration/ExtensionBuilder/settings.yaml:
             List.html: keep
 
 Otherwise your changes will be overwritten the next time you save the extension in the extension builder
+<f:be.container 
+    includeJsFiles = "{0: 'https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js'}, 1:'{f:uri.resource(path: \'js/script2.js\')}'}" >
+  <!-- Content -->
+</f:be.container>
 
 <f:section name="content">
     <h1>Listing for LighthouseStatistics</h1>
