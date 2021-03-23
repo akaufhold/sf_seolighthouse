@@ -16,9 +16,12 @@ Otherwise your changes will be overwritten the next time you save the extension 
 
 <f:section name="content">
     <f:be.container
-                    includeJsFiles = "{0: 'https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js', 1: '{f:uri.resource(path:\'Javascript/charts.js\')}'}" >
+         includeJsFiles = "{0: 'https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js', 1: '{f:uri.resource(path:\'Javascript/charts.js\')}'}" >
       <!-- Content -->
     </f:be.container>
+    <script type="text/javascript">
+        var actionsPathFromViewHelperSetInTheView  = '<f:uri.action action="ajax" controller="" pageType="89657201" />';
+    </script>
     <h1>Listing for LighthouseStatistics</h1>
 
     <f:flashMessages />
@@ -52,7 +55,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
       </f:then>
       <f:else>
         <h2><f:translate key="tx_sf_seolighthouse_showlighthouse.name"/></h2>
-        <form class="form container-fluid" action="analyse" name="auto" method="POST">
+        <!--form class="form container-fluid" action="{action}" enctype="multipart/form-data" name="auto" method="POST"-->
           <div class="row">
             <div class="col-md-12">
               <label class="custom-control-label">
@@ -83,8 +86,10 @@ Otherwise your changes will be overwritten the next time you save the extension 
                 </div>
             </div>
           </div>
-          <f:form.submit value="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.formSubmit')}" class="btn btn-default"/>
-        </form>
+            <f:link.action action="analyse" class="btn btn-default" onclick="getLighthouseData(this)">
+              <f:translate key="tx_sf_seolighthouse_showlighthouse.formSubmit" />
+            </f:link.action>
+        <!--/form-->
       </f:else>
     </f:if>
   	<!--f:link.action action="new">New LighthouseStatistics</f:link.action-->
