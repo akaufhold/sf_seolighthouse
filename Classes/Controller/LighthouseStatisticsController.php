@@ -140,6 +140,19 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     }
 
     /**
+     * action create
+     * 
+     * @param \Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $lighthouseStatistics
+     * @return string|object|null|void
+     */
+    public function createAction(\Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $lighthouseStatistics)
+    {
+        $this->addFlashMessage('The object was created. Please be aware that this action is publicly accessible unless you implement an access check. See https://docs.typo3.org/typo3cms/extensions/extension_builder/User/Index.html', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+        $this->lighthouseStatisticsRepository->add($newTest);
+        $this->redirect('list');
+    }
+
+    /**
      * action page url
      * 
      * @return string|object|null|void
