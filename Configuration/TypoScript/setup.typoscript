@@ -72,3 +72,5 @@ module.tx_sfseolighthouse {
         layoutRootPaths.1 = {$module.tx_sfseolighthouse_lighthouse.view.layoutRootPath}
     }
 }
+
+config.includeJSLibs.chartsJs = https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js

@@ -15,7 +15,7 @@ call_user_func(static function() {
         'lighthouse', // Submodule key
         '10', // Position
         [
-            \Stackfactory\SfSeolighthouse\Controller\LighthouseStatisticsController::class => 'new, list, show, delete, analyse',
+            \Stackfactory\SfSeolighthouse\Controller\LighthouseStatisticsController::class => 'list, show, new, create, delete, analyse',
         ],
         [
             'access' => 'user,group',

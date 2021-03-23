@@ -31,7 +31,7 @@
 				<source>Show SEO Lighthouse Score</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.url" resname="tx_sf_seolighthouse_showlighthouse.url">
-				<source>Show SEO Lighthouse Score</source>
+				<source>Lighthouse Target Url</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.formDesktop" resname="tx_sf_seolighthouse_showlighthouse.formDesktop">
 				<source>Desktop</source>

@@ -43,40 +43,47 @@ Otherwise your changes will be overwritten the next time you save the extension 
                     <td><f:link.action action="edit" arguments="{lighthouseStatistics : lighthouseStatistics}">Edit</f:link.action></td>
                     <td><f:link.action action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">Delete</f:link.action></td>
                 </tr>
-                </f:for>
+            </f:for>
         </table>
       </f:then>
       <f:else>
-        <form object="{sfseolighthouse}" objectName="analyse" class="form">
-          <div class="formRow">
-              <div class="formCol formLabel">
-                <label>
-                  <f:translate key="tx_sf_seolighthouse_showlighthouse.url"/>
-                </label>
-              </div>
-              <div class="formCol">
-                <f:form.textfield name="sfseolighthouse[url]" type="url" required="TRUE" value="{baseUrl}"/>
-              </div>
+        <h2><f:translate key="tx_sf_seolighthouse_showlighthouse.name"/></h2>
+        <form object="{sfseolighthouse}" objectName="analyse" class="form container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <label class="custom-control-label">
+                <f:translate key="tx_sf_seolighthouse_showlighthouse.url"/>
+              </label>
+            </div>
           </div>
-          <div class="formRow">
-              <div class="custom-control custom-radio" >
-                <f:form.radio property="device" id="device1" class="custom-control-input" value="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.formDesktop')}" />
-                <label class="custom-control-label" for="device1">
-                    <f:translate key="tx_sf_seolighthouse_showlighthouse.formDesktop" />
-                </label>
-              </div>
-              <div class="custom-control custom-radio" >
-                <f:form.radio property="device" id="device2" class="custom-control-input" value="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.formMobile')}" />
-                <label class="custom-control-label" for="device2">
-                  <f:translate key="tx_sf_seolighthouse_showlighthouse.formMobile" />
-                </label>
-              </div>
+          <div class="row">
+            <div class="col-md-12">
+                
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2">
+                <div class="custom-control custom-radio" >
+                  <f:form.radio property="device" id="device1" class="custom-control-input" value="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.formDesktop')}" />
+                  <label class="custom-control-label" for="device1">
+                      <f:translate key="tx_sf_seolighthouse_showlighthouse.formDesktop" />
+                  </label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="custom-control custom-radio" >
+                  <f:form.radio property="device" id="device2" class="custom-control-input" value="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.formMobile')}" />
+                  <label class="custom-control-label" for="device2">
+                    <f:translate key="tx_sf_seolighthouse_showlighthouse.formMobile" />
+                  </label>
+                </div>
+            </div>
           </div>
           <f:form.submit value="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.formSubmit')}" class="btn btn-default"/>
         </form>
       </f:else>
     </f:if>
-  	<f:link.action action="new">New LighthouseStatistics</f:link.action>
+  	<!--f:link.action action="new">New LighthouseStatistics</f:link.action-->
     
 </f:section>
 </html>
