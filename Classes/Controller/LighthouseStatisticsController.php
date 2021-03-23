@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
     public function __construct(){
- 
+        $this->pageSpeedApiUrl = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?";
     }
     /**
      * lighthouseStatisticsRepository
@@ -81,20 +81,6 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         return $storagePid;
     }
 
-    public function includeJSLibs(){
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->addRequireJsConfiguration(
-        [
-            'paths' => [
-                'chartsJS' => 'https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js',
-            ],
-            'shim' => [
-                'deps' => ['chartsJS'],
-            ],
-        ]
-        );
-    }
-
     public function postlighthouse(){
         $this->url = $this->settings['url'];
         //\TYPO3\CMS\Core\Utility\DebugUtility::debug($this->url);
@@ -106,8 +92,9 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
      */
     public function analyseAction()
     {
-        $this->getTargetUrl();
-        $this->postlighthouse();
+        \TYPO3\CMS\Core\Utility\DebugUtility::debug($_POST);
+        //$this->getTargetUrl($this->locale,);
+        //$this->postlighthouse();
     }
 
     /**
@@ -115,9 +102,9 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
      * 
      * @return string|object|null|void
      */
-    public function getTargetUrl()
+    public function getTargetUrl($locale, $pageurl, $device)
     {
-        
+        //$this->targetUrl = $this->pageSpeedApiUrl.
     }
 
     /**
