@@ -143,6 +143,8 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $ajaxGetUrlMobile  = $this->getTargetUrl($this->locale,$lightHouseGetUrl,"mobile");
 
         //\TYPO3\CMS\Core\Utility\DebugUtility::debug($ajaxGetUrlMobile); 
+        
+        $this->view->assign('pageId', $this->pageSpeedApiUrl);
         $this->view->assign('ajaxGetUrlDesktop', $ajaxGetUrlDesktop);
         $this->view->assign('ajaxGetUrlMobile', $ajaxGetUrlMobile);
     }
