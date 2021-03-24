@@ -33,10 +33,10 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.url" resname="tx_sf_seolighthouse_showlighthouse.url">
 				<source>Lighthouse Target Url</source>
 			</trans-unit>
-			<trans-unit id="tx_sf_seolighthouse_showlighthouse.formDesktop" resname="tx_sf_seolighthouse_showlighthouse.formDesktop">
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.desktop" resname="tx_sf_seolighthouse_showlighthouse.desktop">
 				<source>Desktop</source>
 			</trans-unit>
-			<trans-unit id="tx_sf_seolighthouse_showlighthouse.formMobile" resname="tx_sf_seolighthouse_showlighthouse.formMobile">
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.mobile" resname="tx_sf_seolighthouse_showlighthouse.mobile">
 				<source>Mobile</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.formSubmit" resname="tx_sf_seolighthouse_showlighthouse.formSubmit">
