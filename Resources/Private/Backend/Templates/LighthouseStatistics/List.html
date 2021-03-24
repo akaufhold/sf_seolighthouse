@@ -86,7 +86,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
                 </div>
             </div>
           </div>
-            <f:link.action action="analyse" class="btn btn-default" onclick="getLighthouseData(this)">
+            <f:link.action class="btn btn-default" data-url="{f:uri.action(action: 'analyse', controller: 'Item', pluginName: 'getLighthouseData', pageType:'{settings.ajax.getLighthouseData}')}">
               <f:translate key="tx_sf_seolighthouse_showlighthouse.formSubmit" />
             </f:link.action>
         <!--/form-->
