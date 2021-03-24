@@ -97,7 +97,7 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     /**
      * lighthouse target page url
      * 
-     * @return string|object|null|void
+     * @return string
      */
     public function getTargetUrl($locale, $pageurl, $device)
     {
@@ -126,6 +126,7 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
      */
     public function listAction()
     {
+
         $lighthouseStatistics = $this->lighthouseStatisticsRepository->findAll();
         $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
 
