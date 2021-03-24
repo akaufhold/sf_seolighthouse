@@ -2,7 +2,6 @@ function runLighthouse(targetUrl) {
     fetch(targetUrl)
       .then(response => response.json())
       .then(json => {
-        console.log(json);
         // See https://developers.google.com/speed/docs/insights/v5/reference/pagespeedapi/runpagespeed#response
         // to learn more about each of the properties in the response object.
         /*const cruxMetrics = {
@@ -18,24 +17,28 @@ function runLighthouse(targetUrl) {
           'First CPU Idle': lighthouse.audits['first-cpu-idle'].displayValue,
           'Estimated Input Latency': lighthouse.audits['estimated-input-latency'].displayValue
         };
+        return lighthouseMetrics;
       });
 }
 
 $(function(){ 
     var url = [];
     $('.getLighthouseData').on('click', function(){
-        url['Mobile'] = jQuery(this).data('mobile');
-        url['Desktop'] = jQuery(this).data('desktop');
+        url['Mobile'] = $(this).data('mobile');
+        url['Desktop'] = $(this).data('desktop');
 
         var device = $("input[name=device]").filter(":checked");
         var deviceVal = $(device).val();
         var format = 'html'; 
-        console.log(deviceVal);
+        
         // if set use the format from the data attribute
         if($(this).data('format')){
             format = jQuery(this).data('format');
         }
-        runLighthouse(url[deviceVal]);
+        //console.log(url[deviceVal]);
+
+        var lhm = runLighthouse(url[deviceVal]);
+        console.log(lhm);
         // send request
         /*jQuery.ajax({
         type: "GET",

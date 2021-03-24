@@ -59,7 +59,7 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $context = GeneralUtility::makeInstance(Context::class);
         /** @var TYPO3\CMS\Core\Site\Entity\Site */
         $site = $GLOBALS['TYPO3_REQUEST']->getAttribute('site');
-        $langId = $context->getPropertyFromAspect('language', 'id');#
+        $langId = $context->getPropertyFromAspect('language', 'id');
         return $langId;
     }
 
@@ -144,7 +144,7 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
 
         //\TYPO3\CMS\Core\Utility\DebugUtility::debug($ajaxGetUrlMobile); 
         
-        $this->view->assign('pageId', $this->pageSpeedApiUrl);
+        $this->view->assign('pageId', $this->getSelectedPage());
         $this->view->assign('ajaxGetUrlDesktop', $ajaxGetUrlDesktop);
         $this->view->assign('ajaxGetUrlMobile', $ajaxGetUrlMobile);
     }

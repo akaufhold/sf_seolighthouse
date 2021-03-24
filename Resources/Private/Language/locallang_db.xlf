@@ -24,6 +24,9 @@
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.cls" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.cls">
 				<source>Cumulative Layout Shift</source>
 			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.listHeader" resname="tx_sf_seolighthouse_showlighthouse.listHeader">
+				<source>Listing Lighthouse Data</source>
+			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.description" resname="tx_sf_seolighthouse_showlighthouse.description">
 				<source></source>
 			</trans-unit>
