@@ -76,19 +76,17 @@ module.tx_sfseolighthouse {
     }
 }
 
-config.includeJSLibs.chartsJs = https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js
-
 # ajax action plugin one
 ajax_tx_sfseolighthouse_getLighthouseData = PAGE
 ajax_tx_sfseolighthouse_getLighthouseData {
-   typeNum < plugin.tx_sfseolighthouse.settings.ajax.getLighthouseData
+   typeNum < plugin.tx_sfseolighthouse_showlighthouse.settings.ajax.getLighthouseData
   
    config {
       disableAllHeaderCode = 1
       additionalHeaders = Content-type:text/html
       xhtml_cleaning = 0
       admPanel = 0
-      debug = 0
+      debug = 1
       no_cache = 1
    }
 }

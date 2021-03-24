@@ -3,12 +3,12 @@
 
 namespace Stackfactory\SfSeolighthouse\Controller;
 
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Site\SiteFinder;
 
 /**
  *
@@ -73,6 +73,13 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         return $langCode;
     }
     
+    public function getSelectedPage(){
+        $selectedPage = GeneralUtility::_GP('id');
+        if (!$selectedPage)
+            $selectedPage = $GLOBALS['TSFE']->id;
+        return $selectedPage;
+    }
+    
     public function getStoragePid(){
         $configurationManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Configuration\\BackendConfigurationManager');
         $configurationManager->getDefaultBackendStoragePid(); 
@@ -81,21 +88,10 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         return $storagePid;
     }
 
-    public function postlighthouse(){
-        $this->url = $this->settings['url'];
-        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($this->url);
-    }
-    /**
-     * action analyse
-     * 
-     * @return string|object|null|void
-     */
-    public function analyseAction()
-    {
-        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($_POST);
-        $this->getTargetUrl($this->locale,"https://www.stackfactory.de","mobile");
-        //$this->postlighthouse();
-        return $this->getTargetUrl;
+    public function getBaseUrl(){
+        $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+        $baseUrl = $protocol."/".$_SERVER["HTTP_HOST"];
+        return $baseUrl;
     }
 
     /**
@@ -105,7 +101,22 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
      */
     public function getTargetUrl($locale, $pageurl, $device)
     {
-        //$this->targetUrl = $this->pageSpeedApiUrl.
+        $this->targetUrl = $this->pageSpeedApiUrl."locale=".$locale."&url=".$pageurl;
+        if ($device)
+            $this->targetUrl.="&strategy=".$device;
+        return $this->targetUrl;
+    }
+
+    /**
+     * action analyse
+     * 
+     * @return string|object|null|void
+     */
+    public function analyseAction()
+    {
+        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($_POST);
+        //$this->postlighthouse();
+
     }
 
     /**
@@ -117,16 +128,23 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     {
         $lighthouseStatistics = $this->lighthouseStatisticsRepository->findAll();
         $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
-        /* GET URL PARAMS FOR GENERATING LIGHTHOUSE AJAX GET*/
-        $this->locale = $this->getLocale();
-        $this->view->assign('locale', $this->locale);
 
         $storagePid = $this->getStoragePid();
         $this->view->assign('storagePid', $storagePid);
 
-        $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-        $baseUrl = $protocol."/".$_SERVER["HTTP_HOST"];
-        $this->view->assign('baseUrl', $baseUrl);
+        /* GET URL PARAMS FOR GENERATING LIGHTHOUSE AJAX GET*/
+        $this->locale = $this->getLocale();
+
+        /* GET FE URL OF SELECTED PAGE IN PAGETREE*/
+        //$lightHouseGetUrl   = $this->getBaseUrl()."/index.php?id=".$this->getSelectedPage();
+        $lightHouseGetUrl   = "https://www.stackfactory.de";
+
+        $ajaxGetUrlDesktop  = $this->getTargetUrl($this->locale,$lightHouseGetUrl,"desktop");
+        $ajaxGetUrlMobile  = $this->getTargetUrl($this->locale,$lightHouseGetUrl,"mobile");
+
+        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($ajaxGetUrlMobile); 
+        $this->view->assign('ajaxGetUrlDesktop', $ajaxGetUrlDesktop);
+        $this->view->assign('ajaxGetUrlMobile', $ajaxGetUrlMobile);
     }
 
     /**
