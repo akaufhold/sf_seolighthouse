@@ -1,4 +1,4 @@
-$( document ).ready(function() {
+define(['jquery'], function($) {
     $('.getLighthouseData').on('click', function(){
         var url = jQuery(this).data('url');
         var format = 'html';
