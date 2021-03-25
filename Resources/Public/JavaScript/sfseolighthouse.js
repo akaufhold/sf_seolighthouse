@@ -20,43 +20,24 @@ function runLighthouse(targetUrl) {
         return lighthouseMetrics;
       });
 }
-
+ 
 $(function(){ 
     var url = [];
     $('.getLighthouseData').on('click', function(){
+        alert(test); 
+        console.log($(".progressBar").find(".counterAmount"));
+        $(".progressBar").find(".counterAmount").addClass("active");
         url['Mobile'] = $(this).data('mobile');
         url['Desktop'] = $(this).data('desktop');
-
         var device = $("input[name=device]").filter(":checked");
         var deviceVal = $(device).val();
         var format = 'html'; 
-        
         // if set use the format from the data attribute
         if($(this).data('format')){
             format = jQuery(this).data('format');
-        }
+        } 
         //console.log(url[deviceVal]);
-
-        var lhm = runLighthouse(url[deviceVal]);
-        console.log(lhm);
-        // send request
-        /*jQuery.ajax({
-        type: "GET",
-        url: url[deviceVal],
-        headers: {
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma': 'no-cache',
-            'Expires': '0'
-        },
-        dataType: format,
-        success: function (content) {
-            // do something with your loaded content
-            // remove old more-button
-            // init new more-buttons
-        }
-        });*/
-
-
+        //var lhm = runLighthouse(url[deviceVal]);
     });
 });  
   
