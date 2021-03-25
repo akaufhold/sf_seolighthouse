@@ -1,7 +1,17 @@
-$progressColor: #5a5a5a;
-$progressBackColor: #ccc;
+$progressColor:#5a5a5a;
+$progressBackColor:#ccc;
+$successColor:#28a745;
+$errorColor:#D8000C;
+
 #typo3-inner-docbody{
     padding:0;
+}
+.custom-control{
+    margin-top:0.5em;
+}
+.counterTitle{
+    min-width: 10em;
+    display: inline-block;
 }
 .progressBar .counterContainer {
     padding: 0.25em 0.5em;
@@ -11,6 +21,8 @@ $progressBackColor: #ccc;
     border-radius: 0.3em;
     position: relative;
     overflow: hidden;
+    max-width: 100%;
+    width:60em;
     .counterAmount {
         background: $progressColor;
         min-height: 0.8em;
@@ -18,9 +30,25 @@ $progressBackColor: #ccc;
         position: absolute;
         top: 0;
         left: 0;
-        transition-duration: 15s;
+        width:0%;
+        transition-duration: 30s;
+        transition-property: width;
         &.active{
             width:100%;
         }
+        &.done{
+            width:100%;
+            transition-duration: 0.5s;
+            background: $successColor;
+        }
+        &.error{
+            width:100%;
+            transition-duration: 0.5s;
+            background: $errorColor;
+        }
     }
+}
+
+.getLighthouseData{
+    margin-top:0.5em;
 }
