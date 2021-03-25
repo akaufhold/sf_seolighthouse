@@ -39,9 +39,15 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.mobile" resname="tx_sf_seolighthouse_showlighthouse.mobile">
 				<source>Mobile</source>
 			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.progress" resname="tx_sf_seolighthouse_showlighthouse.progress">
+				<source>Progress</source>
+			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.formSubmit" resname="tx_sf_seolighthouse_showlighthouse.formSubmit">
 				<source>Analyse Lighthouse Score</source>
 			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.noPageInfo" resname="tx_sf_seolighthouse_showlighthouse.noPageInfo">
+				<source>No Page Selected</source>
+			</trans-unit>		
 		</body>
 	</file>
 </xliff>
