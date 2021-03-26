@@ -7,22 +7,22 @@
 				<source>Lighthouse Statistics</source>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp">
-				<source>Fcp</source>
+				<source>First Contentful Paint</source>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.si" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.si">
-				<source>Si</source>
+				<source>Speed Index</source>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.lcp" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.lcp">
-				<source>Lcp</source>
+				<source>Largest Contentful Paint</source>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.tti" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.tti">
-				<source>Tti</source>
+				<source>Time To Interactive</source>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.tbt" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.tbt">
-				<source>Tbt</source>
+				<source>Total Blocking Time</source>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.cls" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.cls">
-				<source>Cls</source>
+				<source>Cumulative Layout Shift</source>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.cls" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.cls">
 				<source>Cls</source>
