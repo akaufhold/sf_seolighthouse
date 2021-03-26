@@ -1,9 +1,1 @@
-{
-    "version": 3,
-    "mappings": "AAAA,AAAA,mBAAmB,AAAA,CACf,UAAU,CAAC,GAAG,CACjB",
-    "sources": [
-        "sfseolighthouse.scss"
-    ],
-    "names": [],
-    "file": "sfseolighthouse.min.css"
-}
+{"version":3,"sources":["sfseolighthouse.scss"],"names":[],"mappings":"AAAA,oBACI,cAAA","file":"sfseolighthouse.min.css"}

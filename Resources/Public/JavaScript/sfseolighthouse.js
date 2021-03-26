@@ -3,7 +3,7 @@ function fetchLighthouseData(targetUrl) {
       .then(response => response.json())
       .then(json => {
         if (!json.hasOwnProperty("error")){
-          $(".progressBar").find(".counterAmount").addClass("done"); 
+          $(".progressBar").find(".counterContainer").addClass("done"); 
           const lighthouse = json.lighthouseResult;
           const lighthouseMetrics = {
             'fcp': lighthouse.audits['first-contentful-paint'].displayValue,            //First Contentful Paint
@@ -19,7 +19,7 @@ function fetchLighthouseData(targetUrl) {
           return lighthouse;
         }else{
           var errorMessage = json.error.message;
-          $(".progressBar").find(".counterAmount").addClass("error"); 
+          $(".progressBar").find(".counterContainer").addClass("error"); 
         }
           
         // See https://developers.google.com/speed/docs/insights/v5/reference/pagespeedapi/runpagespeed#response

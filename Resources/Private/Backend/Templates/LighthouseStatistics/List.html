@@ -93,11 +93,22 @@ Otherwise your changes will be overwritten the next time you save the extension 
               </div>
             </div>
             <div class="progressBar progress-bar-animated">
-                <span class="counterTitle">
-                  <f:translate key="tx_sf_seolighthouse_showlighthouse.progress"/>
-                </span>
                 <span class="counterContainer">
                     <span class="counterAmount" data-width="0%"></span>
+                    <span class="counterTitle">
+                      <span class="statusMessage">
+                        <f:translate key="tx_sf_seolighthouse_showlighthouse.status"/>
+                      </span>
+                      <span class="progressMessage">
+                          <f:translate key="tx_sf_seolighthouse_showlighthouse.progress"/>
+                      </span>
+                      <span class="errorMessage">
+                        <f:translate key="tx_sf_seolighthouse_showlighthouse.error"/>
+                      </span>
+                      <span class="successMessage">
+                        <f:translate key="tx_sf_seolighthouse_showlighthouse.success"/>
+                      </span>
+                    </span>
                 </span>
             </div>
             <a class="btn btn-default getLighthouseData" data-format="jsonp" data-desktop="{ajaxGetUrlDesktop}" data-mobile="{ajaxGetUrlMobile}" data-url="{f:uri.action(action: 'analyse', controller: '', pluginName: 'getLighthouseData', pageType:'{settings.ajax.getLighthouseData}')}">

@@ -22,7 +22,30 @@
   max-width: 100%;
   width: 60em;
 }
-
+.progressBar .counterContainer .counterTitle > *:not(.statusMessage) {
+  font-size: 0.75em;
+}
+.progressBar .counterContainer .progressMessage,
+.progressBar .counterContainer .errorMessage,
+.progressBar .counterContainer .successMessage {
+  display: none;
+}
+.progressBar .counterContainer.done .counterAmount {
+  width: 100%;
+  transition-duration: 0.5s;
+  background: #28a745;
+}
+.progressBar .counterContainer.done .successMessage {
+  display: block;
+}
+.progressBar .counterContainer.error .counterAmount {
+  width: 100%;
+  transition-duration: 0.5s;
+  background: #D8000C;
+}
+.progressBar .counterContainer.error .errorMessage {
+  display: block;
+}
 .progressBar .counterContainer .counterAmount {
   background: #5a5a5a;
   min-height: 0.8em;
@@ -34,24 +57,10 @@
   transition-duration: 30s;
   transition-property: width;
 }
-
 .progressBar .counterContainer .counterAmount.active {
   width: 100%;
 }
 
-.progressBar .counterContainer .counterAmount.done {
-  width: 100%;
-  transition-duration: 0.5s;
-  background: #28a745;
-}
-
-.progressBar .counterContainer .counterAmount.error {
-  width: 100%;
-  transition-duration: 0.5s;
-  background: #D8000C;
-}
-
 .getLighthouseData {
   margin-top: 0.5em;
-}
-/*# sourceMappingURL=backend.css.map */
+}/*# sourceMappingURL=backend.css.map */
