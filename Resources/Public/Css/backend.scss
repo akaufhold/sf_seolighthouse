@@ -9,66 +9,115 @@ $errorColor:#D8000C;
 .custom-control{
     margin-top:0.5em;
 }
-.counterTitle{
-    min-width: 10em;
-    display: inline-block;
-}
-.progressBar .counterContainer {
-    padding: 0.25em 0.5em;
-    display: inline-block;
-    width: 100%;
-    background: $progressBackColor;
-    border-radius: 0.3em;
-    position: relative;
-    overflow: hidden;
-    max-width: 100%;
-    width:60em;
-    .counterTitle{
-        > *:not(.statusMessage){
-            font-size:0.75em;
-        }
+.progressBar{
+    *{
+        line-height: 0.4;
     }
-    .progressMessage,
-    .errorMessage, 
-    .successMessage{
-        display:none;
-    }
-    &.done{
-        .counterAmount{
-            width:100%;
-            transition-duration: 0.5s;
-            background: $successColor;
+    .counterContainer {
+        padding: 0em 0.25em;
+        display: inline-block;
+        width: 100%;
+        background: $progressBackColor;
+        border-radius: 0.3em;
+        position: relative;
+        overflow: hidden;
+        max-width: 100%;
+        width:60em; 
+        .counterTitle{
+            min-width: 10em;
+            height: .6em;
+            display: inline-block;
+            position: relative;
+            z-index: 10;
+            > *{
+                font-size:.6em;
+                text-transform: uppercase;
+                font-weight: bold;
+                height: 100%;
+                display: inline-block;
+                line-height: 1em;
+            }
         }
+        .counterAmount {
+            background: $progressColor;
+            min-height: .8em;
+            min-height: 100%;
+            top: 0;
+            left: 0;
+            width:0%;
+            position: absolute;
+            .totalTime{
+                display:inline-block;
+            }
+        }
+        .progressMessage,
+        .errorMessage, 
         .successMessage{
-            display:block;
+            display:none;
         }
-    }
-    &.error{
-        .counterAmount{
-            width:100%;
-            transition-duration: 0.5s;
-            background: $errorColor;
+        &.progress{
+            height:auto;
+            margin:0;
+            .counterAmount{
+                width:100%;
+                transition-duration: 20s;
+                transition-property: width;
+            }
+            .counterTitle{ 
+                >*{
+                    display:none;
+                }
+                .progressMessage{
+                    display:inline-block;
+                    color:white;
+                }
+            }
         }
-        .errorMessage{
-            display:block;
+        &.done{
+            .counterTitle{ 
+                >*{
+                    display:none;
+                }
+                .successMessage{
+                    display:inline-block;
+                }
+            }
         }
-    }
-    .counterAmount {
-        background: $progressColor;
-        min-height: 0.8em;
-        min-height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width:0%;
-        transition-duration: 30s;
-        transition-property: width;
-        &.active{
-            width:100%;
+        &.error{
+            .counterAmount{
+                width:100%;
+                transition-duration: 0.5s;
+                background: $errorColor;
+            }
+            .counterTitle{ 
+                >*{
+                    display:none;
+                }
+                .errorMessage{
+                    display:inline-block;
+                    color:white;
+                }
+            }
+        }
+        &.success{
+            .counterAmount{
+                width:100% !important;
+                transition-duration: 0.5s !important;
+                background: $successColor;
+            }
+            .counterTitle{ 
+                >*{
+                    display:none;
+                }
+                .totalTime,
+                .successMessage{
+                    display:inline-block;
+                    color:white;
+                }
+            }
         }
     }
 }
-
 .getLighthouseData{
     margin-top:0.5em;
 }
