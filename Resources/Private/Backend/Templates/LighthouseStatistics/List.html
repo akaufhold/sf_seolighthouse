@@ -115,6 +115,11 @@ Otherwise your changes will be overwritten the next time you save the extension 
               <f:translate key="tx_sf_seolighthouse_showlighthouse.formSubmit" />
             </a>
         </div>
+        <f:render partial="FormErrors" />
+        <f:form action="create" name="newTest" object="{newTest}">
+          <f:render partial="Test/FormFields" />
+              <f:form.submit value="Create new" />
+        </f:form>
       </f:else>
       <f:else>
         <div class=".callout-info">
