@@ -52,7 +52,8 @@ function fetchLighthouseData(targetUrl) {
 $(function(){ 
     var url = [];
     $('.getLighthouseData').on('click', function(){
-        $(".progressBar").find(".counterContainer").find(".counterAmount").css({width:"0%"});
+        //$(".progressBar").find(".counterContainer").find(".counterAmount").css({width:"0%"});
+        $(".progressBar").find(".counterContainer").removeClass("progress");
         $(".progressBar").find(".counterContainer").find(".counterTitle").find(".errorMessage").html("error");
         //console.log($(".progressBar").find(".counterAmount"));
         $(".progressBar").find(".counterContainer").addClass("progress");

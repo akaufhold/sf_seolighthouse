@@ -3,6 +3,11 @@ $progressBackColor:#ccc;
 $successColor:#28a745;
 $errorColor:#D8000C;
 
+@keyframes runProgressBar {
+    0% { width:0%; }
+    100% { width:100%;}
+}
+
 #typo3-inner-docbody{
     padding:0;
 }
@@ -64,8 +69,7 @@ $errorColor:#D8000C;
                 margin:0;
                 .counterAmount{
                     width:100%;
-                    transition-duration: 20s;
-                    transition-property: width;
+                    animation: runProgressBar 20s fowards 0s;
                 }
                 .counterTitle{ 
                     >*{
