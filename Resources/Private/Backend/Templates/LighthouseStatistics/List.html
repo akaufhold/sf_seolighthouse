@@ -14,14 +14,10 @@ in /Configuration/ExtensionBuilder/settings.yaml:
 
 Otherwise your changes will be overwritten the next time you save the extension in the extension builder
 
-<f:section name="content">
-    <!--f:be.container
-         includeJsFiles = "{
-                            0: 'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js',
-                            1: 'https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js', 
-                            2: '{f:uri.resource(path:\'Javascript/charts.js\')}'}" >
-    </f:be.container-->
+2: 'https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js',
+3: '{f:uri.resource(path:\'JavaScript/charts.js\')}'
 
+<f:section name="content">
     <f:be.pageRenderer pageTitle="sfseolighthouse"
       includeCssFiles="{0: '{f:uri.resource(path:\'Css/backend.min.css\')}'}"
       includeJsFiles="{
@@ -37,48 +33,10 @@ Otherwise your changes will be overwritten the next time you save the extension 
       </f:then>
       <f:else if="{pageId}">
         <div class="tx_sfseolighthouse">
-          <h1>
-            <f:translate key="tx_sf_seolighthouse_showlighthouse.name"/>
-          </h1>
-            <div class="row">
-              <div class="col-md-9">
-                <label class="custom-control-label">
-                  <f:translate key="tx_sf_seolighthouse_showlighthouse.url"/>
-                </label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-9 targetUrl callout-info">
-                  {ajaxGetUrlDesktop}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-2">
-                  <div class="custom-control custom-radio" >
-                    <f:form.radio name="device" id="device1" class="custom-control-input device" value="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.desktop')}" />
-                    <label class="custom-control-label" for="device1">
-                        <f:translate key="tx_sf_seolighthouse_showlighthouse.desktop" />
-                    </label>
-                  </div>
-              </div>
-              <div class="col-md-2">
-                  <div class="custom-control custom-radio" >
-                    <f:form.radio name="device" id="device2" class="custom-control-input device" value="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.mobile')}" />
-                    <label class="custom-control-label" for="device2">
-                      <f:translate key="tx_sf_seolighthouse_showlighthouse.mobile" />
-                    </label>
-                  </div>
-              </div>
-            </div>
-            <div class="progressBar progress-bar-animated">
-              <f:render partial="LighthouseStatistics/ProgressBar" />
-            </div>
-            <a class="btn btn-default getLighthouseData" data-format="jsonp" data-desktop="{ajaxGetUrlDesktop}" data-mobile="{ajaxGetUrlMobile}" data-url="{f:uri.action(action: 'analyse', controller: '', pluginName: 'getLighthouseData', pageType:'{settings.ajax.getLighthouseData}')}">
-              <f:translate key="tx_sf_seolighthouse_showlighthouse.formSubmit" />
-            </a>
+            <f:render partial="LighthouseStatistics/FormTarget" arguments="{_all}"/>
             <f:render partial="FormErrors" />
             <f:form action="create" name="newLighthouseStatistics" object="{newLighthouseStatistics}">
-              <f:render partial="LighthouseStatistics/FormFields" />
+              <f:render partial="LighthouseStatistics/FormFields" arguments="{_all}"/>
               <f:form.submit value="Create new" class="btn btn-default"/>
             </f:form>
         </div>
