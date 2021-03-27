@@ -108,36 +108,6 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     }
 
     /**
-     * action analyse
-     * 
-     * @return string|object|null|void
-     */
-    public function analyseAction()
-    {
-        $lighthouseStatistics = $this->lighthouseStatisticsRepository->findAll();
-        $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
-
-        $storagePid = $this->getStoragePid();
-        $this->view->assign('storagePid', $storagePid);
-
-        /* GET URL PARAMS FOR GENERATING LIGHTHOUSE AJAX GET*/
-        $this->locale = $this->getLocale();
-
-        /* GET FE URL OF SELECTED PAGE IN PAGETREE*/
-        //$lightHouseGetUrl   = $this->getBaseUrl()."/index.php?id=".$this->getSelectedPage();
-        $lightHouseGetUrl   = "https://www.stackfactory.de";
-
-        $ajaxGetUrlDesktop  = $this->getTargetUrl($this->locale,$lightHouseGetUrl,"desktop");
-        $ajaxGetUrlMobile  = $this->getTargetUrl($this->locale,$lightHouseGetUrl,"mobile");
-
-        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($ajaxGetUrlMobile); 
-        
-        $this->view->assign('pageId', $this->getSelectedPage());
-        $this->view->assign('ajaxGetUrlDesktop', $ajaxGetUrlDesktop);
-        $this->view->assign('ajaxGetUrlMobile', $ajaxGetUrlMobile);
-    }
-
-    /**
      * action list
      * 
      * @return string|object|null|void

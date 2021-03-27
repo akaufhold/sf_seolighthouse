@@ -1,32 +1,46 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-
-<label for="fcp">
-	<f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp" />
-</label><br />
-	<f:form.textfield property="fcp" id="fcp" /><br />
-
-<label for="si">
-	<f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.si" />
-</label><br />
-	<f:form.textfield property="si" id="si" /><br />
-
-<label for="lcp">
-	<f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.lcp" />
-</label><br />
-	<f:form.textfield property="lcp" id="lcp" /><br />
-
-<label for="tti">
-	<f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.tti" />
-</label><br />
-	<f:form.textfield property="tti" id="tti" /><br />
-
-<label for="tbt">
-	<f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.tbt" />
-</label><br />
-	<f:form.textfield property="tbt" id="tbt" /><br />
-
-<label for="cls">
-		<f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.cls" />
-	</label><br />
-		<f:form.textfield property="cls" id="cls" /><br />
+	<ul class="list-lighthouse list-group list-group-flush">
+		<li class="list-group-item" id="fcp">
+			<span class="label">
+				<f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp" />
+				<f:form.textfield property="fcp" type="hidden"/>
+			</span>
+			<span class="value"></span>
+		</li>
+		<li class="list-group-item" id="si">
+			<span class="label" >
+				<f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.si" />
+				<f:form.textfield property="si" type="hidden"/>
+			</span>
+			<span class="value"></span>
+		</li>
+		<li class="list-group-item" id="lcp">
+			<span class="label">
+				<f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.lcp" />
+				<f:form.textfield property="lcp" type="hidden"/>
+			</span>
+			<span class="value"></span>
+		</li>
+		<li class="list-group-item" id="tti">
+			<span class="label">
+				<f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.tti" />
+				<f:form.textfield property="tti" type="hidden"/>
+			</span>
+			<span class="value"></span>
+		</li>
+		<li class="list-group-item" id="tbt">
+			<span class="label">
+				<f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.tbt" />
+				<f:form.textfield property="tbt" type="hidden"/>
+			</span>
+			<span class="value"></span>
+		</li>
+		<li class="list-group-item" id="cls">
+			<span class="label">
+				<f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.cls" />
+				<f:form.textfield property="cls" type="hidden"/>
+			</span>
+			<span class="value"></span>
+		</li>
+	</ul>
 </html>
