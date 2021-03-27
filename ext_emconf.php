@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'SEO Lighthouse Score',
-    'description' => 'Shows Lighthouse Score in Frontend, Backend and TYPO3 Console',
+    'description' => 'Shows Lighthouse Score & Charts in Backend',
     'category' => 'misc',
     'author' => 'Andreas Kauhold',
     'author_email' => 'info@stackfactory.de',

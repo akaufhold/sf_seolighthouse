@@ -3,7 +3,6 @@
 
 namespace Stackfactory\SfSeolighthouse\Controller;
 
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -39,13 +38,6 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
      * @var \Stackfactory\SfSeolighthouse\Domain\Repository\LighthouseStatisticsRepository
      */
     protected $lighthouseStatisticsRepository = null;
-
-    /**
-     * UriBuilder
-     *
-     * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
-     */
-    protected $uriBuilder = NULL;
 
     /**
      * @param \Stackfactory\SfSeolighthouse\Domain\Repository\LighthouseStatisticsRepository $lighthouseStatisticsRepository
@@ -184,7 +176,3 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     }
     
 }
-
-/*$lighthouse = new LighthouseStatisticsController();
-$lighthouse->getUrl();*/
-
