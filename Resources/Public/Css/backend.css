@@ -6,10 +6,13 @@
   margin-top: 0.5em;
 }
 
-.progressBar * {
+.tx_sfseolighthouse .targetUrl {
+  padding: 0.5em 1.25em;
+}
+.tx_sfseolighthouse .progressBar * {
   line-height: 0.4;
 }
-.progressBar .counterContainer {
+.tx_sfseolighthouse .progressBar .counterContainer {
   padding: 0em 0.25em;
   display: inline-block;
   width: 100%;
@@ -20,14 +23,14 @@
   max-width: 100%;
   width: 60em;
 }
-.progressBar .counterContainer .counterTitle {
+.tx_sfseolighthouse .progressBar .counterContainer .counterTitle {
   min-width: 10em;
   height: 0.6em;
   display: inline-block;
   position: relative;
   z-index: 10;
 }
-.progressBar .counterContainer .counterTitle > * {
+.tx_sfseolighthouse .progressBar .counterContainer .counterTitle > * {
   font-size: 0.6em;
   text-transform: uppercase;
   font-weight: bold;
@@ -35,7 +38,7 @@
   display: inline-block;
   line-height: 1em;
 }
-.progressBar .counterContainer .counterAmount {
+.tx_sfseolighthouse .progressBar .counterContainer .counterAmount {
   background: #5a5a5a;
   min-height: 0.8em;
   min-height: 100%;
@@ -44,60 +47,71 @@
   width: 0%;
   position: absolute;
 }
-.progressBar .counterContainer .counterAmount .totalTime {
+.tx_sfseolighthouse .progressBar .counterContainer .counterAmount .totalTime {
   display: inline-block;
 }
-.progressBar .counterContainer .progressMessage,
-.progressBar .counterContainer .errorMessage,
-.progressBar .counterContainer .successMessage {
+.tx_sfseolighthouse .progressBar .counterContainer .progressMessage,
+.tx_sfseolighthouse .progressBar .counterContainer .errorMessage,
+.tx_sfseolighthouse .progressBar .counterContainer .successMessage {
   display: none;
 }
-.progressBar .counterContainer.progress {
+.tx_sfseolighthouse .progressBar .counterContainer.progress {
   height: auto;
   margin: 0;
 }
-.progressBar .counterContainer.progress .counterAmount {
+.tx_sfseolighthouse .progressBar .counterContainer.progress .counterAmount {
   width: 100%;
   transition-duration: 20s;
   transition-property: width;
 }
-.progressBar .counterContainer.progress .counterTitle > * {
+.tx_sfseolighthouse .progressBar .counterContainer.progress .counterTitle > * {
   display: none;
 }
-.progressBar .counterContainer.progress .counterTitle .progressMessage {
+.tx_sfseolighthouse .progressBar .counterContainer.progress .counterTitle .progressMessage {
   display: inline-block;
   color: white;
 }
-.progressBar .counterContainer.done .counterTitle > * {
+.tx_sfseolighthouse .progressBar .counterContainer.done .counterTitle > * {
   display: none;
 }
-.progressBar .counterContainer.done .counterTitle .successMessage {
+.tx_sfseolighthouse .progressBar .counterContainer.done .counterTitle .successMessage {
   display: inline-block;
 }
-.progressBar .counterContainer.error .counterAmount {
+.tx_sfseolighthouse .progressBar .counterContainer.error .counterAmount {
   width: 100%;
   transition-duration: 0.5s;
   background: #D8000C;
 }
-.progressBar .counterContainer.error .counterTitle > * {
+.tx_sfseolighthouse .progressBar .counterContainer.error .counterTitle > * {
   display: none;
 }
-.progressBar .counterContainer.error .counterTitle .errorMessage {
+.tx_sfseolighthouse .progressBar .counterContainer.error .counterTitle .errorMessage {
   display: inline-block;
   color: white;
 }
-.progressBar .counterContainer.success .counterAmount {
+.tx_sfseolighthouse .progressBar .counterContainer.success .counterAmount {
   width: 100% !important;
   transition-duration: 0.5s !important;
   background: #28a745;
 }
-.progressBar .counterContainer.success .counterTitle > * {
+.tx_sfseolighthouse .progressBar .counterContainer.success .counterTitle > * {
   display: none;
 }
-.progressBar .counterContainer.success .counterTitle .totalTime,
-.progressBar .counterContainer.success .counterTitle .successMessage {
+.tx_sfseolighthouse .progressBar .counterContainer.success .counterTitle .totalTime,
+.tx_sfseolighthouse .progressBar .counterContainer.success .counterTitle .successMessage {
   display: inline-block;
   color: white;
+}
+
+.list-lighthouse {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  width: 60em;
+}
+.list-lighthouse li > span {
+  color: #222;
+  text-transform: uppercase;
+  font-size: 0.8em;
 }
 
 .getLighthouseData {

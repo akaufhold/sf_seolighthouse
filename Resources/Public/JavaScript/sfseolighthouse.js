@@ -5,25 +5,38 @@ function fetchLighthouseData(targetUrl) {
         if (!json.hasOwnProperty("error")){
           $(".progressBar").find(".counterContainer").removeClass("progress"); 
           $(".progressBar").find(".counterContainer").addClass("success"); 
+          $(".progressBar").find(".counterContainer").find(".counterAmount").css({width:"100%"});
           const lighthouse = json.lighthouseResult;
+          $("#fcp").find("input").val(lighthouse.audits['first-contentful-paint'].displayValue);
+          $("#fcp").find(".value").html(lighthouse.audits['first-contentful-paint'].displayValue);
+          $("#si").find("input").val(lighthouse.audits['speed-index'].displayValue);
+          $("#si").find(".value").html(lighthouse.audits['speed-index'].displayValue);
+          $("#tti").find("input").val(lighthouse.audits['interactive'].displayValue);
+          $("#tti").find(".value").html(lighthouse.audits['interactive'].displayValue);
+          $("#fmp").find("input").val(lighthouse.audits['first-meaningful-paint'].displayValue);
+          $("#fmp").find(".value").html(lighthouse.audits['first-meaningful-paint'].displayValue);
+          $("#fci").find("input").val(lighthouse.audits['first-cpu-idle'].displayValue);
+          $("#fci").find(".value").html(lighthouse.audits['first-cpu-idle'].displayValue);
+          $("#eil").find("input").val(lighthouse.audits['estimated-input-latency'].displayValue);
+          $("#eil").find(".value").html(lighthouse.audits['estimated-input-latency'].displayValue);
+
           const lighthouseMetrics = {
             'score':lighthouse.categories.performance.score,
-            'fcp': lighthouse.audits['first-contentful-paint'].displayValue,            //First Contentful Paint
-            'si': lighthouse.audits['speed-index'].displayValue,                        //Speed Index
-            'tti': lighthouse.audits['interactive'].displayValue,                       //Time To Interactive
-            'fmp': lighthouse.audits['first-meaningful-paint'].displayValue,            //First Meaningful Paint
-            'fci': lighthouse.audits['first-cpu-idle'].displayValue,                    //First CPU Idle
-            'eil': lighthouse.audits['estimated-input-latency'].displayValue,           //Estimated Input Latency
-            'bi': lighthouse.environment['benchmarkIndex'],                             //Benchmark Index
+            'bi': lighthouse.environment['benchmarkIndex'],                   
           };
-          $('.counterContainer').find(".counterTitle").append("<span class='totalTime'>"+(lighthouse.timing.total/1000).toFixed(2)+" s</span>");
+
           console.log(lighthouseMetrics);
+          /*lighthouseMetrics.each(function(key,value){
+              console.log(key);
+          })*/
+          $('.counterContainer').find(".counterTitle").append("<span class='totalTime'>"+(lighthouse.timing.total/1000).toFixed(2)+" s</span>");
+          console.log(json);
           return lighthouse;
         }else{
           var errorMessage = json.error.message;
-          $(".progressBar").find(".counterContainer").removeClass("progress"); 
-          $(".progressBar").find(".counterContainer").addClass("error"); 
-          $(".progressBar").find(".errorMessage").append(": "+errorMessage.substring(0, 70));
+          $(".progressBar").find(".counterContainer").removeClass("progress").addClass("error"); 
+          $(".progressBar").find(".counterContainer").find(".counterAmount").css({width:"100%"});
+          $(".progressBar").find(".errorMessage").append(": "+errorMessage.substring(0, 130));
         }
           
         // See https://developers.google.com/speed/docs/insights/v5/reference/pagespeedapi/runpagespeed#response
@@ -39,6 +52,8 @@ function fetchLighthouseData(targetUrl) {
 $(function(){ 
     var url = [];
     $('.getLighthouseData').on('click', function(){
+        $(".progressBar").find(".counterContainer").find(".counterAmount").css({width:"0%"});
+        $(".progressBar").find(".counterContainer").find(".counterTitle").find(".errorMessage").html("error");
         //console.log($(".progressBar").find(".counterAmount"));
         $(".progressBar").find(".counterContainer").addClass("progress");
         url['Mobile'] = $(this).data('mobile');
@@ -51,5 +66,10 @@ $(function(){
         } 
         var lhm = fetchLighthouseData(url[deviceVal]);
     });
+    $("input[type=radio][name=device]").change(function(){
+      var deviceName = $(this).val();
+      var targetUrl = $(".getLighthouseData").data(deviceName);
+
+    })
 });  
   
