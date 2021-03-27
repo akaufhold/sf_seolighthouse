@@ -18,24 +18,19 @@ Otherwise your changes will be overwritten the next time you save the extension 
 3: '{f:uri.resource(path:\'JavaScript/charts.js\')}'
 
 <f:section name="content">
-    <f:be.pageRenderer pageTitle="sfseolighthouse"
-      includeCssFiles="{0: '{f:uri.resource(path:\'Css/backend.min.css\')}'}"
-      includeJsFiles="{
-        0: 'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js',
-        1: '{f:uri.resource(path:\'JavaScript/sfseolighthouse.js\')}'}"/>
+    <f:be.pageRenderer pageTitle="sfseolighthouse" includeCssFiles="{0: '{f:uri.resource(path:\'Css/backend.min.css\')}'}"
+      includeJsFiles="{0: 'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js', 
+                       1: '{f:uri.resource(path:\'JavaScript/sfseolighthouse.js\')}'}"/>
     <f:flashMessages />
     <f:if condition="{storagePid}=={data.uid}">
       <f:then>
-        <h1>
-          <f:translate key="tx_sf_seolighthouse_showlighthouse.listHeader" />
-        </h1>
         <f:render partial="LighthouseStatistics/List" arguments="{_all}"/>
       </f:then>
       <f:else if="{pageId}">
         <div class="tx_sfseolighthouse">
             <f:render partial="LighthouseStatistics/FormTarget" arguments="{_all}"/>
             <f:render partial="FormErrors" />
-            <f:form action="create" name="newLighthouseStatistics" object="{newLighthouseStatistics}">
+            <f:form action="create" class="newLighthouseStatistics" name="newLighthouseStatistics" object="{newLighthouseStatistics}">
               <f:render partial="LighthouseStatistics/FormFields" arguments="{_all}"/>
               <f:form.submit value="Create new" class="btn btn-default"/>
             </f:form>
