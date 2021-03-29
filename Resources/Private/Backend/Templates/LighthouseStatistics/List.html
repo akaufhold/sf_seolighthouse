@@ -11,7 +11,7 @@ in /Configuration/ExtensionBuilder/settings.yaml:
         Templates:
           LighthouseStatistics:
             List.html: keep
-
+ 
 Otherwise your changes will be overwritten the next time you save the extension in the extension builder
 
 2: 'https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js',
@@ -19,21 +19,27 @@ Otherwise your changes will be overwritten the next time you save the extension 
 
 <f:section name="content">
     <f:be.pageRenderer pageTitle="sfseolighthouse" includeCssFiles="{0: '{f:uri.resource(path:\'Css/backend.min.css\')}'}"
-      includeJsFiles="{0: 'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js', 
-                       1: '{f:uri.resource(path:\'JavaScript/sfseolighthouse.js\')}'}"/>
+      includeJsFiles="{0: 'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js',
+                       1: 'https://cdn.jsdelivr.net/npm/chart.js@2.0.0/dist/Chart.bundle.min.js',
+                       2: '{f:uri.resource(path:\'JavaScript/sfseolighthouse.js\')}',
+                       3: '{f:uri.resource(path:\'JavaScript/charts.js\')}'}"/>
     <f:flashMessages />
     <f:if condition="{storagePid}=={data.uid}">
       <f:then>
         <f:render partial="LighthouseStatistics/List" arguments="{_all}"/>
       </f:then>
       <f:else if="{pageId}">
-        <div class="tx_sfseolighthouse">
+        <div class="tx_sfseolighthouse container-fluid">
             <f:render partial="LighthouseStatistics/FormTarget" arguments="{_all}"/>
-            <f:render partial="FormErrors" />
-            <f:form action="create" class="newLighthouseStatistics" name="newLighthouseStatistics" object="{newLighthouseStatistics}">
-              <f:render partial="LighthouseStatistics/FormFields" arguments="{_all}"/>
-              <f:form.submit value="Create new" class="btn btn-default"/>
-            </f:form>
+            <div class="row">
+              <div class="col-md-9">
+                <f:render partial="FormErrors" />
+                <f:form action="create" class="newLighthouseStatistics" name="newLighthouseStatistics" object="{newLighthouseStatistics}">
+                  <f:render partial="LighthouseStatistics/FormFields" arguments="{_all}"/>
+                  <f:form.submit value="Create new" class="btn btn-default"/>
+                </f:form>
+              </div>
+            </div>
         </div>
       </f:else>
       <f:else>
@@ -42,6 +48,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
         </div>
       </f:else>
     </f:if>
+    <canvas id="myChart"></canvas>
 </f:section>
 </html>
   	<!--f:link.action action="new">New LighthouseStatistics</f:link.action-->
