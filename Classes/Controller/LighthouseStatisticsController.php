@@ -6,7 +6,7 @@ namespace Stackfactory\SfSeolighthouse\Controller;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\Context; 
 use TYPO3\CMS\Core\Site\SiteFinder;
 
 /**
@@ -91,12 +91,27 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
      * 
      * @return string
      */
-    public function getTargetUrl($locale, $pageurl, $device)
-    {
+    public function getTargetUrl($locale, $pageurl, $device){
         $this->targetUrl = $this->pageSpeedApiUrl."locale=".$locale."&url=".$pageurl;
         if ($device)
             $this->targetUrl.="&strategy=".$device;
         return $this->targetUrl;
+    }
+
+    public function requiredJavascript($locale, $pageurl, $device){
+        $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
+        $pageRenderer->addRequireJsConfiguration(
+        [
+            'paths' => [
+                'jquery' => 'sysext/core/Resources/Public/JavaScript/Contrib/jquery/',
+                'plupload' => '../typo3conf/ext/your_extension/node_modules/plupload/js/plupload.full.min',
+            ],
+            'shim' => [
+                'deps' => ['jquery'],
+                'plupload' => ['exports' => 'plupload'],
+            ],
+        ]
+        );
     }
 
     /**
@@ -111,10 +126,8 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
 
         $storagePid = $this->getStoragePid();
         $this->view->assign('storagePid', $storagePid);
-
         /* GET URL PARAMS FOR GENERATING LIGHTHOUSE AJAX GET*/
         $this->locale = $this->getLocale();
-
         /* GET FE URL OF SELECTED PAGE IN PAGETREE*/
         //$lightHouseGetUrl   = $this->getBaseUrl()."/index.php?id=".$this->getSelectedPage();
         $lightHouseGetUrl   = "https://www.stackfactory.de";

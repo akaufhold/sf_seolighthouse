@@ -30,6 +30,15 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.success" resname="tx_sf_seolighthouse_showlighthouse.success">
 				<source>Success</source>
 			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.listHeader.name" resname="tx_sf_seolighthouse_showlighthouse.listHeader.name">
+				<source>Lighthouse Property</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.listHeader.value" resname="tx_sf_seolighthouse_showlighthouse.listHeader.value">
+				<source>Value</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.listHeader.score" resname="tx_sf_seolighthouse_showlighthouse.listHeader.score">
+				<source>Score</source>
+			</trans-unit>		
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.formSubmit" resname="tx_sf_seolighthouse_showlighthouse.formSubmit">
 				<source>Analyse Lighthouse Score</source>
 			</trans-unit>
