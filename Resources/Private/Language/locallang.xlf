@@ -39,6 +39,15 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.listHeader.score" resname="tx_sf_seolighthouse_showlighthouse.listHeader.score">
 				<source>Score</source>
 			</trans-unit>		
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.mainAudits" resname="tx_sf_seolighthouse_showlighthouse.mainAudits">
+				<source>Main Audits</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.createNew" resname="tx_sf_seolighthouse_showlighthouse.createNew">
+				<source>Save Statistics for Charts</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.additionalAudits" resname="tx_sf_seolighthouse_showlighthouse.additionalAudits">
+				<source>Additional Audits</source>
+			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.formSubmit" resname="tx_sf_seolighthouse_showlighthouse.formSubmit">
 				<source>Analyse Lighthouse Score</source>
 			</trans-unit>

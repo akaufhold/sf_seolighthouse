@@ -129,16 +129,37 @@
   text-transform: unset;
 }
 .newLighthouseStatistics .list-lighthouse li {
+  height: 3.3em;
+  cursor: pointer;
   padding: 0;
+}
+.newLighthouseStatistics .list-lighthouse li:hover {
+  background-color: #ebf3fb;
+  transform: scale(1.01);
+  transition-duration: 0.25s;
+  position: relative;
+  z-index: 2;
+}
+.newLighthouseStatistics .list-lighthouse li:hover .label .icon-actions-chevron-down {
+  display: inline-block;
 }
 .newLighthouseStatistics .list-lighthouse li > span {
   color: #222;
   text-transform: uppercase;
   font-size: 0.9em;
 }
+.newLighthouseStatistics .list-lighthouse li > span .icon-size-small {
+  height: 12px;
+  width: 12px;
+  line-height: 12px;
+}
 .newLighthouseStatistics .list-lighthouse li .label {
   display: inline-block;
   padding: 1.2em 1em 1.2em;
+}
+.newLighthouseStatistics .list-lighthouse li .label .icon-actions-chevron-down {
+  padding-right: 1em;
+  display: none;
 }
 .newLighthouseStatistics .list-lighthouse li .value {
   position: absolute;
@@ -175,12 +196,28 @@
 .newLighthouseStatistics .list-lighthouse li .description {
   display: block;
   width: 100%;
-  padding: 0em 6% 1em 1em;
+  padding: 0em 6% 0em 1em;
+  height: 0px;
+  overflow: hidden;
 }
 .newLighthouseStatistics .list-lighthouse li .description > b {
   width: 100%;
   display: block;
   text-transform: inherit;
+  margin-bottom: 1em;
+}
+.newLighthouseStatistics .list-lighthouse li.active {
+  height: auto;
+  background-color: #ebf3fb;
+  border-color: #bdc5cd;
+  transform: scale(1.01);
+}
+.newLighthouseStatistics .list-lighthouse li.active .label .icon-actions-chevron-down {
+  display: inline-block;
+}
+.newLighthouseStatistics .list-lighthouse li.active .description {
+  height: 100%;
+  padding-bottom: 1em;
 }
 .newLighthouseStatistics .list-lighthouse.list-additional li .value {
   max-width: 75%;
