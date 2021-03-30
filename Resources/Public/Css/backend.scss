@@ -145,10 +145,15 @@ $averageColor:#ffa400;
             }
         }
         li{
+            padding: 0;
             > span{ 
                 color: #222;
                 text-transform: uppercase;
                 font-size: 0.9em;
+            }
+            .label {
+                display: inline-block;
+                padding: 1.2em 1em 1.2em;
             }
             .value{
                 position: absolute;
@@ -180,6 +185,16 @@ $averageColor:#ffa400;
                 }
                 &.fast{
                     background-color:$successColor;
+                }
+            }
+            .description{
+                display:block;
+                width:100%;
+                padding: 0em 6% 1em 1em;
+                > b{
+                    width:100%;
+                    display:block;
+                    text-transform: inherit;
                 }
             }
         }

@@ -31,41 +31,48 @@ function fetchLighthouseData(targetUrl) {
           mainAudits.forEach(function(value){
               OutputAuditName   = value[0].replace("-"," ");
               OutputAuditsHtml += '<li class="list-group-item" id="'+value[1]+'">';
-              OutputAuditsHtml +=   '<span class="label">';
-              OutputAuditsHtml +=       OutputAuditName;
-              OutputAuditsHtml +=       '<input type="hidden" name="tx_sfseolighthouse_web_sfseolighthouselighthouse[newLighthouseStatistics]['+value[1]+']" value="'+lighthouse.audits[value[0]].displayValue+'"/>';
-              OutputAuditsHtml +=   '</span>';
-              OutputAuditsHtml +=   '<span class="value">';
-              OutputAuditsHtml +=     auditResults[value[0]].displayValue;
-              OutputAuditsHtml +=   '</span>';
-              OutputAuditsHtml +=   '<span class="score ';
+              OutputAuditsHtml +=     '<span class="label">';
+              OutputAuditsHtml +=         OutputAuditName;
+              OutputAuditsHtml +=         '<input type="hidden" name="tx_sfseolighthouse_web_sfseolighthouselighthouse[newLighthouseStatistics]['+value[1]+']" value="'+lighthouse.audits[value[0]].displayValue+'"/>';
+              OutputAuditsHtml +=     '</span>';
+              OutputAuditsHtml +=     '<span class="value">';
+              OutputAuditsHtml +=         auditResults[value[0]].displayValue;
+              OutputAuditsHtml +=     '</span>';
+              OutputAuditsHtml +=     '<span class="score ';
               if (auditResults[value[0]].score < 0.5){OutputAuditsHtml += 'slow';}
               else if (auditResults[value[0]].score < 0.9){OutputAuditsHtml += 'average';}
               else if (auditResults[value[0]].score <= 1){OutputAuditsHtml += 'fast';}
-              OutputAuditsHtml +=   '">'+auditResults[value[0]].score;
-              OutputAuditsHtml +=   '</span>';
-              OutputAuditsHtml +=  '</li>';
+              OutputAuditsHtml +=     '">'+auditResults[value[0]].score;
+              OutputAuditsHtml +=     '</span>';
+              OutputAuditsHtml += '</li>';
           });
           $(".list-main").html(OutputAuditsHtml);
           OutputAuditsHtml = "";
           /* ADDTIONAL AUDIT PROPERTIES*/
           Object.keys(auditResults).sort().forEach(function(key){
-            console.log(String(auditResults[key].scoreDisplayMode)); 
-            if (!(String(auditResults[key].scoreDisplayMode)=="notApplicable")){
+            var displayMode = String(auditResults[key].scoreDisplayMode);
+            if (displayMode!="notApplicable"){
+              //console.log(String(auditResults[key].scoreDisplayMode));
               OutputAuditName   = key.replace("-"," ");
               OutputAuditsHtml += '<li class="list-group-item" id="'+key+'">';
-              OutputAuditsHtml +=   '<span class="label">';
-              OutputAuditsHtml +=     OutputAuditName;
-              OutputAuditsHtml +=   '</span>';
-              OutputAuditsHtml +=   '<span class="value">';
-              OutputAuditsHtml +=     auditResults[key].displayValue;
-              OutputAuditsHtml +=   '</span>';
-              OutputAuditsHtml +=   '<span class="score ';
+              OutputAuditsHtml +=     '<span class="label">';
+              OutputAuditsHtml +=         OutputAuditName;
+              if (auditResults[key].description){
+                  OutputAuditsHtml += '<i class="arrowDown"></i>';
+              }
+              OutputAuditsHtml +=     '</span>';
+              OutputAuditsHtml +=     '<span class="value">';
+              OutputAuditsHtml +=         auditResults[key].displayValue;
+              OutputAuditsHtml +=     '</span>';
+              OutputAuditsHtml +=     '<span class="score ';
               if (auditResults[key].score < 0.5){OutputAuditsHtml += 'slow';}
               else if (auditResults[key].score < 0.9){OutputAuditsHtml += 'average';}
               else if (auditResults[key].score <= 1){OutputAuditsHtml += 'fast';}
-              OutputAuditsHtml +=   '">'+auditResults[key].score;
-              OutputAuditsHtml +=   '</span>';
+              OutputAuditsHtml +=     '">'+auditResults[key].score;
+              OutputAuditsHtml +=     '</span>';
+              if (auditResults[key].description){  
+                  OutputAuditsHtml += "<span class='description'>"+((auditResults[key].title)?"<b>"+auditResults[key].title+"</b>":"")+auditResults[key].description+"</span>";
+              }
               OutputAuditsHtml +=  '</li>';
             }
           });
