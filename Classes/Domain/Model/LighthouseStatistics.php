@@ -20,7 +20,7 @@ namespace Stackfactory\SfSeolighthouse\Domain\Model;
 class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
     /**
-    * @var \DateTime
+    * @var int
     */
     protected $crdate;
     
@@ -83,9 +83,9 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     /**
      * Returns the Creation Date
      * 
-     * @return int $crDate
+     * @return int $crdate
      */
-    public function getCrdate(): \DateTime
+    public function getCrdate()
     {
         return $this->crdate;
     }

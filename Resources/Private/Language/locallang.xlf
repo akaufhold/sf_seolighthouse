@@ -10,7 +10,7 @@
 				<source>Listing Lighthouse Data</source>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.crdate" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.crdate">
-				<source>Statistics From</source>
+				<source>Creation Date</source>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.target" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.target">
 				<source>Page ID</source>
