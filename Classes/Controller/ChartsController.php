@@ -40,4 +40,10 @@ class ChartsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         $this->lighthouseStatisticsRepository = $lighthouseStatisticsRepository;
     }
+
+    public function chartsAction()
+    {
+        $lighthouseStatistics = $this->lighthouseStatisticsRepository->findAll();
+        $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
+    }
 }

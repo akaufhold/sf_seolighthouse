@@ -1,20 +1,66 @@
-/* DECLARATION AUDIT OBJECTS */
-const mainAudits        = [
-          ["first-contentful-paint", "fcp"],
-          ["speed-index", "si"],
-          ["interactive", "tti"],
-          ["largest-contentful-paint", "lcp"],
-          ["total-blocking-time", "tbt"],
-          ["cumulative-layout-shift", "cls"]
-        ];
-const environmentAudits = [
-          ["benchmarkIndex", "bi"],
-          ["dom-size", "ds"]
-        ];
-const individualAudits  = [
-          ["Overall Score","os"]
-        ];
-function fetchLighthouseData(targetUrl) {
+requirejs(['jquery'], function ($) {
+
+  var chevronDown;
+  requirejs(['TYPO3/CMS/Backend/Icons'], function(Icons) {
+    // Get a single icon
+    Icons.getIcon('actions-chevron-down', Icons.sizes.small).done(function(icon) {
+      chevronDown = icon;
+    });
+  });
+
+  /* DECLARATION AUDIT OBJECTS */
+  const mainAudits        = [
+            ["first-contentful-paint", "fcp"],
+            ["speed-index", "si"],
+            ["interactive", "tti"],
+            ["largest-contentful-paint", "lcp"],
+            ["total-blocking-time", "tbt"],
+            ["cumulative-layout-shift", "cls"]
+          ];
+  const environmentAudits = [
+            ["benchmarkIndex", "bi"],
+            ["dom-size", "ds"]
+          ];
+  const individualAudits  = [
+            ["Overall Score","os"]
+          ];
+
+  var url = [];
+  $('.getLighthouseData').on('click', function(){
+      /* PROGRESS BAR */
+      $(".progressBar").find(".counterContainer").find(".counterAmount").css({width:"0%"});
+      $(".progressBar").find(".counterContainer").removeClass("progress").removeClass("error").removeClass("success");
+      $(".progressBar").find(".counterContainer").addClass("progress");
+      $(".progressBar").find(".counterContainer").find(".counterTitle").find(".errorMessage").html("error");
+      /* SETTING UP GET REQUEST */
+      url['Mobile'] = $(this).data('mobile');
+      url['Desktop'] = $(this).data('desktop');
+      var device = $("input[name=device]").filter(":checked");
+      var deviceVal = $(device).val();
+      $("#device").val(deviceVal);
+      $("#target").val($('.newLighthouseStatistics').attr("id"));
+      var format = 'html'; 
+      if($(this).data('format')){
+          format = jQuery(this).data('format');
+      } 
+      fetchLighthouseData(url[deviceVal]);
+  });
+
+  $("input[type=radio][name=device]").change(function(){
+    var deviceName = $(this).val();
+    var targetUrl = $(".getLighthouseData").data(deviceName);
+  });
+
+  $(".list-lighthouse").on("click","li",function(){
+    var listItem = $(this);
+    $(".list-lighthouse").find("li").removeClass("active");
+    if (!$(listItem).hasClass("active")){
+      $(listItem).addClass("active");
+    }
+  });
+
+
+  function fetchLighthouseData(targetUrl) {
     fetch(targetUrl)
       .then(response => response.json())
       .then(json => {
@@ -22,17 +68,16 @@ function fetchLighthouseData(targetUrl) {
           console.log(json);
           const lighthouse = json.lighthouseResult;
           const auditResults = lighthouse.audits;
-          var OutputAuditsHtml = "";
           var OutputAuditName;
+          var OutputAuditsHtml = "";
           $(".progressBar").find(".counterContainer").removeClass("progress").addClass("success"); 
           $(".progressBar").find(".counterContainer").find(".counterAmount").css({width:"100%"});
           /* MAIN AUDIT PROPERTIES */
           mainAudits.forEach(function(value){
               OutputAuditName   = value[0].replace("-"," ");
-              OutputAuditsHtml += '<li class="list-group-item" id="'+value[1]+'">';
+              OutputAuditsHtml += '<li class="list-group-item" id="list-'+value[1]+'">';
               OutputAuditsHtml +=     '<span class="label">';
               OutputAuditsHtml +=         OutputAuditName;
-              OutputAuditsHtml +=         '<input type="hidden" name="tx_sfseolighthouse_web_sfseolighthouselighthouse[newLighthouseStatistics]['+value[1]+']" value="'+lighthouse.audits[value[0]].displayValue+'"/>';
               OutputAuditsHtml +=     '</span>';
               OutputAuditsHtml +=     '<span class="value">';
               OutputAuditsHtml +=         auditResults[value[0]].displayValue;
@@ -44,6 +89,8 @@ function fetchLighthouseData(targetUrl) {
               OutputAuditsHtml +=     '">'+auditResults[value[0]].score;
               OutputAuditsHtml +=     '</span>';
               OutputAuditsHtml += '</li>';
+              console.log(parseFloat(auditResults[value[0]].displayValue.replace(',', '.')));
+              $("#"+value[1]).val(parseFloat(auditResults[value[0]].displayValue.replace(',', '.')));
           });
           $(".list-main").html(OutputAuditsHtml);
           OutputAuditsHtml = "";
@@ -97,43 +144,6 @@ function fetchLighthouseData(targetUrl) {
           $(".progressBar").find(".errorMessage").append(": "+errorMessage.substring(0, 130));
         }
       });
-} 
-var chevronDown;
-$(function(){ 
-    requirejs(['TYPO3/CMS/Backend/Icons'], function(Icons) {
-      // Get a single icon
-      Icons.getIcon('actions-chevron-down', Icons.sizes.small).done(function(icon) {
-        chevronDown = icon;
-      });
-    });
-    var url = [];
-    $('.getLighthouseData').on('click', function(){
-        /* PROGRESS BAR */
-        $(".progressBar").find(".counterContainer").find(".counterAmount").css({width:"0%"});
-        $(".progressBar").find(".counterContainer").removeClass("progress").removeClass("error").removeClass("success");
-        $(".progressBar").find(".counterContainer").addClass("progress");
-        $(".progressBar").find(".counterContainer").find(".counterTitle").find(".errorMessage").html("error");
-        /* SETTING UP GET REQUEST */
-        url['Mobile'] = $(this).data('mobile');
-        url['Desktop'] = $(this).data('desktop');
-        var device = $("input[name=device]").filter(":checked");
-        var deviceVal = $(device).val();
-        var format = 'html'; 
-        if($(this).data('format')){
-            format = jQuery(this).data('format');
-        } 
-        fetchLighthouseData(url[deviceVal]);
-    });
-    $("input[type=radio][name=device]").change(function(){
-      var deviceName = $(this).val();
-      var targetUrl = $(".getLighthouseData").data(deviceName);
-    });
-    $(".list-lighthouse").on("click","li",function(){
-      var listItem = $(this);
-      $(".list-lighthouse").find("li").removeClass("active");
-      if (!$(listItem).hasClass("active")){
-        $(listItem).addClass("active");
-      }
-    });
-});  
-  
+  } 
+
+});

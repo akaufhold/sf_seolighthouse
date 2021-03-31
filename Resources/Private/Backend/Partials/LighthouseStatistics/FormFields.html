@@ -1,20 +1,10 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-	<ul class="list-lighthouse list-header list-group">
-		<li class="list-group-item">
-			<span class="label">
-				<f:translate key="tx_sf_seolighthouse_showlighthouse.listHeader.name"/>
-			</span>
-			<span class="value">
-				<f:translate key="tx_sf_seolighthouse_showlighthouse.listHeader.value"/>
-			</span>
-			<span class="score">
-				<f:translate key="tx_sf_seolighthouse_showlighthouse.listHeader.score"/>
-			</span>
-		</li>
-	</ul>
-	<h2><f:translate key="tx_sf_seolighthouse_showlighthouse.mainAudits"/></h2>
-	<ul class="list-lighthouse list-main list-group"></ul>
-	<f:form.submit value="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.createNew')}" class="btn btn-default"/>
-	<h2><f:translate key="tx_sf_seolighthouse_showlighthouse.additionalAudits"/></h2>
-	<ul class="list-lighthouse list-additional list-group"></ul>
+<f:form.textfield type="hidden" property="target" id="target" />
+<f:form.textfield type="hidden" property="fcp" id="fcp" />
+<f:form.textfield type="hidden" property="si" id="si" />
+<f:form.textfield type="hidden" property="lcp" id="lcp" />
+<f:form.textfield type="hidden" property="tti" id="tti" />
+<f:form.textfield type="hidden" property="tbt" id="tbt" />
+<f:form.textfield type="hidden" property="cls" id="cls" />
+<f:form.textfield type="hidden" property="device" id="device" />
 </html>

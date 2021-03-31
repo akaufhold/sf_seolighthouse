@@ -19,6 +19,12 @@ namespace Stackfactory\SfSeolighthouse\Domain\Model;
  */
 class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
+    /**
+     * Target Page ID
+     * 
+     * @var int
+     */
+    protected $target = 1;
 
     /**
      * First Contentful Paint
@@ -37,30 +43,58 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     /**
      * Largest Contentful Paint
      * 
-     * @var string
+     * @var float
      */
-    protected $lcp = '';
+    protected $lcp = 0.0;
 
     /**
      * Time to Interactive
      * 
-     * @var string
+     * @var float
      */
-    protected $tti = '';
+    protected $tti = 0.0;
 
     /**
      * Total Blocking Time
      * 
-     * @var string
+     * @var float
      */
-    protected $tbt = '';
+    protected $tbt = 0.0;
 
     /**
      * Cumulative Layout Shift
      * 
+     * @var float
+     */
+    protected $cls = 0.0;
+
+    /**
+     * Device 
+     * 
      * @var string
      */
-    protected $cls = '';
+    protected $device = '';
+
+    /**
+     * Returns the target
+     * 
+     * @return int $target
+     */
+    public function getTarget()
+    {
+        return $this->target;
+    }
+
+    /**
+     * Sets the target
+     * 
+     * @param int $target
+     * @return void
+     */
+    public function setTarget($target)
+    {
+        $this->target = $target;
+    }
 
     /**
      * Returns the fcp
@@ -107,7 +141,7 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     /**
      * Returns the lcp
      * 
-     * @return string $lcp
+     * @return float $lcp
      */
     public function getLcp()
     {
@@ -117,7 +151,7 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     /**
      * Sets the lcp
      * 
-     * @param string $lcp
+     * @param float $lcp
      * @return void
      */
     public function setLcp($lcp)
@@ -128,7 +162,7 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     /**
      * Returns the tti
      * 
-     * @return string $tti
+     * @return float $tti
      */
     public function getTti()
     {
@@ -138,7 +172,7 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     /**
      * Sets the tti
      * 
-     * @param string $tti
+     * @param float $tti
      * @return void
      */
     public function setTti($tti)
@@ -149,7 +183,7 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     /**
      * Returns the tbt
      * 
-     * @return string $tbt
+     * @return float $tbt
      */
     public function getTbt()
     {
@@ -159,7 +193,7 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     /**
      * Sets the tbt
      * 
-     * @param string $tbt
+     * @param float $tbt
      * @return void
      */
     public function setTbt($tbt)
@@ -170,7 +204,7 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     /**
      * Returns the cls
      * 
-     * @return string $cls
+     * @return float $cls
      */
     public function getCls()
     {
@@ -180,11 +214,32 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     /**
      * Sets the cls
      * 
-     * @param string $cls
+     * @param float $cls
      * @return void
      */
     public function setCls($cls)
     {
         $this->cls = $cls;
+    }
+
+    /**
+     * Returns the device
+     * 
+     * @return string $device
+     */
+    public function getDevice()
+    {
+        return $this->device;
+    }
+
+    /**
+     * Sets the device
+     * 
+     * @param string $device
+     * @return void
+     */
+    public function setDevice($device)
+    {
+        $this->device = $device;
     }
 }

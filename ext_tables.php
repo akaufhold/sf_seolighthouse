@@ -16,6 +16,7 @@ call_user_func(static function() {
         '10', // Position
         [
             \Stackfactory\SfSeolighthouse\Controller\LighthouseStatisticsController::class => 'list, charts, show, new, create, delete',
+            \Stackfactory\SfSeolighthouse\Controller\ChartsController::class => 'charts'
         ],
         [
             'access' => 'user,group',

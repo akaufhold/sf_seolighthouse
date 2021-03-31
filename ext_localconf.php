@@ -9,11 +9,12 @@ call_user_func(
             'SfSeolighthouse',
             'Showlighthouse',
             [
-                \Stackfactory\SfSeolighthouse\Controller\LighthouseStatisticsController::class => 'list, charts, show, new, create, delete'
+                \Stackfactory\SfSeolighthouse\Controller\LighthouseStatisticsController::class => 'list, show, new, create, delete',
+                \Stackfactory\SfSeolighthouse\Controller\ChartsController::class => 'charts'
             ],
             // non-cacheable actions
             [
-                \Stackfactory\SfSeolighthouse\Controller\LighthouseStatisticsController::class => 'delete'
+                \Stackfactory\SfSeolighthouse\Controller\LighthouseStatisticsController::class => 'create, delete'
             ]
         );
 
