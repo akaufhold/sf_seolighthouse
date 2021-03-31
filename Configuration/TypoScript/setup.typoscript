@@ -10,7 +10,15 @@ plugin.tx_sfseolighthouse_showlighthouse {
     persistence {
         storagePid = {$plugin.tx_sfseolighthouse_showlighthouse.persistence.storagePid}
         #recursive = 1
+        classes {
+            tx_sfseolighthouse_domain_model_lighthousestatistics {
+                mapping {
+                    columns.crdate.mapOnProperty = crdate 
+                }
+            }
+        }
     }
+
     features {
         #skipDefaultArguments = 1
         # if set to 1, the enable fields are ignored in BE context
@@ -25,7 +33,6 @@ plugin.tx_sfseolighthouse_showlighthouse {
         getLighthouseData = 123
     }
 }
-
 # these classes are only used in auto-generated templates
 plugin.tx_sfseolighthouse._CSS_DEFAULT_STYLE (
     textarea.f3-form-error {

@@ -20,6 +20,11 @@ namespace Stackfactory\SfSeolighthouse\Domain\Model;
 class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
     /**
+    * @var \DateTime
+    */
+    protected $crdate;
+    
+    /**
      * Target Page ID
      * 
      * @var int
@@ -74,6 +79,16 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
      * @var string
      */
     protected $device = '';
+
+    /**
+     * Returns the Creation Date
+     * 
+     * @return int $crDate
+     */
+    public function getCrdate(): \DateTime
+    {
+        return $this->crdate;
+    }
 
     /**
      * Returns the target
@@ -242,4 +257,5 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     {
         $this->device = $device;
     }
+
 }

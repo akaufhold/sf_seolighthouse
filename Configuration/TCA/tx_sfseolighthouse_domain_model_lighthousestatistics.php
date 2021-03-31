@@ -23,6 +23,15 @@ return [
         '1' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, fcp, si, lcp, tti, tbt, cls, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime'],
     ],
     'columns' => [
+        'crdate'=> [
+            'exclude' => 1,
+            'label' => 'Creation date',
+            'config' => [
+                'type' => 'none',
+                'format' => 'date',
+                'eval' => 'date'
+            ],
+         ],
         'sys_language_uid' => [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
