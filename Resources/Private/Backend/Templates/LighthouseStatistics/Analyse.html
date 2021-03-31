@@ -1,19 +1,36 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:layout name="Default" />
 
-This template is responsible for creating a table of domain objects.
-
-If you modify this template, do not forget to change the overwrite settings
-in /Configuration/ExtensionBuilder/settings.yaml:
-  Resources:
-    Private:
-      Backend:
-        Templates:
-          LighthouseStatistics:
-            List.html: keep
-
-Otherwise your changes will be overwritten the next time you save the extension in the extension builder
-
 <f:section name="content">
-    
+    <f:be.pageRenderer pageTitle="sfseolighthouse" includeCssFiles="{0: '{f:uri.resource(path:\'Css/backend.min.css\')}'}"
+      includeJsFiles="{0: 'https://cdn.jsdelivr.net/npm/chart.js@2.0.0/dist/Chart.bundle.min.js',
+                       1: '{f:uri.resource(path:\'JavaScript/sfseolighthouse.js\')}',
+                       2: '{f:uri.resource(path:\'JavaScript/charts.js\')}'}"/>
+    <f:flashMessages />
+    <f:if condition="{storagePid}=={data.uid}">
+      <f:then>
+        <f:render partial="LighthouseStatistics/List" arguments="{_all}"/>
+      </f:then>
+      <f:else if="{pageId}">
+        <div class="tx_sfseolighthouse container-fluid">
+            <f:render partial="LighthouseStatistics/FormTarget" arguments="{_all}"/>
+            <div class="row">
+              <div class="col-md-9">
+                <f:render partial="FormErrors" />
+                <f:form id="{pageId}" action="create" class="newLighthouseStatistics" name="newLighthouseStatistics" object="{newLighthouseStatistics}">
+                  <f:render partial="LighthouseStatistics/FormFields" arguments="{_all}"/>
+                  <f:render partial="LighthouseStatistics/FormList" arguments="{_all}"/>
+                </f:form>
+              </div>
+            </div>
+        </div>
+      </f:else>
+      <f:else>
+        <div class="callout-info">
+          <p><f:translate key="tx_sf_seolighthouse_showlighthouse.noPageInfo"/></p>
+        </div>
+      </f:else>
+    </f:if>
 </f:section>
+</html>
+  	<!--f:link.action action="new">New LighthouseStatistics</f:link.action-->

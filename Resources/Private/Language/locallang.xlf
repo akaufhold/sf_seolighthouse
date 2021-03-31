@@ -6,11 +6,35 @@
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics" resname="tx_sfseolighthouse_domain_model_lighthousestatistics">
 				<source>Lighthouse Statistics</source>
 			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.listHeader" resname="tx_sf_seolighthouse_showlighthouse.listHeader">
+				<source>Listing Lighthouse Data</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.target" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.target">
+				<source>Target Page ID</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp">
+				<source>First Contentful Paint</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.si" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.si">
+				<source>Speed Index</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.lcp" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.lcp">
+				<source>Largest Contentful Paint</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.tti" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.tti">
+				<source>Time To Interactive</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.tbt" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.tbt">
+				<source>Total Blocking Time</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.cls" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.cls">
+				<source>Cumulative Layout Shift</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.device" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.device">
+				<source>Device</source>
+			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.name" resname="tx_sf_seolighthouse_showlighthouse.name">
 				<source>Show SEO Lighthouse Score</source>
-			</trans-unit>
-			<trans-unit id="tx_sf_seolighthouse_showlighthouse.url" resname="tx_sf_seolighthouse_showlighthouse.url">
-				<source>Lighthouse Target Url</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.desktop" resname="tx_sf_seolighthouse_showlighthouse.desktop">
 				<source>Desktop</source>

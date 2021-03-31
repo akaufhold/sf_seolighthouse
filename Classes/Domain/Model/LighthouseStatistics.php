@@ -24,7 +24,7 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
      * 
      * @var int
      */
-    protected $target = 1;
+    protected $target = 0;
 
     /**
      * First Contentful Paint

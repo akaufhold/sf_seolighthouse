@@ -113,13 +113,12 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         ]
         );
     }
-
     /**
-     * action list
+     * action analyse
      * 
      * @return string|object|null|void
      */
-    public function listAction()
+    public function analyseAction()
     {
         $lighthouseStatistics = $this->lighthouseStatisticsRepository->findAll();
         $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
@@ -140,6 +139,17 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $this->view->assign('pageId', $this->getSelectedPage());
         $this->view->assign('ajaxGetUrlDesktop', $ajaxGetUrlDesktop);
         $this->view->assign('ajaxGetUrlMobile', $ajaxGetUrlMobile);
+    }
+
+    /**
+     * action list
+     * 
+     * @return string|object|null|void
+     */
+    public function listAction()
+    {
+        $lighthouseStatistics = $this->lighthouseStatisticsRepository->findAll();
+        $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
     }
 
     /**
@@ -186,7 +196,7 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $this->addFlashMessage('The object was created. Please be aware that this action is publicly accessible unless you implement an access check. See https://docs.typo3.org/typo3cms/extensions/extension_builder/User/Index.html', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
         \TYPO3\CMS\Core\Utility\DebugUtility::debug($newLighthouseStatistics);
         $this->lighthouseStatisticsRepository->add($newLighthouseStatistics);
-        //$this->redirect('list');
+        $this->redirect('list');
     }
     
 }

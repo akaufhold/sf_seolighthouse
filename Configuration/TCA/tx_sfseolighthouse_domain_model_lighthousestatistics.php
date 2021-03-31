@@ -103,7 +103,15 @@ return [
                 ]
             ],
         ],
-
+        'target' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.target',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'int'
+            ]
+        ],
         'fcp' => [
             'exclude' => true,
             'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.fcp',
@@ -158,6 +166,13 @@ return [
                 'eval' => 'double2'
             ],
         ],
-    
+        'device' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.device',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+            ]
+        ],
     ],
 ];
