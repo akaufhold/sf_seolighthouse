@@ -43,6 +43,9 @@ class ChartsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
     public function chartsAction()
     {
+        $LighthouseStatisticsController = GeneralUtility::makeInstance(LighthouseStatisticsController::class);
+        $this->view->assign('pageId', $LighthouseStatisticsController->getSelectedPage());
+
         $lighthouseStatistics = $this->lighthouseStatisticsRepository->findAll();
         $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
     }

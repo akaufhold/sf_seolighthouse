@@ -19,4 +19,5 @@ namespace Stackfactory\SfSeolighthouse\Domain\Repository;
  */
 class LighthouseStatisticsRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
+
 }

@@ -1,149 +1,166 @@
 requirejs(['jquery'], function ($) {
-
+  /* REQUIRED ICONS */
   var chevronDown;
   requirejs(['TYPO3/CMS/Backend/Icons'], function(Icons) {
-    // Get a single icon
     Icons.getIcon('actions-chevron-down', Icons.sizes.small).done(function(icon) {
       chevronDown = icon;
     });
   });
 
-  /* DECLARATION AUDIT OBJECTS */
-  const mainAudits        = [
-            ["first-contentful-paint", "fcp"],
-            ["speed-index", "si"],
-            ["interactive", "tti"],
-            ["largest-contentful-paint", "lcp"],
-            ["total-blocking-time", "tbt"],
-            ["cumulative-layout-shift", "cls"]
-          ];
-  const environmentAudits = [
-            ["benchmarkIndex", "bi"],
-            ["dom-size", "ds"]
-          ];
-  const individualAudits  = [
-            ["Overall Score","os"]
-          ];
+  var LighthouseData = function () {
+      /* DECLARATION AUDIT CONSTANTS */
+      const mainAudits        = [
+          ["first-contentful-paint", "fcp"],["speed-index", "si"],["interactive", "tti"],["largest-contentful-paint", "lcp"],["total-blocking-time", "tbt"],["cumulative-layout-shift", "cls"]
+      ];
+      const environmentAudits = [
+          ["benchmarkIndex", "bi"],["dom-size", "ds"]
+      ];
+      const individualAudits  = [
+          ["Overall Score","os"]
+      ];
+      /* DECLARATION VARS */
+      var me = this;
+      var OutputAuditName;
+      var OutputAuditsHtml;
+      var url = [];
+      var pb = $(".progressBar");
+      var cc = $(".progressBar").find(".counterContainer");
 
-  var url = [];
-  $('.getLighthouseData').on('click', function(){
-      /* PROGRESS BAR */
-      $(".progressBar").find(".counterContainer").find(".counterAmount").css({width:"0%"});
-      $(".progressBar").find(".counterContainer").removeClass("progress").removeClass("error").removeClass("success");
-      $(".progressBar").find(".counterContainer").addClass("progress");
-      $(".progressBar").find(".counterContainer").find(".counterTitle").find(".errorMessage").html("error");
-      /* SETTING UP GET REQUEST */
-      url['Mobile'] = $(this).data('mobile');
-      url['Desktop'] = $(this).data('desktop');
-      var device = $("input[name=device]").filter(":checked");
-      var deviceVal = $(device).val();
-      $("#device").val(deviceVal);
-      $("#target").val($('.newLighthouseStatistics').attr("id"));
-      var format = 'html'; 
-      if($(this).data('format')){
-          format = jQuery(this).data('format');
-      } 
-      fetchLighthouseData(url[deviceVal]);
-  });
+      me.init = function () {
+          $('.getLighthouseData').on('click', function(){
+            var thisis = $(this);
+            /* PROGRESS BAR */
+            me.pbReset();
+            me.setPbStatus("progress");
+            //$("#target").val($('.newLighthouseStatistics').attr("id"));
+            /* SETTING DATA FORMAT */
+            var format = 'html'; 
+            if($(this).data('format')){
+                format = jQuery(this).data('format');
+            } 
+            /* CALL LIGHTHOUSE REQUEST */
+            me.fetchLighthouseData(me.getDevice(thisis));
+        });
 
-  $("input[type=radio][name=device]").change(function(){
-    var deviceName = $(this).val();
-    var targetUrl = $(".getLighthouseData").data(deviceName);
-  });
+        $("input[type=radio][name=device]").change(function(){
+          var deviceName = $(this).val();
+          var targetUrl = $(".getLighthouseData").data(deviceName.toLowerCase());
+          $(".targetUrl").html(targetUrl);
+        });
+          
+        $(".list-lighthouse").on("click","li",function(){
+          var listItem = $(this);
+          $(".list-lighthouse").find("li").removeClass("active");
+          if (!$(listItem).hasClass("active")){
+            $(listItem).addClass("active");
+          }
+        });
+    };
 
-  $(".list-lighthouse").on("click","li",function(){
-    var listItem = $(this);
-    $(".list-lighthouse").find("li").removeClass("active");
-    if (!$(listItem).hasClass("active")){
-      $(listItem).addClass("active");
+    me.fetchLighthouseData = function(targetUrl) {
+      fetch(targetUrl)
+        .then(response => response.json())
+        .then(json => {
+          if (!json.hasOwnProperty("error")){
+            OutputAuditsHtml = "";
+            var speed, score, displayValue, screenshot, displayMode;
+            const lighthouse = json.lighthouseResult;
+            const auditResults = lighthouse.audits;
+            me.pbReset();
+            me.setPbStatus("success");
+            /* MAIN AUDIT PROPERTIES */
+            mainAudits.forEach(function(value){
+                displayValue      = auditResults[value[0]].displayValue;
+                score             = auditResults[value[0]].score;
+                if (score < 0.5){speed = 'slow';} 
+                else if (score < 0.9){speed = 'average';} 
+                else if (score <= 1){speed = 'fast';}
+
+                OutputAuditName   = value[0].replace("-"," ");
+                OutputAuditsHtml += '<li class="list-group-item" id="list-'+value[1]+'">';
+                OutputAuditsHtml +=     me.addSpan("label",OutputAuditName);
+                OutputAuditsHtml +=     me.addSpan("value", displayValue);
+                OutputAuditsHtml +=     me.addSpan("score "+speed,score);
+                OutputAuditsHtml += '</li>';
+                $("#"+value[1]).val(parseFloat(displayValue.replace(',', '.')));
+            });
+            $(".list-main").html(OutputAuditsHtml);
+            OutputAuditsHtml = "";
+            /* ADDTIONAL AUDIT PROPERTIES*/
+            Object.keys(auditResults).sort().forEach(function(key){
+              displayMode         = String(auditResults[key].scoreDisplayMode);
+              if (auditResults[key].hasOwnProperty("details.screenshot")){screenshot = auditResults[key].details.screenshot;}
+              displayValue            = auditResults[key].displayValue;
+              score                   = auditResults[key].score;
+              if (displayMode!="notApplicable"){
+                OutputAuditName       = key.replace("-"," ");
+                OutputAuditsHtml      += '<li class="list-group-item" id="'+key+'">';
+                OutputAuditsHtml      += me.addSpan("label",((auditResults[key].description) ? chevronDown : '')+OutputAuditName);
+                if (displayValue!=undefined){
+                    OutputAuditsHtml  += me.addSpan("value",displayValue);
+                }
+                if (score){
+                    if (score < 0.5){speed = 'slow';} else if (score < 0.9){speed = 'average';} else if (score <= 1){speed = 'fast';}
+                    OutputAuditsHtml  += me.addSpan("score "+speed,score);
+                }
+                if (auditResults[key].description){  
+                    OutputAuditsHtml  += "<span class='description'>"+((auditResults[key].title)?"<b>"+auditResults[key].title+"</b>":"")+auditResults[key].description;
+                    if (auditResults[key].hasOwnProperty("details.screenshot")){
+                        OutputAuditsHtml += screenshot;
+                    }
+                    OutputAuditsHtml += "</span>";
+                }
+                OutputAuditsHtml +=  '</li>';
+              }
+            });
+            console.log(json);
+            $(".list-additional").html(OutputAuditsHtml);
+            $(".newLighthouseStatistics").css({display:"block"});
+            if (!$(cc).find(".totalTime").length)
+              $(cc).find(".counterTitle").append("<span class='totalTime'>"+(lighthouse.timing.total/1000).toFixed(2)+" s</span>");
+            else
+              $(cc).find(".totalTime").html((lighthouse.timing.total/1000).toFixed(2)+" s");
+          }else{
+            /* ERROR HANDLING */
+            me.pbReset();
+            me.setPbStatus("error");
+            $(pb).find(".errorMessage").append(": "+json.error.message.substring(0, 130));
+          }
+        });
+    } 
+    /* GET URL DEPENDING ON DEVICE */
+    me.getDevice = function(radioInput){
+        url['Mobile'] = $(radioInput).data('mobile');
+        url['Desktop'] = $(radioInput).data('desktop');
+        var device = $("input[name=device]").filter(":checked");
+        var deviceVal = $(device).val();
+        $("#device").val(deviceVal);
+        return url[deviceVal];
     }
+
+    /* PROGRESS BAR */
+    me.pbReset = function(){
+        $(cc).find(".counterAmount").css({width:"0%"});
+        $(cc).removeClass("progress").removeClass("error").removeClass("success");
+        $(cc).find(".counterTitle").find(".errorMessage").html("error");
+    }
+    me.setPbStatus = function(status){
+        $(cc).addClass(status);
+        if ((status=="success") || (status=="error"))
+            $(cc).find(".counterAmount").css({width:"100%"});
+    }
+
+    /* HTML OUTPUT */
+    me.addSpan = function(htmlClass,value){
+        var output  = '<span class="'+htmlClass+'">';
+        output      +=    value;
+        output      += '</span>';
+        return output;
+    }
+  }
+
+  $(document).ready(function () {
+      var lighthousedata = new LighthouseData();
+      lighthousedata.init();
   });
-
-
-  function fetchLighthouseData(targetUrl) {
-    fetch(targetUrl)
-      .then(response => response.json())
-      .then(json => {
-        if (!json.hasOwnProperty("error")){
-          console.log(json);
-          const lighthouse = json.lighthouseResult;
-          const auditResults = lighthouse.audits;
-          var OutputAuditName;
-          var OutputAuditsHtml = "";
-          $(".progressBar").find(".counterContainer").removeClass("progress").addClass("success"); 
-          $(".progressBar").find(".counterContainer").find(".counterAmount").css({width:"100%"});
-          /* MAIN AUDIT PROPERTIES */
-          mainAudits.forEach(function(value){
-              OutputAuditName   = value[0].replace("-"," ");
-              OutputAuditsHtml += '<li class="list-group-item" id="list-'+value[1]+'">';
-              OutputAuditsHtml +=     '<span class="label">';
-              OutputAuditsHtml +=         OutputAuditName;
-              OutputAuditsHtml +=     '</span>';
-              OutputAuditsHtml +=     '<span class="value">';
-              OutputAuditsHtml +=         auditResults[value[0]].displayValue;
-              OutputAuditsHtml +=     '</span>';
-              OutputAuditsHtml +=     '<span class="score ';
-              if (auditResults[value[0]].score < 0.5){OutputAuditsHtml += 'slow';}
-              else if (auditResults[value[0]].score < 0.9){OutputAuditsHtml += 'average';}
-              else if (auditResults[value[0]].score <= 1){OutputAuditsHtml += 'fast';}
-              OutputAuditsHtml +=     '">'+auditResults[value[0]].score;
-              OutputAuditsHtml +=     '</span>';
-              OutputAuditsHtml += '</li>';
-              console.log(parseFloat(auditResults[value[0]].displayValue.replace(',', '.')));
-              $("#"+value[1]).val(parseFloat(auditResults[value[0]].displayValue.replace(',', '.')));
-          });
-          $(".list-main").html(OutputAuditsHtml);
-          OutputAuditsHtml = "";
-          /* ADDTIONAL AUDIT PROPERTIES*/
-          Object.keys(auditResults).sort().forEach(function(key){
-            var displayMode = String(auditResults[key].scoreDisplayMode);
-            if (displayMode!="notApplicable"){
-              OutputAuditName   = key.replace("-"," ");
-              OutputAuditsHtml += '<li class="list-group-item" id="'+key+'">';
-              OutputAuditsHtml +=     '<span class="label">';
-              if (auditResults[key].description){
-                  OutputAuditsHtml += chevronDown;
-              }
-              OutputAuditsHtml +=         OutputAuditName;
-              OutputAuditsHtml +=     '</span>';
-              if (auditResults[key].displayValue!=undefined){
-                  OutputAuditsHtml +=     '<span class="value">';
-                  OutputAuditsHtml +=         auditResults[key].displayValue;
-                  OutputAuditsHtml +=     '</span>';
-              }
-              if (auditResults[key].score){
-                OutputAuditsHtml +=     '<span class="score ';
-                if (auditResults[key].score < 0.5){OutputAuditsHtml += 'slow';}
-                else if (auditResults[key].score < 0.9){OutputAuditsHtml += 'average';}
-                else if (auditResults[key].score <= 1){OutputAuditsHtml += 'fast';}
-                OutputAuditsHtml +=     '">'+auditResults[key].score;
-                OutputAuditsHtml +=     '</span>';
-              }
-              if (auditResults[key].description){  
-                  OutputAuditsHtml += "<span class='description'>"+((auditResults[key].title)?"<b>"+auditResults[key].title+"</b>":"")+auditResults[key].description;
-                  if (auditResults[key].hasOwnProperty("details.screenshot")){
-                    console.log(auditResults[key]+""+auditResults[key].details.screenshot);
-                      OutputAuditsHtml += auditResults[key].details.screenshot
-                  }
-                  OutputAuditsHtml += "</span>";
-              }
-              OutputAuditsHtml +=  '</li>';
-            }
-          });
-          $(".list-additional").html(OutputAuditsHtml);
-          $(".newLighthouseStatistics").css({display:"block"});
-          if (!$('.counterContainer').find(".totalTime").length)
-            $('.counterContainer').find(".counterTitle").append("<span class='totalTime'>"+(lighthouse.timing.total/1000).toFixed(2)+" s</span>");
-          else
-            $('.counterContainer').find(".totalTime").html((lighthouse.timing.total/1000).toFixed(2)+" s");
-        }else{
-          /* ERROR HANDLING */
-          var errorMessage = json.error.message;
-          $(".progressBar").find(".counterContainer").removeClass("progress").addClass("error"); 
-          $(".progressBar").find(".counterContainer").find(".counterAmount").css({width:"100%"});
-          $(".progressBar").find(".errorMessage").append(": "+errorMessage.substring(0, 130));
-        }
-      });
-  } 
-
 });

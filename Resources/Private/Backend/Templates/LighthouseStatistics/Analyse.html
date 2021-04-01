@@ -7,30 +7,18 @@
                        1: '{f:uri.resource(path:\'JavaScript/sfseolighthouse.js\')}',
                        2: '{f:uri.resource(path:\'JavaScript/charts.js\')}'}"/>
     <f:flashMessages />
-    <f:if condition="{storagePid}=={data.uid}">
-      <f:then>
-        <f:render partial="LighthouseStatistics/List" arguments="{_all}"/>
-      </f:then>
-      <f:else if="{pageId}">
-        <div class="tx_sfseolighthouse container-fluid">
-            <f:render partial="LighthouseStatistics/FormTarget" arguments="{_all}"/>
-            <div class="row">
-              <div class="col-md-9">
-                <f:render partial="FormErrors" />
-                <f:form id="{pageId}" action="create" class="newLighthouseStatistics" name="newLighthouseStatistics" object="{newLighthouseStatistics}">
-                  <f:render partial="LighthouseStatistics/FormFields" arguments="{_all}"/>
-                  <f:render partial="LighthouseStatistics/FormList" arguments="{_all}"/>
-                </f:form>
-              </div>
-            </div>
+    <div class="tx_sfseolighthouse container-fluid">
+        <f:render partial="LighthouseStatistics/FormTarget" arguments="{_all}"/>
+        <div class="row">
+          <div class="col-md-9">
+            <f:render partial="FormErrors" />
+            <f:form id="{pageId}" action="create" class="newLighthouseStatistics" name="newLighthouseStatistics" object="{newLighthouseStatistics}">
+              <f:render partial="LighthouseStatistics/FormFields" arguments="{_all}"/>
+              <f:render partial="LighthouseStatistics/FormList" arguments="{_all}"/>
+            </f:form>
+          </div>
         </div>
-      </f:else>
-      <f:else>
-        <div class="callout-info">
-          <p><f:translate key="tx_sf_seolighthouse_showlighthouse.noPageInfo"/></p>
-        </div>
-      </f:else>
-    </f:if>
+    </div>
 </f:section>
 </html>
   	<!--f:link.action action="new">New LighthouseStatistics</f:link.action-->
