@@ -79,47 +79,11 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $storagePid = $extbaseFrameworkConfiguration["module."]["tx_sfseolighthouse."]["persistence."]["storagePid"];
         return $storagePid;
     }
-<<<<<<< HEAD
 
     public function getBaseUrl(){
         $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $baseUrl = $protocol."/".$_SERVER["HTTP_HOST"];
         return $baseUrl;
-=======
-
-    public function getBaseUrl(){
-        $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-        $baseUrl = $protocol."/".$_SERVER["HTTP_HOST"];
-        return $baseUrl;
-    }
-
-    /**
-     * lighthouse target page url
-     * 
-     * @return string
-     */
-    public function getTargetUrl($locale, $pageurl, $device){
-        $this->targetUrl = $this->pageSpeedApiUrl."locale=".$locale."&url=".$pageurl;
-        if ($device)
-            $this->targetUrl.="&strategy=".$device;
-        return $this->targetUrl;
-    }
-
-    public function requiredJavascript($locale, $pageurl, $device){
-        $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
-        $pageRenderer->addRequireJsConfiguration(
-        [
-            'paths' => [
-                'jquery' => 'sysext/core/Resources/Public/JavaScript/Contrib/jquery/',
-                'plupload' => '../typo3conf/ext/your_extension/node_modules/plupload/js/plupload.full.min',
-            ],
-            'shim' => [
-                'deps' => ['jquery'],
-                'plupload' => ['exports' => 'plupload'],
-            ],
-        ]
-        );
->>>>>>> 99b6c39c4227e546dcccd3d23088b62b82f599f1
     }
 
     /**
