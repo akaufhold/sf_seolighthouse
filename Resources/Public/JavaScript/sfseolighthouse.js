@@ -32,7 +32,8 @@ requirejs(['jquery'], function ($) {
             /* PROGRESS BAR */
             me.pbReset();
             me.setPbStatus("progress");
-            //$("#target").val($('.newLighthouseStatistics').attr("id"));
+            /* PREFILL TARGET INPUT */
+            $("#target").val($('.newLighthouseStatistics').attr("id"));
             /* SETTING DATA FORMAT */
             var format = 'html'; 
             if($(this).data('format')){
@@ -75,7 +76,6 @@ requirejs(['jquery'], function ($) {
                 if (score < 0.5){speed = 'slow';} 
                 else if (score < 0.9){speed = 'average';} 
                 else if (score <= 1){speed = 'fast';}
-
                 OutputAuditName   = value[0].replace("-"," ");
                 OutputAuditsHtml += '<li class="list-group-item" id="list-'+value[1]+'">';
                 OutputAuditsHtml +=     me.addSpan("label",OutputAuditName);
@@ -84,12 +84,15 @@ requirejs(['jquery'], function ($) {
                 OutputAuditsHtml += '</li>';
                 $("#"+value[1]).val(parseFloat(displayValue.replace(',', '.')));
             });
+
             $(".list-main").html(OutputAuditsHtml);
             OutputAuditsHtml = "";
             /* ADDTIONAL AUDIT PROPERTIES*/
             Object.keys(auditResults).sort().forEach(function(key){
               displayMode         = String(auditResults[key].scoreDisplayMode);
-              if (auditResults[key].hasOwnProperty("details.screenshot")){screenshot = auditResults[key].details.screenshot;}
+              if (auditResults[key].hasOwnProperty("details.screenshot")){
+                  screenshot = auditResults[key].details.screenshot;
+              }
               displayValue            = auditResults[key].displayValue;
               score                   = auditResults[key].score;
               if (displayMode!="notApplicable"){

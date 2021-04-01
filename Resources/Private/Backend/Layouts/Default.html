@@ -8,10 +8,10 @@
                     <f:be.menus.actionMenu>
                         <f:if condition="{storagePid}!={pageId}">
                             <f:then>
-                                <f:be.menus.actionMenuItem label="Lighthouse Statistics for Current Page" controller="LighthouseStatistics" action="analyse" />
+                                <f:be.menus.actionMenuItem label="Get Lighthouse Statistics" controller="LighthouseStatistics" action="analyse" />
                             </f:then>
                         </f:if>
-                        <f:be.menus.actionMenuItem label="Show Stored Data" controller="LighthouseStatistics" action="list" />
+                        <f:be.menus.actionMenuItem label="Show Statistics Entries" controller="LighthouseStatistics" action="list" />
                         <f:if condition="{storagePid}!={pageId}">
                             <f:then>
                                 <f:be.menus.actionMenuItem label="Charts" controller="Charts" action="charts" />

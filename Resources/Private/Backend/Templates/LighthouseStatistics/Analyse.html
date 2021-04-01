@@ -2,21 +2,19 @@
 <f:layout name="Default" />
 
 <f:section name="content">
-    <f:be.pageRenderer pageTitle="sfseolighthouse" includeCssFiles="{0: '{f:uri.resource(path:\'Css/backend.min.css\')}'}"
-      includeJsFiles="{0: 'https://cdn.jsdelivr.net/npm/chart.js@2.0.0/dist/Chart.bundle.min.js',
-                       1: '{f:uri.resource(path:\'JavaScript/sfseolighthouse.js\')}',
-                       2: '{f:uri.resource(path:\'JavaScript/charts.js\')}'}"/>
+    <f:be.pageRenderer pageTitle="analyse" 
+      includeCssFiles="{0: '{f:uri.resource(path:\'Css/backend.min.css\')}'}"/>
     <f:flashMessages />
     <div class="tx_sfseolighthouse container-fluid">
-        <f:render partial="LighthouseStatistics/FormTarget" arguments="{_all}"/>
+        <f:render partial="LighthouseStatistics/FormDevice" arguments="{_all}"/>
         <div class="row">
-          <div class="col-md-9">
-            <f:render partial="FormErrors" />
-            <f:form id="{pageId}" action="create" class="newLighthouseStatistics" name="newLighthouseStatistics" object="{newLighthouseStatistics}">
-              <f:render partial="LighthouseStatistics/FormFields" arguments="{_all}"/>
-              <f:render partial="LighthouseStatistics/FormList" arguments="{_all}"/>
-            </f:form>
-          </div>
+            <div class="col-md-9">
+                <f:render partial="FormErrors" />
+                <f:form id="{pageId}" action="create" class="newLighthouseStatistics" name="newLighthouseStatistics" object="{newLighthouseStatistics}">
+                    <f:render partial="LighthouseStatistics/FormFieldsHidden" arguments="{_all}"/>
+                    <f:render partial="LighthouseStatistics/LighthouseList" arguments="{_all}"/>
+                </f:form>
+            </div>
         </div>
     </div>
 </f:section>
