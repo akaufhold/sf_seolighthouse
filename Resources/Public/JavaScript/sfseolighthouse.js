@@ -37,7 +37,7 @@ requirejs(['jquery'], function ($) {
             /* SETTING DATA FORMAT */
             var format = 'html'; 
             if($(this).data('format')){
-                format = jQuery(this).data('format');
+                format = $(this).data('format');
             } 
             /* CALL LIGHTHOUSE REQUEST */
             me.fetchLighthouseData(me.getDevice(thisis));
@@ -73,9 +73,7 @@ requirejs(['jquery'], function ($) {
             mainAudits.forEach(function(value){
                 displayValue      = auditResults[value[0]].displayValue;
                 score             = auditResults[value[0]].score;
-                if (score < 0.5){speed = 'slow';} 
-                else if (score < 0.9){speed = 'average';} 
-                else if (score <= 1){speed = 'fast';}
+                speed             = me.getSpeedClass(score);
                 OutputAuditName   = value[0].replace("-"," ");
                 OutputAuditsHtml += '<li class="list-group-item" id="list-'+value[1]+'">';
                 OutputAuditsHtml +=     me.addSpan("label",OutputAuditName);
@@ -103,7 +101,7 @@ requirejs(['jquery'], function ($) {
                     OutputAuditsHtml  += me.addSpan("value",displayValue);
                 }
                 if (score){
-                    if (score < 0.5){speed = 'slow';} else if (score < 0.9){speed = 'average';} else if (score <= 1){speed = 'fast';}
+                    speed             =  me.getSpeedClass(score);
                     OutputAuditsHtml  += me.addSpan("score "+speed,score);
                 }
                 if (auditResults[key].description){  
@@ -116,7 +114,7 @@ requirejs(['jquery'], function ($) {
                 OutputAuditsHtml +=  '</li>';
               }
             });
-            console.log(json);
+            //console.log(json);
             $(".list-additional").html(OutputAuditsHtml);
             $(".newLighthouseStatistics").css({display:"block"});
             if (!$(cc).find(".totalTime").length)
@@ -140,7 +138,12 @@ requirejs(['jquery'], function ($) {
         $("#device").val(deviceVal);
         return url[deviceVal];
     }
-
+    me.getSpeedClass = function(scoreIn){
+        if (scoreIn < 0.5){speedOut = 'slow';} 
+        else if (scoreIn < 0.9){speedOut = 'average';} 
+        else if (scoreIn <= 1){speedOut = 'fast';}
+        return speedOut;
+    }
     /* PROGRESS BAR */
     me.pbReset = function(){
         $(cc).find(".counterAmount").css({width:"0%"});
@@ -152,18 +155,17 @@ requirejs(['jquery'], function ($) {
         if ((status=="success") || (status=="error"))
             $(cc).find(".counterAmount").css({width:"100%"});
     }
-
     /* HTML OUTPUT */
     me.addSpan = function(htmlClass,value){
-        var output  = '<span class="'+htmlClass+'">';
-        output      +=    value;
-        output      += '</span>';
-        return output;
+        var htmlOut  = '<span class="'+htmlClass+'">';
+        htmlOut      +=    value;
+        htmlOut      += '</span>';
+        return htmlOut;
     }
   }
 
   $(document).ready(function () {
-      var lighthousedata = new LighthouseData();
-      lighthousedata.init();
+      var lighthouseData = new LighthouseData();
+      lighthouseData.init();
   });
 });

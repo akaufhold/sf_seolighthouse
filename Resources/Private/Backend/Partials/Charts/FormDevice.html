@@ -1,19 +1,4 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<h1>
-    <f:translate key="tx_sf_seolighthouse_showlighthouse.name"/>
-</h1>
-<div class="row">
-    <div class="col-md-9">
-    <label class="custom-control-label">
-        <f:translate key="tx_sf_seolighthouse_showlighthouse.urlHeader"/>
-    </label>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-9 targetUrl callout-info">
-        {ajaxGetUrlDesktop}
-    </div>
-</div>
 <div class="row">
     <div class="col-md-2">
         <div class="custom-control custom-radio" >
@@ -30,11 +15,6 @@
             <f:translate key="tx_sf_seolighthouse_showlighthouse.mobile" />
         </label>
         </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-9">
-        <f:render partial="LighthouseStatistics/ProgressBar" />
     </div>
 </div>
 <a class="btn btn-default getLighthouseData" data-format="jsonp" data-desktop="{ajaxGetUrlDesktop}" data-mobile="{ajaxGetUrlMobile}" data-url="{f:uri.action(action: 'analyse', controller: '', pluginName: 'getLighthouseData', pageType:'{settings.ajax.getLighthouseData}')}">

@@ -6,12 +6,6 @@
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics" resname="tx_sfseolighthouse_domain_model_lighthousestatistics">
 				<source>Lighthouse Statistics</source>
 			</trans-unit>
-			<trans-unit id="tx_sf_seolighthouse_showlighthouse.listHeader" resname="tx_sf_seolighthouse_showlighthouse.listHeader">
-				<source>Listing Lighthouse Data</source>
-			</trans-unit>
-			<trans-unit id="tx_sf_seolighthouse_showlighthouse.urlHeader" resname="tx_sf_seolighthouse_showlighthouse.urlHeader">
-				<source>Target URL</source>
-			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.crdate" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.crdate">
 				<source>Creation Date</source>
 			</trans-unit>
@@ -38,6 +32,12 @@
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.device" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.device">
 				<source>Device</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.listHeader" resname="tx_sf_seolighthouse_showlighthouse.listHeader">
+				<source>Listing Lighthouse Data</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.urlHeader" resname="tx_sf_seolighthouse_showlighthouse.urlHeader">
+				<source>Target URL</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.name" resname="tx_sf_seolighthouse_showlighthouse.name">
 				<source>Show SEO Lighthouse Score</source>
@@ -83,6 +83,9 @@
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.noPageInfo" resname="tx_sf_seolighthouse_showlighthouse.noPageInfo">
 				<source>No Page Selected</source>
+			</trans-unit>		
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsHeader" resname="tx_sf_seolighthouse_showlighthouse.chartsHeader">
+				<source>Lighthouse Charts</source>
 			</trans-unit>		
 		</body>
 	</file>
