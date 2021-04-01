@@ -173,9 +173,12 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
      */
     public function deleteAction(\Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $lighthouseStatistics)
     {
-        $this->addFlashMessage('The object was deleted. Please be aware that this action is publicly accessible unless you implement an access check. See https://docs.typo3.org/typo3cms/extensions/extension_builder/User/Index.html', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
-        $this->lighthouseStatisticsRepository->remove($lighthouseStatistics);
-        $this->redirect('list');
+        if ($GLOBALS['BE_USER']->isAdmin()){
+            $this->lighthouseStatisticsRepository->remove($lighthouseStatistics);
+            $this->redirect('list');
+        }else{
+            $this->addFlashMessage('The object was not deleted. Please Login as User with administration rights.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+        }
     }
 
     /**
@@ -195,10 +198,12 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
      */
     public function createAction(\Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $newLighthouseStatistics)
     {
-        $this->addFlashMessage('The object was created. Please be aware that this action is publicly accessible unless you implement an access check. See https://docs.typo3.org/typo3cms/extensions/extension_builder/User/Index.html', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
-        \TYPO3\CMS\Core\Utility\DebugUtility::debug($newLighthouseStatistics);
-        $this->lighthouseStatisticsRepository->add($newLighthouseStatistics);
-        $this->redirect('list');
+        if ($GLOBALS['BE_USER']->isAdmin()){
+            $this->lighthouseStatisticsRepository->add($newLighthouseStatistics);
+            $this->redirect('list');
+        }else{
+            $this->addFlashMessage('The object was not created. Please Login as User with administration rights.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+        }
     }
     
 }
