@@ -193,7 +193,6 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     /**
      * action create
      * 
-<<<<<<< HEAD
      * @param \Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $newLighthouseStatistics
      * @return string|object|null|void
      */
@@ -205,16 +204,6 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         }else{
             $this->addFlashMessage('The object was not created. Please Login as User with administration rights.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
         }
-=======
-     * @param \Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $newlighthouseStatistics
-     * @return string|object|null|void
-     */
-    public function createAction(\Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $newlighthouseStatistics)
-    {
-        $this->addFlashMessage('The object was created. Please be aware that this action is publicly accessible unless you implement an access check. See https://docs.typo3.org/typo3cms/extensions/extension_builder/User/Index.html', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
-        $this->lighthouseStatisticsRepository->add($newlighthouseStatistics);
-        $this->redirect('list');
->>>>>>> 99b6c39c4227e546dcccd3d23088b62b82f599f1
     }
     
 }

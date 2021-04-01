@@ -84,15 +84,12 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.noPageInfo" resname="tx_sf_seolighthouse_showlighthouse.noPageInfo">
 				<source>No Page Selected</source>
 			</trans-unit>		
-<<<<<<< HEAD
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsHeader" resname="tx_sf_seolighthouse_showlighthouse.chartsHeader">
 				<source>Lighthouse Charts</source>
 			</trans-unit>		
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType" resname="tx_sf_seolighthouse_showlighthouse.chartsType">
 				<source>Charts Type</source>
 			</trans-unit>		
-=======
->>>>>>> 99b6c39c4227e546dcccd3d23088b62b82f599f1
 		</body>
 	</file>
 </xliff>
