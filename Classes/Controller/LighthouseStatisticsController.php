@@ -79,11 +79,47 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $storagePid = $extbaseFrameworkConfiguration["module."]["tx_sfseolighthouse."]["persistence."]["storagePid"];
         return $storagePid;
     }
+<<<<<<< HEAD
 
     public function getBaseUrl(){
         $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $baseUrl = $protocol."/".$_SERVER["HTTP_HOST"];
         return $baseUrl;
+=======
+
+    public function getBaseUrl(){
+        $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+        $baseUrl = $protocol."/".$_SERVER["HTTP_HOST"];
+        return $baseUrl;
+    }
+
+    /**
+     * lighthouse target page url
+     * 
+     * @return string
+     */
+    public function getTargetUrl($locale, $pageurl, $device){
+        $this->targetUrl = $this->pageSpeedApiUrl."locale=".$locale."&url=".$pageurl;
+        if ($device)
+            $this->targetUrl.="&strategy=".$device;
+        return $this->targetUrl;
+    }
+
+    public function requiredJavascript($locale, $pageurl, $device){
+        $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
+        $pageRenderer->addRequireJsConfiguration(
+        [
+            'paths' => [
+                'jquery' => 'sysext/core/Resources/Public/JavaScript/Contrib/jquery/',
+                'plupload' => '../typo3conf/ext/your_extension/node_modules/plupload/js/plupload.full.min',
+            ],
+            'shim' => [
+                'deps' => ['jquery'],
+                'plupload' => ['exports' => 'plupload'],
+            ],
+        ]
+        );
+>>>>>>> 99b6c39c4227e546dcccd3d23088b62b82f599f1
     }
 
     /**
@@ -193,6 +229,7 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     /**
      * action create
      * 
+<<<<<<< HEAD
      * @param \Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $newLighthouseStatistics
      * @return string|object|null|void
      */
@@ -204,6 +241,16 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         }else{
             $this->addFlashMessage('The object was not created. Please Login as User with administration rights.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
         }
+=======
+     * @param \Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $newlighthouseStatistics
+     * @return string|object|null|void
+     */
+    public function createAction(\Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $newlighthouseStatistics)
+    {
+        $this->addFlashMessage('The object was created. Please be aware that this action is publicly accessible unless you implement an access check. See https://docs.typo3.org/typo3cms/extensions/extension_builder/User/Index.html', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
+        $this->lighthouseStatisticsRepository->add($newlighthouseStatistics);
+        $this->redirect('list');
+>>>>>>> 99b6c39c4227e546dcccd3d23088b62b82f599f1
     }
     
 }

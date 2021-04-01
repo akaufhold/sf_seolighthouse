@@ -36,6 +36,9 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.url" resname="tx_sf_seolighthouse_showlighthouse.url">
 				<source>Lighthouse Target Url</source>
 			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.url" resname="tx_sf_seolighthouse_showlighthouse.url">
+				<source>Lighthouse Target Url</source>
+			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.description" resname="tx_sf_seolighthouse_showlighthouse.name">
 				<source>lighthouse</source>
 			</trans-unit>
