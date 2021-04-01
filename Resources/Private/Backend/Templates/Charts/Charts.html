@@ -5,9 +5,26 @@
     includeCssFiles="{0: '{f:uri.resource(path:\'Css/backend.min.css\')}'}"
     includeJsFiles="{0: 'https://cdn.jsdelivr.net/npm/chart.js@2.0.0/dist/Chart.bundle.min.js',
                      1: '{f:uri.resource(path:\'JavaScript/charts.js\')}'}"/>
-    <h2><f:translate key='tx_sf_seolighthouse_showlighthouse.chartsHeader' /></h2>
-    <f:render partial="Charts/FormDevices"/>
-    <f:render partial="Charts/StatisticChartsFields" arguments="{_all}"/>
-    <canvas id="lighthouseChart"></canvas>
+    <f:flashMessages />
+    <div class="panel panel-space panel-default recordlist">
+        <div class="panel-heading">
+            <h2><f:translate key='tx_sf_seolighthouse_showlighthouse.chartsHeader' /></h2>
+        </div>
+
+            <div class="tx_sfseolighthouse container-fluid">
+                <div class="row">
+                    <f:render partial="Charts/ChartsDevices"/>
+                    <f:render partial="Charts/ChartsType"/>
+                    <f:render partial="Charts/ChartsPeriod"/>
+                    <f:render partial="Charts/StatisticChartsFields" arguments="{_all}"/>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <canvas id="lighthouseChart"></canvas>
+                    </div>
+                </div>
+            </div>
+    </div>
 </f:section>
 </html>

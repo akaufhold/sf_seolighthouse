@@ -87,6 +87,9 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsHeader" resname="tx_sf_seolighthouse_showlighthouse.chartsHeader">
 				<source>Lighthouse Charts</source>
 			</trans-unit>		
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType" resname="tx_sf_seolighthouse_showlighthouse.chartsType">
+				<source>Charts Type</source>
+			</trans-unit>		
 		</body>
 	</file>
 </xliff>

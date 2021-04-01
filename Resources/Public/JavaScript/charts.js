@@ -1,6 +1,6 @@
 requirejs(['jquery'], function ($) {
 
-    var LighthouseData = function () {
+    var LighthouseCharts = function () {
         var datasetArray;
         var labelArray;
 
@@ -12,26 +12,26 @@ requirejs(['jquery'], function ($) {
             $(entries).each(function(key,value) {
                 data = $(this).data();
             });
-
+            me.createCharts(ctx);
 
         }
         /* TEST DATA */
-        me.dataset = function () {
-            var datasetArray = [{
+        me.createDatasets = function () {
+            datasetArray = [{
                 label: 'My First dataset',
                 backgroundColor: 'rgba(0, 0, 0, 0)',
                 borderColor: 'rgb(255, 99, 132)',
                 data: [0, 10, 5, 2, 20, 30, 45]
             }];
         }
-        me.dataset = function () {
+        me.createLabels = function () {
             label = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
         }
         
-        me.chart = function () {
-            var chart = new Chart(ctx, {
+        me.createCharts = function (ctxIn, typeIn) {
+            var chart = new Chart(ctxIn, {
                 // The type of chart we want to create
-                type: 'line',
+                type: typeIn,
 
                 // The data for our dataset
                 data: {
