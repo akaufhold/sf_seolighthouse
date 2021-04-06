@@ -9,28 +9,53 @@ require.config({
       },
     },
 });
-  
+
+var chartColors = {
+    red: 'rgb(255, 99, 132)',
+    orange: 'rgb(255, 159, 64)',
+    yellow: 'rgb(255, 205, 86)',
+    green: 'rgb(75, 192, 192)',
+    blue: 'rgb(54, 162, 235)',
+    purple: 'rgb(153, 102, 255)',
+    grey: 'rgb(231,233,237)'
+};
+
 
 requirejs(['jquery'], function ($) {
     require(["moment", "chart"], function(moment, chart) {
         var LighthouseCharts = function () {
             var ch = this;
-            var datasetArray;
-            var labelArray;
-
+            var datasetArray, labelArray, type, period, chart;
             /* INIT */
             ch.init = function () {
                 var entries = $(".chartsEntries").find(".entry"); 
                 var data;
-                var ctx = document.getElementById('lighthouseChart').getContext('2d');
+                var lhc = document.getElementById('lighthouseChart').getContext('2d');
 
                 $(entries).each(function(key,value) {
                     data = $(this).data();
                 });
                 ch.createDatasets();
                 ch.createLabels();
-                ch.createCharts(ctx,"line");
 
+                period = $("#period-select").find("option:selected").val();
+                type = $("#type-select").find("option:selected").val();
+
+                chart = ch.createCharts(lhc,type);
+
+                $("#type-select").on("change",function(){
+                    // console.log($(this).val());
+                    type = $(this).val().toLowerCase();
+                    chart.destroy();
+                    chart = ch.createCharts(lhc,type);
+                });
+
+                $("#period-select").on("change",function(){
+                    // console.log($(this).val());
+                    period = $(this).val().toLowerCase(); 
+                    chart.destroy();
+                    chart = ch.createCharts(lhc,type);
+                });
             }
             /* DATA */
             ch.createDatasets = function () {
@@ -45,9 +70,10 @@ requirejs(['jquery'], function ($) {
             ch.createLabels = function () {
                 labelArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
             }
+
             /* CREATE CHARTS*/
-            ch.createCharts = function (ctxIn, typeIn) {
-                const chart = new Chart(ctxIn, {
+            ch.createCharts = function (chartIn, typeIn) {
+                var chartIn = new Chart(chartIn, {
                     // The type of chart we want to create
                     type: typeIn,
 
@@ -58,13 +84,18 @@ requirejs(['jquery'], function ($) {
                     },
 
                     // Configuration options go here
-                    options: {}
+                    options: {
+                        scales:{
+                            
+                        }
+                    }
                 });
+                return chartIn;
             }
         }
-        $(document).ready(function () {
-            var lighthouseCharts = new LighthouseCharts();
-            lighthouseCharts.init();
-        });
+        
+        var lighthouseCharts = new LighthouseCharts();
+        lighthouseCharts.init();
+        
     });
 });

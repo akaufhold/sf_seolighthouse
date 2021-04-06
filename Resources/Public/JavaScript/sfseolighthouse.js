@@ -19,16 +19,16 @@ requirejs(['jquery'], function ($) {
         chevronDown = icon;
       });
     });
-
+    //var color = Chart.helpers.color;
     var LighthouseData = function () {
         /* DECLARATION AUDIT CONSTANTS */
         const mainAudits        = [
-            ["first-contentful-paint", "fcp",0.15],
-            ["speed-index", "si",0.15],
-            ["interactive", "tti",0.25],
-            ["largest-contentful-paint", "lcp",0.15],
-            ["total-blocking-time", "tbt",0.25],
-            ["cumulative-layout-shift", "cls",0.05]
+            ["first-contentful-paint", "fcp",0.15,"rgba(255, 159, 64, 1)"],
+            ["speed-index", "si",0.15,"rgba(255, 99, 132, 1)"],
+            ["interactive", "tti",0.25,"rgba(255, 205, 86, 1)"],
+            ["largest-contentful-paint", "lcp",0.15,"rgba(75, 192, 192, 1)"],
+            ["total-blocking-time", "tbt",0.25,"rgba(54, 162, 235, 1)"],
+            ["cumulative-layout-shift", "cls",0.05,"rgba(153, 102, 255, 1)"]
         ];
         const environmentAudits = [
             ["benchmarkIndex", "bi"],["dom-size", "ds"]
@@ -37,17 +37,19 @@ requirejs(['jquery'], function ($) {
             ["Overall Score","os"]
         ];
         /* DECLARATION VARS */
+        var scoreChart;
+        var auditsChart;
+
         var me = this;
         /* LIGHTHOUSE */
-        var OutputAuditName;
-        var OutputAuditsHtml;
+        var OutputAuditName, OutputAuditsHtml;
         var url = [];
         /* PROGRESS BAR */
         var pb = $(".progressBar");
         var cc = $(".progressBar").find(".counterContainer");
         /* CHARTS */
-        /*var labelArray = [];
-        var datasetArray = [];*/
+        var labelArray = [];
+        var datasetArray= [];
 
         me.init = function () {
             $('.getLighthouseData').on('click', function(){
@@ -90,13 +92,28 @@ requirejs(['jquery'], function ($) {
               var speed, score, displayValue, screenshot, displayMode, chartVal;
               const lighthouse = json.lighthouseResult;
               const auditResults = lighthouse.audits;
+              const overallScore = lighthouse.categories.performance.score; 
+          
               me.pbReset();
               me.setPbStatus("success");
+              /* CREATE CHARTS OUTPUT */
+              var oac = document.getElementById('overallChart').getContext('2d');
+              me.createCharts(oac,"pie","score");
+
+              var missingScore = 1-overallScore;
+              me.addDataSet(scoreChart,"Score","rgba(255, 159, 64, 1)",[overallScore*100,missingScore*100]);
+              
+              //Score Missing","rgba(255, 255, 255, 1)",);
+
+              var mac = document.getElementById('mainAuditsChart').getContext('2d');
+              me.createCharts(mac,"bar","audits");
+
               /* MAIN AUDIT PROPERTIES */
               mainAudits.forEach(function(value){
                   displayValue      = auditResults[value[0]].displayValue;
                   score             = auditResults[value[0]].score;
                   speed             = me.getSpeedClass(score);
+                  color             = value[3];
                   OutputAuditName   = value[0].replace("-"," ");
                   OutputAuditsHtml += '<li class="list-group-item" id="list-'+value[1]+'">';
                   OutputAuditsHtml +=     me.addSpan("label",OutputAuditName);
@@ -105,13 +122,8 @@ requirejs(['jquery'], function ($) {
                   OutputAuditsHtml += '</li>';
                   $("#"+value[1]).val(parseFloat(displayValue.replace(',', '.')));
                   /* ADD CHARTS DATA TO ARRAY */
-                  labelArray.push(OutputAuditName); 
-                  chartVal = parseFloat(score)*value[2]*100;
-                  //console.log(displayValue+" "+value[2]," "+chartVal);
-                  /*datasetArray = [{
-                    data: [0, 10, 5, 2, 20, 30, 45]
-                  }]*/
-                  datasetArray.push(parseInt(chartVal));
+                  chartVal = parseFloat(displayValue.replace(',', '.'))*100;
+                  me.addDataSet(auditsChart,OutputAuditName,color,score);
               });
               $(".list-main").html(OutputAuditsHtml);
               OutputAuditsHtml = "";
@@ -144,10 +156,6 @@ requirejs(['jquery'], function ($) {
                   OutputAuditsHtml +=  '</li>';
                 }
               });
-              console.log(labelArray);
-              console.log(datasetArray);
-              var ctx = document.getElementById('mainAuditsChart').getContext('2d');
-              me.createCharts(ctx);
 
               $(".list-additional").html(OutputAuditsHtml);
               $(".newLighthouseStatistics").css({display:"block"});
@@ -160,6 +168,8 @@ requirejs(['jquery'], function ($) {
               me.pbReset();
               me.setPbStatus("error");
               $(pb).find(".errorMessage").append(": "+json.error.message.substring(0, 130));
+              me.fetchLighthouseData(me.getDevice($('.getLighthouseData')));
+              me.pbReset();
             }
           });
       } 
@@ -198,24 +208,68 @@ requirejs(['jquery'], function ($) {
           return htmlOut;
       }
       /* CHARTS */
-      datasetArray = [ 14, 15, 25, 14, 25, 2 ];
-      me.createCharts = function (ctxIn) {
-        const chart = new Chart(ctxIn, {
-            // The type of chart we want to create
-            type: "doughnut",
-
-            // The data for our dataset
+      me.createCharts = function (chartIn,typeIn,target) {
+        if (target=="score"){
+          scoreChart = new Chart(chartIn, {
+            type: typeIn,
             data: {
-                labels: labelArray,
-                datasets: datasetArray
+              datasets: [{ 
+                      data: [] 
+                      }]
             },
-
-
-            // Configuration options go here
             options: {
-  
+              plugins:{
+                legend:{
+                  display:false,
+                }
+              },
+              scales: {
+
+              }
             }
         });
+        }else if(target="audits"){
+          auditsChart = new Chart(chartIn, {
+            type: typeIn,
+            data: {
+              datasets: [{ 
+                      data: [] 
+                      }]
+            },
+            options: {
+              plugins:{
+                legend:{
+                  display:false,
+                }
+              },
+              scales: {
+
+              }
+            }
+          });
+        }
+      }
+
+      me.addDataSet = function (chart, label, color, data) {
+        chart.data.labels.push(label);
+        var newDataset = {
+          label: label,
+          backgroundColor: color,
+          borderColor: color,
+          borderWidth: 1,
+          data:[]
+        };
+        if (Array.isArray(data)){
+          data.forEach(function(key,val){
+            newDataset.data.push(val);
+          })
+        }
+        else{
+          newDataset.data.push(data);
+        } 
+        //console.log(newDataset);
+        chart.data.datasets.push(newDataset);
+        chart.update();
       }
     }
 
