@@ -24,7 +24,7 @@ $highlightBorderColor:#bdc5cd;
     }
     .progressBar{
         *{
-            line-height: 0.4;
+            line-height: 0.35;
         }
         .counterContainer {
             padding: 0em 0.25em;
@@ -129,6 +129,14 @@ $highlightBorderColor:#bdc5cd;
             }
         }
     }   
+    &.table{
+        position: relative;
+        tr{ 
+            > td:last-child{
+                text-align: center;
+            }
+        }
+    }
 }
 .newLighthouseStatistics{
     display:none;
