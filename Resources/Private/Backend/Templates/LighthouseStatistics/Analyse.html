@@ -4,11 +4,18 @@
 <f:section name="content">
     <f:be.pageRenderer pageTitle="analyse" 
       includeCssFiles="{0: '{f:uri.resource(path:\'Css/backend.min.css\')}'}"
-      includeJsFiles="{0: 'https://cdn.jsdelivr.net/npm/chart.js@2.0.0/dist/Chart.bundle.min.js',
-                       1: '{f:uri.resource(path:\'JavaScript/sfseolighthouse.js\')}'}"/>
+      includeJsFiles="{0: '{f:uri.resource(path:\'JavaScript/sfseolighthouse.js\')}'}"/>
     <f:flashMessages />
     <div class="tx_sfseolighthouse container-fluid">
         <f:render partial="LighthouseStatistics/FormDevices" arguments="{_all}"/>
+        <div class="row">
+            <div class="col-md-4">
+                <canvas id="mainAuditsChart"></canvas>
+            </div>
+            <div class="col-md-4">
+                <canvas id="overallChart"></canvas>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-9">
                 <f:render partial="FormErrors" />

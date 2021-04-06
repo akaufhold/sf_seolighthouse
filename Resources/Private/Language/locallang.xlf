@@ -89,7 +89,34 @@
 			</trans-unit>		
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType" resname="tx_sf_seolighthouse_showlighthouse.chartsType">
 				<source>Charts Type</source>
-			</trans-unit>		
+			</trans-unit>	
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsPeriod" resname="tx_sf_seolighthouse_showlighthouse.chartsPeriod">
+				<source>Charts Period</source>
+			</trans-unit>			
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType.line" resname="tx_sf_seolighthouse_showlighthouse.chartsType.line">
+				<source>Line</source>
+			</trans-unit>	
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType.bar" resname="tx_sf_seolighthouse_showlighthouse.chartsType.bar">
+				<source>Bar</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType.radar" resname="tx_sf_seolighthouse_showlighthouse.chartsType.radar">
+				<source>Radar</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType.pie" resname="tx_sf_seolighthouse_showlighthouse.chartsType.pie">
+				<source>Pie</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType.day" resname="tx_sf_seolighthouse_showlighthouse.chartsType.day">
+				<source>Day</source>
+			</trans-unit>	
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType.week" resname="tx_sf_seolighthouse_showlighthouse.chartsType.week">
+				<source>Week</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType.month" resname="tx_sf_seolighthouse_showlighthouse.chartsType.month">
+				<source>Month</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType.year" resname="tx_sf_seolighthouse_showlighthouse.chartsType.year">
+				<source>Year</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
