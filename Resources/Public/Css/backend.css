@@ -18,7 +18,7 @@
   padding: 0.5em 1.25em;
 }
 .tx_sfseolighthouse .progressBar * {
-  line-height: 0.4;
+  line-height: 0.35;
 }
 .tx_sfseolighthouse .progressBar .counterContainer {
   padding: 0em 0.25em;
@@ -107,6 +107,12 @@
 .tx_sfseolighthouse .progressBar .counterContainer.success .counterTitle .successMessage {
   display: inline-block;
   color: white;
+}
+.tx_sfseolighthouse.table {
+  position: relative;
+}
+.tx_sfseolighthouse.table tr > td:last-child {
+  text-align: center;
 }
 
 .newLighthouseStatistics {
