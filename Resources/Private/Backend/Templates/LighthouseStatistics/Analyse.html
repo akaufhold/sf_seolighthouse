@@ -9,14 +9,6 @@
     <div class="tx_sfseolighthouse container-fluid">
         <f:render partial="LighthouseStatistics/FormDevices" arguments="{_all}"/>
         <div class="row">
-            <div class="col-md-4">
-                <canvas id="mainAuditsChart"></canvas>
-            </div>
-            <div class="col-md-4">
-                <canvas id="overallChart"></canvas>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-md-9">
                 <f:render partial="FormErrors" />
                 <f:form id="{pageId}" action="create" class="newLighthouseStatistics container-fluid" name="newLighthouseStatistics" object="{newLighthouseStatistics}">
