@@ -17,12 +17,24 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-md-9">
 			<h2><f:translate key="tx_sf_seolighthouse_showlighthouse.mainAudits"/></h2>
 			<ul class="list-lighthouse list-main list-group"></ul>
 			<f:form.submit value="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.createNew')}" class="btn btn-default"/>
 		</div>
+		<div class="col-md-3">
+			<canvas id="overallChart" class="lighthouseCharts"></canvas>
+		</div>
 	</div>
-	<h2><f:translate key="tx_sf_seolighthouse_showlighthouse.additionalAudits"/></h2>
-	<ul class="list-lighthouse list-additional list-group"></ul>
+	<div class="row">
+		<div class="col-md-12">
+			<canvas id="mainAuditsChart" class="lighthouseCharts"></canvas>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<h2><f:translate key="tx_sf_seolighthouse_showlighthouse.additionalAudits"/></h2>
+			<ul class="list-lighthouse list-additional list-group"></ul>
+		</div>
+	</div>
 </html>

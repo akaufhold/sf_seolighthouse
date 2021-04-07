@@ -1,7 +1,8 @@
 require.config({
   paths: {
     moment: "//cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min",
-    chart: "//cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min"
+    chartjs: "//cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min",
+    roughjs: "//cdn.jsdelivr.net/npm/roughjs@3.1.0/dist/rough"
   },
   shim: {
     chartjs: {
@@ -11,7 +12,7 @@ require.config({
 });
 
 requirejs(['jquery'], function ($) {
-  require(["moment", "chart"], function(moment, chart) {
+  require(["moment", "chartjs","roughjs"], function(moment, chart) {
     /* REQUIRED ICONS */
     var chevronDown;
     requirejs(['TYPO3/CMS/Backend/Icons'], function(Icons) {
@@ -50,15 +51,15 @@ requirejs(['jquery'], function ($) {
         /* CHARTS */
         var labelArray = [];
         var datasetArray= [];
-
+        var oac,mac;
         me.init = function () {
             $('.getLighthouseData').on('click', function(){
               var thisis = $(this);
-              /* PROGRESS BAR */
-              me.pbReset();
-              me.setPbStatus("progress");
               /* PREFILL TARGET INPUT */
               $("#target").val($('.newLighthouseStatistics').attr("id"));
+              /* SAVE CHARTS CANVAS */
+              oac = document.getElementById('overallChart').getContext('2d');
+              mac = document.getElementById('mainAuditsChart').getContext('2d');
               /* SETTING DATA FORMAT */
               var format = 'html'; 
               if($(this).data('format')){
@@ -84,6 +85,10 @@ requirejs(['jquery'], function ($) {
       };
       /* FETCH API REQUEST FUNCTION */
       me.fetchLighthouseData = function(targetUrl) {
+        /* PROGRESS BAR */
+        me.pbReset();
+        me.setPbStatus("progress");
+        /* FETCH LIGHTHOUSE DATA */
         fetch(targetUrl)
           .then(response => response.json())
           .then(json => {
@@ -97,23 +102,21 @@ requirejs(['jquery'], function ($) {
               me.pbReset();
               me.setPbStatus("success");
               /* CREATE CHARTS OUTPUT */
-              var oac = document.getElementById('overallChart').getContext('2d');
-              me.createCharts(oac,"pie","score");
-
               var missingScore = 1-overallScore;
-              me.addDataSet(scoreChart,"Score","rgba(255, 159, 64, 1)",[overallScore*100,missingScore*100]);
-              
-              //Score Missing","rgba(255, 255, 255, 1)",);
-
-              var mac = document.getElementById('mainAuditsChart').getContext('2d');
+              var speedColor = me.getSpeedColor(overallScore);
+              me.createCharts(oac,"pie","score");
+              me.addDataSet(scoreChart,"Score",speedColor,overallScore*100,1,0);
+              me.addDataSet(scoreChart,"","rgba(255, 255, 255, 1)",missingScore*100,0,1);
+  
               me.createCharts(mac,"bar","audits");
 
               /* MAIN AUDIT PROPERTIES */
+              var mainCounter = 1;
               mainAudits.forEach(function(value){
                   displayValue      = auditResults[value[0]].displayValue;
                   score             = auditResults[value[0]].score;
                   speed             = me.getSpeedClass(score);
-                  color             = value[3];
+                  color             = me.getSpeedColor(score);
                   OutputAuditName   = value[0].replace("-"," ");
                   OutputAuditsHtml += '<li class="list-group-item" id="list-'+value[1]+'">';
                   OutputAuditsHtml +=     me.addSpan("label",OutputAuditName);
@@ -121,9 +124,15 @@ requirejs(['jquery'], function ($) {
                   OutputAuditsHtml +=     me.addSpan("score "+speed,score);
                   OutputAuditsHtml += '</li>';
                   $("#"+value[1]).val(parseFloat(displayValue.replace(',', '.')));
+
                   /* ADD CHARTS DATA TO ARRAY */
-                  chartVal = parseFloat(displayValue.replace(',', '.'))*100;
-                  me.addDataSet(auditsChart,OutputAuditName,color,score);
+                  chartVal = score*100;
+                  if (mainAudits.length==mainCounter){
+                      me.addDataSet(auditsChart,OutputAuditName,color,chartVal,((mainCounter==1) ? '1' : '0'),1);
+                  }else{
+                      me.addDataSet(auditsChart,OutputAuditName,color,chartVal,((mainCounter==1) ? '1' : '0'),0);
+                  }
+                  mainCounter++; 
               });
               $(".list-main").html(OutputAuditsHtml);
               OutputAuditsHtml = "";
@@ -169,7 +178,6 @@ requirejs(['jquery'], function ($) {
               me.setPbStatus("error");
               $(pb).find(".errorMessage").append(": "+json.error.message.substring(0, 130));
               me.fetchLighthouseData(me.getDevice($('.getLighthouseData')));
-              me.pbReset();
             }
           });
       } 
@@ -187,6 +195,13 @@ requirejs(['jquery'], function ($) {
           if (scoreIn < 0.5){speedOut = 'slow';} 
           else if (scoreIn < 0.9){speedOut = 'average';} 
           else if (scoreIn <= 1){speedOut = 'fast';}
+          return speedOut;
+      }
+      /* COLOR FOR SPEED STATUS */
+      me.getSpeedColor = function(scoreIn){
+          if (scoreIn < 0.5){speedOut = '#d8000c';} 
+          else if (scoreIn < 0.9){speedOut = '#ffa400';} 
+          else if (scoreIn <= 1){speedOut = '#28a745';}
           return speedOut;
       }
       /* PROGRESS BAR */
@@ -250,26 +265,25 @@ requirejs(['jquery'], function ($) {
         }
       }
 
-      me.addDataSet = function (chart, label, color, data) {
+      var newDataset;
+      me.addDataSet = function (chart, label, color, data, createDataset, datasetReady) {
         chart.data.labels.push(label);
-        var newDataset = {
-          label: label,
-          backgroundColor: color,
-          borderColor: color,
-          borderWidth: 1,
-          data:[]
-        };
-        if (Array.isArray(data)){
-          data.forEach(function(key,val){
-            newDataset.data.push(val);
-          })
+        if (createDataset==1){
+          newDataset = [];
+          newDataset = {
+            backgroundColor: [],
+            borderColor: [],
+            data:[]
+          };
         }
-        else{
-          newDataset.data.push(data);
-        } 
-        //console.log(newDataset);
-        chart.data.datasets.push(newDataset);
-        chart.update();
+        newDataset.backgroundColor.push(color);
+        newDataset.borderColor.push(color);
+        newDataset.data.push(data);
+
+        if (datasetReady){
+          chart.data.datasets.push(newDataset);
+          chart.update();
+        }  
       }
     }
 
