@@ -142,6 +142,9 @@ $highlightBorderColor:#bdc5cd;
     padding-top:2em;
 }
 .newLighthouseStatistics{
+    &.container-fluid{
+        padding:0;
+    }
     display:none;
     .list-lighthouse{
         margin-top:1em;

@@ -68,12 +68,14 @@ requirejs(['jquery'], function ($) {
               /* CALL LIGHTHOUSE REQUEST FUNCTION */
               me.fetchLighthouseData(me.getDevice(thisis));
           });
+
           /* DEVICE RADIO BUTTON ON CHANGE */
           $("input[type=radio][name=device]").change(function(){
             var deviceName = $(this).val();
             var targetUrl = $(".getLighthouseData").data(deviceName.toLowerCase());
             $(".targetUrl").html(targetUrl);
           });
+
           /* ACTIVE LIST ENTRY ON CLICK */
           $(".list-lighthouse").on("click","li",function(){
             var listItem = $(this);
@@ -109,6 +111,8 @@ requirejs(['jquery'], function ($) {
               me.addDataSet(scoreChart,"","rgba(255, 255, 255, 1)",missingScore*100,0,1);
   
               me.createCharts(mac,"bar","audits");
+              scoreChart.options.plugins.title.display = true;
+              scoreChart.options.plugins.title.text    = "Overall Score";
 
               /* MAIN AUDIT PROPERTIES */
               var mainCounter = 1;
@@ -264,12 +268,10 @@ requirejs(['jquery'], function ($) {
           });
         }
       }
-
-      var newDataset;
+      var newDataset = [];
       me.addDataSet = function (chart, label, color, data, createDataset, datasetReady) {
         chart.data.labels.push(label);
         if (createDataset==1){
-          newDataset = [];
           newDataset = {
             backgroundColor: [],
             borderColor: [],

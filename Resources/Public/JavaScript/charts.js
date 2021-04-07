@@ -28,47 +28,81 @@ requirejs(['jquery'], function ($) {
             var datasetArray, labelArray, type, period, chart;
             /* INIT */
             ch.init = function () {
-                var entries = $(".chartsEntries").find(".entry"); 
                 var data;
-                var lhc = document.getElementById('lighthouseChart').getContext('2d');
+                var entries = $(".chartsEntries").find(".entry"); 
+
+                var lhcd    = document.getElementById('lighthouseChart_desktop').getContext('2d');
+                var lhcm    = document.getElementById('lighthouseChart_mobile').getContext('2d');
+
+                period      = $("#period-select").find("option:selected").val();
+                type        = $("#type-select").find("option:selected").val();
+
+                chart       = ch.createCharts(lhcd,type);
+                chart2      = ch.createCharts(lhcm,type);
 
                 $(entries).each(function(key,value) {
-                    data = $(this).data();
+                    data        = $(this).data();
+                    var date    = data.crdate;
+
+                    var fcp     = data.fcp;
+                    var si      = data.si;
+                    var lcp     = data.lcp;
+                    var tti     = data.tti;
+                    var tbt     = data.tbt;
+                    var cls     = data.cls;
+
+                    
+                    console.log(data.cls);
+                    /*data.forEach(function(key,value){
+                        console.log(key);
+                        console.log(value);
+                    });    */
                 });
-                ch.createDatasets();
-                ch.createLabels();
+                //ch.addDataSet(chart);
 
-                period = $("#period-select").find("option:selected").val();
-                type = $("#type-select").find("option:selected").val();
-
-                chart = ch.createCharts(lhc,type);
+                $(".device").on("change",function(){
+                    type = $(this).val().toLowerCase();
+                    $(".lighthouseCharts").css({display:"none"});
+                    $("#lighthouseChart_"+type).css({display:"block"});
+                });
 
                 $("#type-select").on("change",function(){
                     // console.log($(this).val());
                     type = $(this).val().toLowerCase();
                     chart.destroy();
-                    chart = ch.createCharts(lhc,type);
+                    chart = ch.createCharts(lhcd,type);
+                    chart2.destroy();
+                    chart2 = ch.createCharts(lhcm,type);
                 });
 
                 $("#period-select").on("change",function(){
                     // console.log($(this).val());
                     period = $(this).val().toLowerCase(); 
                     chart.destroy();
-                    chart = ch.createCharts(lhc,type);
+                    chart = ch.createCharts(lhcd,type);
+                    chart2.destroy();
+                    chart2 = ch.createCharts(lhcm,type);
                 });
             }
             /* DATA */
-            ch.createDatasets = function () {
-                datasetArray = [{
-                    label: 'My First dataset',
-                    backgroundColor: 'rgba(0, 0, 0, 0)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: [0, 10, 5, 2, 20, 30, 45]
-                }];
-            }
-            /* LABELS */
-            ch.createLabels = function () {
-                labelArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+            var newDataset = [];
+            ch.addDataSet = function (chart, label, color, date, data, createDataset, datasetReady) {
+              chart.data.labels.push(label);
+              if (createDataset==1){
+                newDataset = {
+                  backgroundColor: [],
+                  borderColor: [],
+                  data:[]
+                };
+              }
+              newDataset.backgroundColor.push(color);
+              newDataset.borderColor.push(color);
+              newDataset.data.push(data);
+      
+              if (datasetReady){
+                chart.data.datasets.push(newDataset);
+                chart.update();
+              }  
             }
 
             /* CREATE CHARTS*/
@@ -86,7 +120,9 @@ requirejs(['jquery'], function ($) {
                     // Configuration options go here
                     options: {
                         scales:{
-                            
+                            xAxes: [{
+                                type: 'time',
+                            }]
                         }
                     }
                 });

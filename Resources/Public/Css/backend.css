@@ -122,6 +122,9 @@
 .newLighthouseStatistics {
   display: none;
 }
+.newLighthouseStatistics.container-fluid {
+  padding: 0;
+}
 .newLighthouseStatistics .list-lighthouse {
   margin-top: 1em;
   margin-bottom: 1em;
