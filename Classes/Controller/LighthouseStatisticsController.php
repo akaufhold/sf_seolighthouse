@@ -130,7 +130,6 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         /* GET FE URL OF SELECTED PAGE IN PAGETREE*/
         //$lightHouseGetUrl   = $this->getBaseUrl()."/index.php?id=".$this->getSelectedPage();
         $lightHouseGetUrl   = "https://www.stackfactory.de";
-        // $lightHouseGetUrl   = "https://www.facebook.de";
 
         $ajaxGetUrlDesktop  = $this->getTargetUrl($this->locale,$lightHouseGetUrl,"desktop");
         $ajaxGetUrlMobile  = $this->getTargetUrl($this->locale,$lightHouseGetUrl,"mobile");
@@ -153,6 +152,7 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $lighthouseStatistics = $this->lighthouseStatisticsRepository->findByTarget($this->getSelectedPage());
         $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
         $this->view->assign('pageId', $this->getSelectedPage());
+        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($lighthouseStatistics);  
     }
 
     /**

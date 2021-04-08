@@ -7,6 +7,7 @@ CREATE TABLE tx_sfseolighthouse_domain_model_lighthousestatistics (
 	tti double(11,2) DEFAULT '0.00' NOT NULL,
 	tbt double(11,2) DEFAULT '0.00' NOT NULL,
 	cls double(11,2) DEFAULT '0.00' NOT NULL,
+	os double(11,2) DEFAULT '0.00' NOT NULL,
 	device varchar(255) NOT NULL DEFAULT ''
 	
 );

@@ -175,6 +175,15 @@ return [
                 'eval' => 'double2'
             ],
         ],
+        'os' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.os',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'double2'
+            ],
+        ],
         'device' => [
             'exclude' => true,
             'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.device',

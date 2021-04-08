@@ -6,6 +6,7 @@
     <f:for each="{lighthouseStatistics}" as="lighthouseStatistics">
         <div class="entry" 
             data-crdate="<f:format.date format='d.m.Y - H:i'>{lighthouseStatistics.crdate}</f:format.date>"
+            data-timestamp="{lighthouseStatistics.crdate}"
             data-target="{lighthouseStatistics.target}"
             data-fcp="{lighthouseStatistics.fcp}"
             data-si="{lighthouseStatistics.si}"
@@ -13,6 +14,7 @@
             data-tti="{lighthouseStatistics.tti}"
             data-tbt="{lighthouseStatistics.tbt}"
             data-cls="{lighthouseStatistics.cls}"
+            data-os="{lighthouseStatistics.os}"
             data-device="{lighthouseStatistics.device}"
         ></div>
     </f:for>

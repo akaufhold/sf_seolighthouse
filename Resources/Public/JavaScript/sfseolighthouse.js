@@ -31,9 +31,6 @@ requirejs(['jquery'], function ($) {
             ["total-blocking-time", "tbt",0.25,"rgba(54, 162, 235, 1)"],
             ["cumulative-layout-shift", "cls",0.05,"rgba(153, 102, 255, 1)"]
         ];
-        const environmentAudits = [
-            ["benchmarkIndex", "bi"],["dom-size", "ds"]
-        ];
         const individualAudits  = [
             ["Overall Score","os"]
         ];
@@ -41,7 +38,7 @@ requirejs(['jquery'], function ($) {
         var scoreChart;
         var auditsChart;
 
-        var me = this;
+        var lh = this;
         /* LIGHTHOUSE */
         var OutputAuditName, OutputAuditsHtml;
         var url = [];
@@ -52,7 +49,7 @@ requirejs(['jquery'], function ($) {
         var labelArray = [];
         var datasetArray= [];
         var oac,mac;
-        me.init = function () {
+        lh.init = function () {
             $('.getLighthouseData').on('click', function(){
               var thisis = $(this);
               /* PREFILL TARGET INPUT */
@@ -66,7 +63,7 @@ requirejs(['jquery'], function ($) {
                   format = $(this).data('format');
               } 
               /* CALL LIGHTHOUSE REQUEST FUNCTION */
-              me.fetchLighthouseData(me.getDevice(thisis));
+              lh.fetchLighthouseData(lh.getDevice(thisis));
           });
 
           /* DEVICE RADIO BUTTON ON CHANGE */
@@ -86,31 +83,36 @@ requirejs(['jquery'], function ($) {
           });
       };
       /* FETCH API REQUEST FUNCTION */
-      me.fetchLighthouseData = function(targetUrl) {
+      lh.fetchLighthouseData = function(targetUrl) {
         /* PROGRESS BAR */
-        me.pbReset();
-        me.setPbStatus("progress");
+        lh.pbReset();
+        lh.setPbStatus("progress");
         /* FETCH LIGHTHOUSE DATA */
         fetch(targetUrl)
           .then(response => response.json())
           .then(json => {
             if (!json.hasOwnProperty("error")){
               OutputAuditsHtml = "";
-              var speed, score, displayValue, screenshot, displayMode, chartVal;
+              var speed, score, displayValue, screenshot, displayMode, chartVal, description, descriptionMore, descriptionLink;
               const lighthouse = json.lighthouseResult;
               const auditResults = lighthouse.audits;
-              const overallScore = lighthouse.categories.performance.score; 
-          
-              me.pbReset();
-              me.setPbStatus("success");
+              const overallScore = lighthouse.categories.performance.score;
+
+              const filterMore          = /\[((?:(?!\\]).)+)/igm;
+              const filterLink          = /\(((?:(?!\\)).\)+)/igm; 
+
+              $("#os").val(overallScore);
+              lh.pbReset();
+              lh.setPbStatus("success");
+              
               /* CREATE CHARTS OUTPUT */
               var missingScore = 1-overallScore;
-              var speedColor = me.getSpeedColor(overallScore);
-              me.createCharts(oac,"pie","score");
-              me.addDataSet(scoreChart,"Score",speedColor,overallScore*100,1,0);
-              me.addDataSet(scoreChart,"","rgba(255, 255, 255, 1)",missingScore*100,0,1);
+              var speedColor = lh.getSpeedColor(overallScore);
+              lh.createCharts(oac,"pie","score");
+              lh.addDataSet(scoreChart,"Score",speedColor,overallScore*100,1,0);
+              lh.addDataSet(scoreChart,"","rgba(255, 255, 255, 1)",missingScore*100,0,1);
   
-              me.createCharts(mac,"bar","audits");
+              lh.createCharts(mac,"bar","audits");
               scoreChart.options.plugins.title.display = true;
               scoreChart.options.plugins.title.text    = "Overall Score";
 
@@ -119,22 +121,22 @@ requirejs(['jquery'], function ($) {
               mainAudits.forEach(function(value){
                   displayValue      = auditResults[value[0]].displayValue;
                   score             = auditResults[value[0]].score;
-                  speed             = me.getSpeedClass(score);
-                  color             = me.getSpeedColor(score);
+                  speed             = lh.getSpeedClass(score);
+                  color             = lh.getSpeedColor(score);
                   OutputAuditName   = value[0].replace("-"," ");
                   OutputAuditsHtml += '<li class="list-group-item" id="list-'+value[1]+'">';
-                  OutputAuditsHtml +=     me.addSpan("label",OutputAuditName);
-                  OutputAuditsHtml +=     me.addSpan("value", displayValue);
-                  OutputAuditsHtml +=     me.addSpan("score "+speed,score);
+                  OutputAuditsHtml +=     lh.addSpan("label",OutputAuditName);
+                  OutputAuditsHtml +=     lh.addSpan("value", displayValue);
+                  OutputAuditsHtml +=     lh.addSpan("score "+speed,score);
                   OutputAuditsHtml += '</li>';
                   $("#"+value[1]).val(parseFloat(displayValue.replace(',', '.')));
 
                   /* ADD CHARTS DATA TO ARRAY */
                   chartVal = score*100;
                   if (mainAudits.length==mainCounter){
-                      me.addDataSet(auditsChart,OutputAuditName,color,chartVal,((mainCounter==1) ? '1' : '0'),1);
+                    lh.addDataSet(auditsChart,OutputAuditName,color,chartVal,((mainCounter==1) ? '1' : '0'),1);
                   }else{
-                      me.addDataSet(auditsChart,OutputAuditName,color,chartVal,((mainCounter==1) ? '1' : '0'),0);
+                    lh.addDataSet(auditsChart,OutputAuditName,color,chartVal,((mainCounter==1) ? '1' : '0'),0);
                   }
                   mainCounter++; 
               });
@@ -142,6 +144,13 @@ requirejs(['jquery'], function ($) {
               OutputAuditsHtml = "";
               /* ADDTIONAL AUDIT PROPERTIES*/
               Object.keys(auditResults).sort().forEach(function(key){
+                description         = auditResults[key].description;
+                
+                /*descriptionMore     = lh.regexMatch(description,filterMore);
+                descriptionLink     = lh.regexMatch(description,filterLink);
+                description = ((descriptionMore!=undefined)?lh.replaceSub(description,descriptionMore,""):description);
+                description = ((descriptionLink!=undefined)?lh.replaceSub(description,descriptionLink,""):description);*/
+
                 displayMode         = String(auditResults[key].scoreDisplayMode);
                 if (auditResults[key].hasOwnProperty("details.screenshot")){
                     screenshot = auditResults[key].details.screenshot;
@@ -151,13 +160,13 @@ requirejs(['jquery'], function ($) {
                 if (displayMode!="notApplicable"){
                   OutputAuditName       = key.replace("-"," ");
                   OutputAuditsHtml      += '<li class="list-group-item" id="'+key+'">';
-                  OutputAuditsHtml      += me.addSpan("label",((auditResults[key].description) ? chevronDown : '')+OutputAuditName);
+                  OutputAuditsHtml      += lh.addSpan("label",((description) ? chevronDown : '')+OutputAuditName);
                   if (displayValue!=undefined){
-                      OutputAuditsHtml  += me.addSpan("value",displayValue);
+                      OutputAuditsHtml  += lh.addSpan("value",displayValue);
                   }
                   if (score){
-                      speed             =  me.getSpeedClass(score);
-                      OutputAuditsHtml  += me.addSpan("score "+speed,score);
+                      speed             =  lh.getSpeedClass(score);
+                      OutputAuditsHtml  += lh.addSpan("score "+speed,score);
                   }
                   if (auditResults[key].description){  
                       OutputAuditsHtml  += "<span class='description'>"+((auditResults[key].title)?"<b>"+auditResults[key].title+"</b>":"")+auditResults[key].description;
@@ -169,7 +178,6 @@ requirejs(['jquery'], function ($) {
                   OutputAuditsHtml +=  '</li>';
                 }
               });
-
               $(".list-additional").html(OutputAuditsHtml);
               $(".newLighthouseStatistics").css({display:"block"});
               if (!$(cc).find(".totalTime").length)
@@ -178,15 +186,15 @@ requirejs(['jquery'], function ($) {
                 $(cc).find(".totalTime").html((lighthouse.timing.total/1000).toFixed(2)+" s");
             }else{
               /* ERROR HANDLING */
-              me.pbReset();
-              me.setPbStatus("error");
+              lh.pbReset();
+              lh.setPbStatus("error");
               $(pb).find(".errorMessage").append(": "+json.error.message.substring(0, 130));
-              me.fetchLighthouseData(me.getDevice($('.getLighthouseData')));
+              lh.fetchLighthouseData(lh.getDevice($('.getLighthouseData')));
             }
           });
       } 
       /* GET URL DEPENDING ON DEVICE */
-      me.getDevice = function(radioInput){
+      lh.getDevice = function(radioInput){
           url['Mobile'] = $(radioInput).data('mobile');
           url['Desktop'] = $(radioInput).data('desktop');
           var device = $("input[name=device]").filter(":checked");
@@ -195,39 +203,39 @@ requirejs(['jquery'], function ($) {
           return url[deviceVal];
       }
       /* CSS CLASS FOR SPEED STATUS COLOR */
-      me.getSpeedClass = function(scoreIn){
+      lh.getSpeedClass = function(scoreIn){
           if (scoreIn < 0.5){speedOut = 'slow';} 
           else if (scoreIn < 0.9){speedOut = 'average';} 
           else if (scoreIn <= 1){speedOut = 'fast';}
           return speedOut;
       }
       /* COLOR FOR SPEED STATUS */
-      me.getSpeedColor = function(scoreIn){
+      lh.getSpeedColor = function(scoreIn){
           if (scoreIn < 0.5){speedOut = '#d8000c';} 
           else if (scoreIn < 0.9){speedOut = '#ffa400';} 
           else if (scoreIn <= 1){speedOut = '#28a745';}
           return speedOut;
       }
       /* PROGRESS BAR */
-      me.pbReset = function(){
+      lh.pbReset = function(){
           $(cc).find(".counterAmount").css({width:"0%"});
           $(cc).removeClass("progress").removeClass("error").removeClass("success");
           $(cc).find(".counterTitle").find(".errorMessage").html("error");
       }
-      me.setPbStatus = function(status){
+      lh.setPbStatus = function(status){
           $(cc).addClass(status);
           if ((status=="success") || (status=="error"))
               $(cc).find(".counterAmount").css({width:"100%"});
       }
       /* HTML OUTPUT */
-      me.addSpan = function(htmlClass,value){
+      lh.addSpan = function(htmlClass,value){
           var htmlOut  = '<span class="'+htmlClass+'">';
           htmlOut      +=    value;
           htmlOut      += '</span>';
           return htmlOut;
       }
       /* CHARTS */
-      me.createCharts = function (chartIn,typeIn,target) {
+      lh.createCharts = function (chartIn,typeIn,target) {
         if (target=="score"){
           scoreChart = new Chart(chartIn, {
             type: typeIn,
@@ -269,7 +277,7 @@ requirejs(['jquery'], function ($) {
         }
       }
       var newDataset = [];
-      me.addDataSet = function (chart, label, color, data, createDataset, datasetReady) {
+      lh.addDataSet = function (chart, label, color, data, createDataset, datasetReady) {
         chart.data.labels.push(label);
         if (createDataset==1){
           newDataset = {
@@ -286,6 +294,24 @@ requirejs(['jquery'], function ($) {
           chart.data.datasets.push(newDataset);
           chart.update();
         }  
+      }
+
+      lh.replaceSub = function(string,search,replace) {
+        return string.replace(search,replace); 
+      }
+
+      lh.regexMatch = function(string, regex) {
+        let m;
+        while ((m = regex.exec(string)) !== null) {
+            if (m.index === regex.lastIndex) {
+                regex.lastIndex++;
+            }
+            return m[0];
+            /*m.forEach((match, groupIndex) => {
+                //console.log(`Found match, group ${groupIndex}: ${match}`);
+                return match;
+            });*/
+        }
       }
     }
 
