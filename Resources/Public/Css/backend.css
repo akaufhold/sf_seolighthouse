@@ -115,10 +115,6 @@
   text-align: center;
 }
 
-.lighthouseCharts {
-  padding-top: 2em;
-}
-
 .newLighthouseStatistics {
   display: none;
 }
@@ -184,6 +180,7 @@
   font-weight: 700;
   text-align: center;
   padding-right: 1em;
+  text-transform: lowercase;
 }
 .newLighthouseStatistics .list-lighthouse li .score {
   position: absolute;
@@ -238,4 +235,9 @@
 
 .getLighthouseData {
   margin-top: 0.5em;
+}
+
+/* CHARTS TAB */
+.lighthouseCharts {
+  padding-top: 2em;
 }/*# sourceMappingURL=backend.css.map */

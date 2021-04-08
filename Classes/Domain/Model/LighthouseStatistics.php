@@ -74,6 +74,13 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     protected $cls = 0.0;
 
     /**
+     * Overall Score
+     * 
+     * @var float
+     */
+    protected $os = 0.0;
+
+    /**
      * Device 
      * 
      * @var string
@@ -235,6 +242,27 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     public function setCls($cls)
     {
         $this->cls = $cls;
+    }
+
+    /**
+     * Returns the os
+     * 
+     * @return float $os
+     */
+    public function getOs()
+    {
+        return $this->os;
+    }
+
+    /**
+     * Sets the os
+     * 
+     * @param float $os
+     * @return void
+     */
+    public function setOs($os)
+    {
+        $this->os = $os;
     }
 
     /**
