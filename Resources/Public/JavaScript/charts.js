@@ -1,6 +1,6 @@
 require.config({
     paths: {
-      moment: "//cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min",
+      moment: "//cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min",
       chart: "//cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min"
     },
     shim: {
@@ -11,14 +11,16 @@ require.config({
 });
 
 requirejs(['jquery'], function ($) {
-    require(["moment", "chart"], function(moment, chart) {
+    require(["moment","chart"], function(moment, chart) {
         var LighthouseCharts = function () {
             var ch = this;
-            var lhcd; 
-            var lhcm;   
-            var datasetArray, labelArray, type, period;
+            var lhcd, lhcm, type, period, device;
             var labelArray = [];
             var datasetArray= [];
+            let newDataset = [];
+
+            /* DECLARATION CHARTS VARS */
+            var desktopChart, mobileChart;
 
             /* DECLARATION CHARTS COLORS */
             var chartColors = {
@@ -28,11 +30,8 @@ requirejs(['jquery'], function ($) {
                 tti: 'rgb(75, 192, 192)',
                 tbt: 'rgb(54, 162, 235)',
                 cls: 'rgb(153, 102, 255)',
-                os:  'rgb(231,233,237)'
+                os:  'rgb(40,167,69)'
             };
-
-            /* DECLARATION CHARTS VARS */
-            var desktopChart, mobileChart;
 
             /* INIT */
             ch.init = function () {
@@ -51,18 +50,20 @@ requirejs(['jquery'], function ($) {
                 ch.entriesToDataset($(entries));
 
                 $(".device").on("change",function(){
-                    type = $(this).val().toLowerCase();
-                    $(".lighthouseCharts").css({display:"none"});
-                    $("#lighthouseChart_"+type).css({display:"block"});
+                    device = $(this).val().toLowerCase();
+                    ch.showChart(device);
                 });
 
                 $("#type-select").on("change",function(){
                     // console.log($(this).val());
+                    device = $("input[name='device']:checked").val().toLowerCase();
+                    console.log(device);
                     type = $(this).val().toLowerCase();
                     desktopChart.destroy();
-                    ch.createCharts(lhcd,type,"desktop");
                     mobileChart.destroy();
-                    ch.createCharts(lhcm,type,"mobile");
+                    //console.log(device.toLowerCase());
+                    ch.createCharts(lhcd,type,device);
+                    ch.showChart(device);
                 });
 
                 /*$("#period-select").on("change",function(){
@@ -87,94 +88,105 @@ requirejs(['jquery'], function ($) {
                     entryValues.si          = data.si;
                     entryValues.lcp         = data.lcp;
                     entryValues.tti         = data.tti;
-                    entryValues.tbt         = data.tbt;
+                    entryValues.tbt         = data.tbt/1000;
                     entryValues.cls         = data.cls;
                     entryValues.os          = data.os;
-
+                    device                  = data.device;
                     /* DATES */
                     var crdate      = data.crdate;
                     var timestamp   = data.timestamp;
                     var date        = new Date(timestamp * 1000);
-                    var day         = date.getDay();
-                    var month       = date.getMonth();
-                    var year        = date.getFullYear();
-                    var hours       = date.getHours();
-                    var minutes     = "0" + date.getMinutes();
-                    var seconds     = "0" + date.getSeconds();
-                    var dateLabel   = day+"."+month+"."+year;
+                    var dateLabel   = date.getDate()+"."+date.getMonth()+1+"."+date.getFullYear();
 
                     if (entryiteration==entryCounter){
                         auditIteration = 0;
                         $.each(entryValues, function(auditKey,auditVal){
-                            console.log(auditIteration);
                             /* ADD AUDIT VALUES TO DESKTOP CHART / ADD COMPLETE DATASET */
-                            ch.addDataSet (desktopChart, auditKey, chartColors[auditKey], dateLabel, date, auditVal, ((entryiteration==1) ? '1' : '0'), 1, auditIteration);
+                            if(device=="Desktop")
+                                ch.addDataSet (desktopChart, auditKey, chartColors[auditKey], dateLabel, date, auditVal, ((entryiteration==1) ? '1' : '0'), 1, auditIteration, "desktop");
                             /* ADD AUDIT VALUES TO MOBILE CHART / ADD COMPLETE DATASET */
-                            ch.addDataSet (mobileChart, auditKey, chartColors[auditKey], dateLabel, date, auditVal, ((entryiteration==1) ? '1' : '0'), 1, auditIteration);
+                            if(device=="Mobile")
+                                ch.addDataSet (mobileChart, auditKey, chartColors[auditKey], dateLabel, date, auditVal, ((entryiteration==1) ? '1' : '0'), 1, auditIteration, "mobile");
+                            
                             auditIteration++;
                         });
                     }else{
                         auditIteration = 0;
-                        $.each(entryValues, function(auditKey,auditVal){
+                        $.each(entryValues, function(auditKey,auditVal){                          
                             /* ADD AUDIT VALUES TO DESKTOP CHART / ADD TO EXISTING DATASET */
-                            ch.addDataSet (desktopChart, auditKey, chartColors[auditKey], dateLabel, date, auditVal, ((entryiteration==1) ? '1' : '0'), 0, auditIteration);
+                            if(device=="Desktop")
+                                ch.addDataSet (desktopChart, auditKey, chartColors[auditKey], dateLabel, date, auditVal, ((entryiteration==1) ? '1' : '0'), 0, auditIteration, "desktop");
                             /* ADD AUDIT VALUES TO MOBILE CHART / ADD TO EXISTING DATASET */
-                            ch.addDataSet (mobileChart, auditKey, chartColors[auditKey], dateLabel, date, auditVal, ((entryiteration==1) ? '1' : '0'), 0, auditIteration);
+                            if(device=="Mobile")
+                                ch.addDataSet (mobileChart, auditKey, chartColors[auditKey], dateLabel, date, auditVal, ((entryiteration==1) ? '1' : '0'), 0, auditIteration, "mobile");
                             auditIteration++;
                         });
                     }
-                    /*
-                    console.log(day+"."+month+"."+year+" "+hours+":"+minutes+":"+seconds);
-                    */  
                     entryiteration++;
                 });
             }
-        
 
             /* DATA */
-            var newDataset = [];
-            ch.addDataSet = function (chartIn, label, color, dateLabel, date, data, createDataset, datasetReady, index) {
-                chartIn.data.labels.push(date);
-                console.log(label+" "+color+" "+dateLabel+" "+date+" "+data+" "+createDataset+" "+datasetReady);
+            ch.addDataSet = function (chartIn, label, color, dateLabel, date, data, createDataset, datasetReady, index, device) {
+                if (index==0)
+                    chartIn.data.labels.push(dateLabel);
                 if (createDataset==1){
-                    newDataset[index] = {backgroundColor: [],borderColor: [],data:[]};
-                    //console.log(index+" "+newDataset[index].data);
+                    if (index==0)
+                        newDataset[device] = [];
+
+                    newDataset[device][index] = {
+                        backgroundColor: [],
+                        borderColor: [],
+                        data:[]
+                    };
+                    newDataset[device][index].label             = label; 
+                    newDataset[device][index].backgroundColor   = color;
+                    newDataset[device][index].borderColor       = color;
                 }
-                newDataset[index].label = label; 
-                newDataset[index].backgroundColor = color;
-                newDataset[index].borderColor = color;
-                newDataset[index].data.push({
-                                            x:date,
-                                            y:data
-                                            });
-        
-                if (datasetReady){
-                    console.log(newDataset);
-                    chartIn.data.datasets.push(newDataset[index]);
+                newDataset[device][index].data.push({x:date,y:data});
+                if (datasetReady==1){
+                    chartIn.data.datasets.push(newDataset[device][index]);
                     chartIn.update();
                 }
             }
 
             /* CREATE CHARTS*/
             ch.createCharts = function (chartIn, typeIn, target) {
-                //console.log(chartIn); 
                 if (target=="desktop"){
                     desktopChart = new Chart(chartIn, {
                         // The type of chart we want to create
                         type: typeIn,
-
                         // The data for our dataset
                         data: {
                             labels: labelArray,
                             datasets: datasetArray
                         },
-
                         // Configuration options go here
                         options: {
+                            responsive: true,
                             scales:{
-                                xAxes: [{
-                                    type: 'time',
-                                }]
+                                x: {
+                                    /*type: 'time',
+                                    stacked: true,*/
+                                    // type: 'time',
+                                    distribution: 'linear',
+                                    // stacked: true,
+                                    time: { 
+                                        displayFormats: { 
+                                            month: 'MM',
+                                        },
+                                        unit: 'day',
+                                    },
+                                    ticks: {
+                                        display: true,
+                                        autoskip:true,
+                                        stepSize: 1,
+                                        fixedStepSize: 1,
+                                    },
+                                    gridLines: {
+                                        display: false
+                                    }
+                                }
                             }
                         }
                     });
@@ -182,26 +194,48 @@ requirejs(['jquery'], function ($) {
                     mobileChart = new Chart(chartIn, {
                         // The type of chart we want to create
                         type: typeIn,
-
                         // The data for our dataset
                         data: {
                             labels: labelArray,
                             datasets: datasetArray
                         },
-
                         // Configuration options go here
                         options: {
+                            responsive: true,
                             scales:{
-                                xAxes: [{
-                                    type: 'time',
-                                }]
+                                x: {
+                                    /*type: 'time',
+                                    stacked: true,*/
+                                    // type: 'time',
+                                    distribution: 'linear',
+                                    // stacked: true,
+                                    time: { 
+                                        displayFormats: { 
+                                            month: 'MM', 
+                                        },
+                                        unit: 'day',
+                                    },
+                                    ticks: {
+                                        display: true,
+                                        autoskip:true,
+                                        stepSize: 1,
+                                        fixedStepSize: 1,
+                                    },
+                                    gridLines: {
+                                        display: false
+                                    }
+                                }
                             }
                         }
                     });
                 }
             }
+            ch.showChart = function(type){
+                $(".lighthouseCharts").css({display:"none"});
+                $("#lighthouseChart_"+type).css({display:"block"});
+            }
         }
-        
+    
         var lighthouseCharts = new LighthouseCharts();
         lighthouseCharts.init();
         
