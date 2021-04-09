@@ -1,6 +1,6 @@
 require.config({
   paths: {
-    moment: "//cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min",
+    moment: "//cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min",
     chartjs: "//cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min",
     roughjs: "//cdn.jsdelivr.net/npm/roughjs@3.1.0/dist/rough"
   },
@@ -289,7 +289,6 @@ requirejs(['jquery'], function ($) {
         newDataset.backgroundColor.push(color);
         newDataset.borderColor.push(color);
         newDataset.data.push(data);
-
         if (datasetReady){
           chart.data.datasets.push(newDataset);
           chart.update();
