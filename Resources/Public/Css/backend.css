@@ -17,6 +17,18 @@
 .tx_sfseolighthouse .targetUrl {
   padding: 0.5em 1.25em;
 }
+.tx_sfseolighthouse .custom-control {
+  position: relative;
+}
+.tx_sfseolighthouse .custom-control.custom-radio {
+  min-height: 3em;
+}
+.tx_sfseolighthouse .custom-control label {
+  position: absolute;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+}
 .tx_sfseolighthouse .progressBar * {
   line-height: 0.35;
 }
@@ -240,4 +252,8 @@
 /* CHARTS TAB */
 .lighthouseCharts {
   padding-top: 2em;
+}
+
+.panel-heading > h1 {
+  margin: 0;
 }/*# sourceMappingURL=backend.css.map */

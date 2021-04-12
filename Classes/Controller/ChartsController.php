@@ -41,6 +41,18 @@ class ChartsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $this->lighthouseStatisticsRepository = $lighthouseStatisticsRepository;
     }
 
+    public function objectsContainsDevice($lighthouseStatistics)
+    {
+        foreach($lighthouseStatistics as $entry => $values){
+            if ($values->getDevice());
+                $this->view->assign($values->getDevice(), "1"); 
+        }
+    }
+    /**
+     * charts action
+     * 
+     * @return string|object|null|void
+     */
     public function chartsAction()
     {
         $LighthouseStatisticsController = GeneralUtility::makeInstance(LighthouseStatisticsController::class);
@@ -48,5 +60,8 @@ class ChartsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
         $lighthouseStatistics = $this->lighthouseStatisticsRepository->findAll();
         $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
+
+        $this->objectsContainsDevice($lighthouseStatistics);
+   
     }
 }

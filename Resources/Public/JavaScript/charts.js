@@ -66,6 +66,11 @@ requirejs(['jquery'], function ($) {
                     ch.showChart(device);
                 });
 
+                $(".tx_sfseolighthouse").find(".custom-radio").find("label").click(function(){
+                    $(".tx_sfseolighthouse").find(".custom-radio").find("label").removeClass("active");
+                    $(this).addClass("active");
+                });
+
                 /*$("#period-select").on("change",function(){
                     // console.log($(this).val());
                     period = $(this).val().toLowerCase(); 
@@ -96,7 +101,7 @@ requirejs(['jquery'], function ($) {
                     var crdate      = data.crdate;
                     var timestamp   = data.timestamp;
                     var date        = new Date(timestamp * 1000);
-                    var dateLabel   = date.getDate()+"."+date.getMonth()+1+"."+date.getFullYear();
+                    var dateLabel   = ("0" + date.getDate()).slice(-2)+"."+("0" + (date.getMonth() + 1)).slice(-2)+"."+date.getFullYear();
 
                     if (entryiteration==entryCounter){
                         auditIteration = 0;
@@ -128,6 +133,7 @@ requirejs(['jquery'], function ($) {
 
             /* DATA */
             ch.addDataSet = function (chartIn, label, color, dateLabel, date, data, createDataset, datasetReady, index, device) {
+                console.log(device);
                 if (index==0)
                     chartIn.data.labels.push(dateLabel);
                 if (createDataset==1){
@@ -186,6 +192,11 @@ requirejs(['jquery'], function ($) {
                                     gridLines: {
                                         display: false
                                     }
+                                },
+                                y: {
+                                    ticks: {
+                                      beginAtZero: true
+                                    }
                                 }
                             }
                         }
@@ -224,6 +235,11 @@ requirejs(['jquery'], function ($) {
                                     gridLines: {
                                         display: false
                                     }
+                                },
+                                y: {
+                                    ticks: {
+                                      beginAtZero: true
+                                    }
                                 }
                             }
                         }
@@ -235,9 +251,7 @@ requirejs(['jquery'], function ($) {
                 $("#lighthouseChart_"+type).css({display:"block"});
             }
         }
-    
         var lighthouseCharts = new LighthouseCharts();
-        lighthouseCharts.init();
-        
+        lighthouseCharts.init(); 
     });
 });

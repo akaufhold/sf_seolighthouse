@@ -22,6 +22,18 @@ $highlightBorderColor:#bdc5cd;
     .targetUrl{
         padding: 0.5em 1.25em;
     }
+    .custom-control {
+        position: relative;
+        &.custom-radio{
+            min-height: 3em;
+        }
+        label{
+            position: absolute;
+            left:0;
+            z-index: 10;
+            width: 100%;
+        }
+    }
     .progressBar{
         *{
             line-height: 0.35;
@@ -270,3 +282,9 @@ $highlightBorderColor:#bdc5cd;
 .lighthouseCharts{
     padding-top:2em;
 }
+
+.panel-heading{
+    > h1{
+        margin:0;
+    }
+} 

@@ -73,6 +73,11 @@ requirejs(['jquery'], function ($) {
             $(".targetUrl").html(targetUrl);
           });
 
+          $(".tx_sfseolighthouse").find(".custom-radio").find("label").click(function(){
+            $(".tx_sfseolighthouse").find(".custom-radio").find("label").removeClass("active");
+            $(this).addClass("active");
+          })
+
           /* ACTIVE LIST ENTRY ON CLICK */
           $(".list-lighthouse").on("click","li",function(){
             var listItem = $(this);
