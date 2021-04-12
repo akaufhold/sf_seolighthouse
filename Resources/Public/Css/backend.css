@@ -123,7 +123,8 @@
 .tx_sfseolighthouse.table {
   position: relative;
 }
-.tx_sfseolighthouse.table tr > td:last-child {
+.tx_sfseolighthouse.table tr > td:last-child,
+.tx_sfseolighthouse.table tr > th:last-child {
   text-align: center;
 }
 
@@ -256,4 +257,28 @@
 
 .panel-heading > h1 {
   margin: 0;
+}
+
+.outputControl {
+  margin: 0;
+  padding: 0;
+}
+.outputControl .custom-control {
+  position: relative;
+}
+.outputControl .custom-control.custom-radio {
+  min-height: 3em;
+}
+.outputControl .custom-control label {
+  position: absolute;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+}
+
+.recordlist tr {
+  display: none;
+}
+.recordlist tr.active {
+  display: table-row;
 }/*# sourceMappingURL=backend.css.map */
