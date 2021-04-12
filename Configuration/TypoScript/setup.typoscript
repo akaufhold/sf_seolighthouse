@@ -13,7 +13,7 @@ plugin.tx_sfseolighthouse_showlighthouse {
         classes {
             tx_sfseolighthouse_domain_model_lighthousestatistics {
                 mapping {
-                    columns.crdate.mapOnProperty = crdate 
+                    columns.crdate.mapOnProperty = crdate
                 }
             }
         }

@@ -20,7 +20,7 @@ return [
         'iconfile' => 'EXT:sf_seolighthouse/Resources/Public/Icons/tx_sfseolighthouse_domain_model_lighthousestatistics.gif'
     ],
     'types' => [
-        '1' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, fcp, si, lcp, tti, tbt, cls, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime'],
+        '1' => ['showitem' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, fcp, si, lcp, tti, tbt, cls, fcps, sis, lcps, ttis, tbts, clss, --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, starttime, endtime'],
     ],
     'columns' => [
         'crdate'=> [
@@ -169,6 +169,60 @@ return [
         'cls' => [
             'exclude' => true,
             'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.cls',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'double2'
+            ],
+        ],
+        'fcps' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.fcps',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'double2'
+            ]
+        ],
+        'sis' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.sis',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'double2'
+            ]
+        ],
+        'lcps' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.lcps',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'double2'
+            ],
+        ],
+        'ttis' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.ttis',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'double2'
+            ],
+        ],
+        'tbts' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.tbts',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'double2'
+            ],
+        ],
+        'clss' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.clss',
             'config' => [
                 'type' => 'input',
                 'size' => 30,

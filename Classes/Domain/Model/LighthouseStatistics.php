@@ -74,6 +74,48 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     protected $cls = 0.0;
 
     /**
+     * Score First Contentful Paint
+     * 
+     * @var float
+     */
+    protected $fcps = 0.0;
+
+    /**
+     * Score Speed Index
+     * 
+     * @var float
+     */
+    protected $sis = 0.0;
+
+    /**
+     * Score Largest Contentful Paint
+     * 
+     * @var float
+     */
+    protected $lcps = 0.0;
+
+    /**
+     * Score Time to Interactive
+     * 
+     * @var float
+     */
+    protected $ttis = 0.0;
+
+    /**
+     * Score Total Blocking Time
+     * 
+     * @var float
+     */
+    protected $tbts = 0.0;
+
+    /**
+     * Score Cumulative Layout Shift 
+     * 
+     * @var float
+     */
+    protected $clss = 0.0;
+
+    /**
      * Overall Score
      * 
      * @var float
@@ -244,6 +286,133 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
         $this->cls = $cls;
     }
 
+    /**
+     * Returns the fcps
+     * 
+     * @return float $fcps
+     */
+    public function getFcps()
+    {
+        return $this->fcps;
+    }
+
+    /**
+     * Sets the fcps
+     * 
+     * @param float $fcps
+     * @return void
+     */
+    public function setFcps($fcps)
+    {
+        $this->fcps = $fcps;
+    }
+
+    /**
+     * Returns the sis
+     * 
+     * @return float $sis
+     */
+    public function getSis()
+    {
+        return $this->sis;
+    }
+
+    /**
+     * Sets the sis
+     * 
+     * @param float $sis
+     * @return void
+     */
+    public function setSis($sis)
+    {
+        $this->sis = $sis;
+    }
+
+    /**
+     * Returns the lcps
+     * 
+     * @return float $lcps
+     */
+    public function getLcps()
+    {
+        return $this->lcps;
+    }
+
+    /**
+     * Sets the lcps
+     * 
+     * @param float $lcps
+     * @return void
+     */
+    public function setLcps($lcps)
+    {
+        $this->lcps = $lcps;
+    }
+
+    /**
+     * Returns the ttis
+     * 
+     * @return float $ttis
+     */
+    public function getTtis()
+    {
+        return $this->ttis;
+    }
+
+    /**
+     * Sets the ttis
+     * 
+     * @param float $ttis
+     * @return void
+     */
+    public function setTtis($ttis)
+    {
+        $this->ttis = $ttis;
+    }
+
+    /**
+     * Returns the tbts
+     * 
+     * @return float $tbts
+     */
+    public function getTbts()
+    {
+        return $this->tbts;
+    }
+
+    /**
+     * Sets the tbts
+     * 
+     * @param float $tbts
+     * @return void
+     */
+    public function setTbts($tbts)
+    {
+        $this->tbts = $tbts;
+    }
+
+    /**
+     * Returns the clss
+     * 
+     * @return float $clss
+     */
+    public function getClss()
+    {
+        return $this->clss;
+    }
+
+    /**
+     * Sets the clss
+     * 
+     * @param float $clss
+     * @return void
+     */
+    public function setClss($clss)
+    {
+        $this->clss = $clss;
+    }
+
+    
     /**
      * Returns the os
      * 

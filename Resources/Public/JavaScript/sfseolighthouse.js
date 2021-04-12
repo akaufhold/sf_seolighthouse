@@ -135,7 +135,7 @@ requirejs(['jquery'], function ($) {
                   OutputAuditsHtml +=     lh.addSpan("score "+speed,score);
                   OutputAuditsHtml += '</li>';
                   $("#"+value[1]).val(parseFloat(displayValue.replace(',', '.')));
-
+                  $("#"+value[1]+"s").val(parseFloat(score)); 
                   /* ADD CHARTS DATA TO ARRAY */
                   chartVal = score*100;
                   if (mainAudits.length==mainCounter){

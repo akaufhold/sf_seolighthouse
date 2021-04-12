@@ -8,13 +8,13 @@
                     <f:be.menus.actionMenu>
                         <f:if condition="{storagePid}!={pageId}">
                             <f:then>
-                                <f:be.menus.actionMenuItem label="Get Lighthouse Statistics" controller="LighthouseStatistics" action="analyse" />
+                                <f:be.menus.actionMenuItem label="<f:translate key='tx_sf_seolighthouse_showlighthouse.get' />" controller="LighthouseStatistics" action="analyse" />
                             </f:then>
                         </f:if>
-                        <f:be.menus.actionMenuItem label="Show Statistics Entries" controller="LighthouseStatistics" action="list" />
+                        <f:be.menus.actionMenuItem label="<f:translate key='tx_sf_seolighthouse_showlighthouse.showEntries' />" controller="LighthouseStatistics" action="list" />
                         <f:if condition="{storagePid}!={pageId}">
                             <f:then>
-                                <f:be.menus.actionMenuItem label="Charts" controller="Charts" action="charts" />
+                                <f:be.menus.actionMenuItem label="<f:translate key='tx_sf_seolighthouse_showlighthouse.charts' />" controller="Charts" action="charts" />
                             </f:then>
                         </f:if>
                     </f:be.menus.actionMenu>
