@@ -47,6 +47,11 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $this->lighthouseStatisticsRepository = $lighthouseStatisticsRepository;
     }
 
+    /**
+     * get language id
+     * 
+     * @return int
+     */
     public function getLangId(){
         $context = GeneralUtility::makeInstance(Context::class);
         /** @var TYPO3\CMS\Core\Site\Entity\Site */
@@ -55,6 +60,11 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         return $langId;
     }
 
+    /**
+     * get language iso code
+     * 
+     * @return string
+     */
     public function getLocale(){
         /** @var TYPO3\CMS\Core\Site\Entity\Site */
         $site = $GLOBALS['TYPO3_REQUEST']->getAttribute('site');
@@ -64,14 +74,24 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $langCode = $language->getLocale();
         return $langCode;
     }
-    
+
+    /**
+     * selected page id
+     * 
+     * @return int
+     */
     public function getSelectedPage(){
         $selectedPage = GeneralUtility::_GP('id');
         if (!$selectedPage)
             $selectedPage = $GLOBALS['TSFE']->id;
         return $selectedPage;
     }
-    
+
+    /**
+     * storage pid
+     * 
+     * @return int
+     */
     public function getStoragePid(){
         $configurationManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Configuration\\BackendConfigurationManager');
         $configurationManager->getDefaultBackendStoragePid(); 
@@ -80,6 +100,11 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         return $storagePid;
     }
 
+    /**
+     * page base url
+     * 
+     * @return string
+     */
     public function getBaseUrl(){
         $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $baseUrl = $protocol."/".$_SERVER["HTTP_HOST"];
@@ -113,6 +138,7 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         ]
         );
     }
+    
     /**
      * action analyse
      * 
