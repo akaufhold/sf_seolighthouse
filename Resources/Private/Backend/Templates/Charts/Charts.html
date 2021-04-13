@@ -14,15 +14,12 @@
                 <div class="row">
                     <f:render partial="Charts/ChartsDevices" arguments="{_all}"/>
                     <f:render partial="Charts/ChartsType"/>
-                    <!--f:render partial="Charts/ChartsPeriod"/-->
+                    <f:render partial="Charts/ChartsValueType"/>
                     <f:render partial="Charts/StatisticChartsFields" arguments="{_all}"/>  
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <canvas id="lighthouseChart_desktop" class="lighthouseCharts"></canvas>
-                        <canvas id="lighthouseChart_desktopScore" class="lighthouseCharts"></canvas>
-                        <canvas id="lighthouseChart_mobile" class="lighthouseCharts"></canvas>
-                        <canvas id="lighthouseChart_mobileScore" class="lighthouseCharts"></canvas>
+                        <canvas id="lighthouseChart" class="lighthouseCharts"></canvas>
                     </div>
                 </div>
             </div>

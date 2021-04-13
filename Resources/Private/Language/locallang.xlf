@@ -153,6 +153,15 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType.year" resname="tx_sf_seolighthouse_showlighthouse.chartsType.year">
 				<source>Year</source>
 			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsValueType" resname="tx_sf_seolighthouse_showlighthouse.chartsValueType">
+				<source>Value Type</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsValueType.absolute" resname="tx_sf_seolighthouse_showlighthouse.chartsValueType.absolute">
+				<source>Absolute Values</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsValueType.score" resname="tx_sf_seolighthouse_showlighthouse.chartsValueType.score">
+				<source>Scores</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
