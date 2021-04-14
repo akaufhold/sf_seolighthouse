@@ -27,7 +27,6 @@ requirejs(['jquery'], function ($) {
                 cls: 'rgb(153, 102, 255)', clss: 'rgb(153, 102, 255)',
                 os:  'rgb(40,167,69)'
             };
-
             /* INIT */
             ch.init = function () {
                 var data;
@@ -38,10 +37,10 @@ requirejs(['jquery'], function ($) {
                 ch.entriesToDataset($(entries),ch.getDevice(),ch.getChartValueType());
 
                 $(".tx_sfseolighthouse").find(".custom-radio").find("label").click(function(){
-                    $(".tx_sfseolighthouse").find(".custom-radio").find("label").removeClass("active");
+                    $(this).parents(".container-control").find("label").removeClass("active");
                     $(this).addClass("active");
                 });
-                $(".device,#type-select,#valueType-select").on("change",function(){
+                $(".device,.type-select,.valueType-select").on("change",function(){
                     ch.showChart($(entries));
                 });
             }
@@ -49,10 +48,10 @@ requirejs(['jquery'], function ($) {
                 return $("input[name='device']:checked").val().toLowerCase();
             }
             ch.getChartType = function(){
-                return $("#type-select").find("option:selected").val();
+                return $("input[name='type-select']:checked").val();
             }
             ch.getChartValueType = function(){
-                return $("#valueType-select").find("option:selected").val();
+                return $("input[name='valueType-select']:checked").val();
             }
             ch.showChart = function(entriesIn){
                 ChartObj.destroy();
@@ -64,7 +63,6 @@ requirejs(['jquery'], function ($) {
                 var entryiteration              = 1;
                 var entryCounter                = ch.countEntries($(entriesIn), deviceIn);
                 var lastDate;
-                //console.log($(entriesIn));
                 $(entriesIn).each(function(key,value) {
                     data                        = $(this).data();
                     device                      = data.device.toLowerCase();
@@ -76,14 +74,10 @@ requirejs(['jquery'], function ($) {
                     var dateLabelTime           = dateLabel +" "+ date.getHours()+":"+('0'+date.getMinutes()).slice(-2);
 
                     if (device==deviceIn){
-
-                        ch.addDataLabel(ChartObj,dateLabelTime);
-                        entryValues = ch.getEntryValues(data, valueTypeIn);
-                        //console.log(entryValues);
-
                         var auditIteration          = 0;
+                        ch.addDataLabel(ChartObj,dateLabelTime);
+                        entryValues = ch.getEntryValues(data, valueTypeIn);         
                         $.each(entryValues, function(auditKey,auditVal){
-                            //console.log(auditKey);
                             ch.addDataSet (ChartObj, auditKey, chartColors[auditKey], date, auditVal, ((entryiteration==1) ? '1' : '0'), ((entryiteration==entryCounter) ? '1' : '0'), auditIteration);
                             auditIteration++;
                         });
@@ -92,7 +86,6 @@ requirejs(['jquery'], function ($) {
                     lastDate = dateLabel;
                 });
             }
-
             ch.getEntryValues = function(dataIn, vti){
                 var entVal = {};
                 var dataType;
@@ -119,7 +112,6 @@ requirejs(['jquery'], function ($) {
                 }
                 return entVal;
             }
-
             ch.countEntries = function(entriesCountable, deviceCountable){
                 var entryCounter = 0;
                 $(entriesCountable).each(function() {
@@ -130,12 +122,9 @@ requirejs(['jquery'], function ($) {
                 });
                 return entryCounter;
             }
-
             ch.addDataLabel = function(chartIn,dateLabel){
                 chartIn.config.data.labels.push(dateLabel);
             }
-
-            /* DATA */
             ch.addDataSet = function (chartIn, label, color, date, data, createDataset, datasetReady, index) {
                 if (createDataset==1){
                     if (index==0){
@@ -151,14 +140,11 @@ requirejs(['jquery'], function ($) {
                     newDataset[index].borderColor       = color;
                 }
                 newDataset[index].data.push({x:date,y:data});
-                //console.log(datasetReady);
                 if (datasetReady==1){
                     chartIn.data.datasets.push(newDataset[index]);
                     chartIn.update();
                 }
             }
-
-            /* CREATE CHARTS*/
             ch.createCharts = function (chartElement, typeChart) {
                 ChartObj = new Chart(chartElement, {
                     type: typeChart,
@@ -166,11 +152,7 @@ requirejs(['jquery'], function ($) {
                         responsive: true,
                         scales:{
                             x: {
-                                /*type: 'time',
-                                stacked: true,*/
-                                // type: 'time',
                                 distribution: 'linear',
-                                // stacked: true,
                                 time: { 
                                     displayFormats: { 
                                         month: 'MM',

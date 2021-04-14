@@ -96,6 +96,9 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.success" resname="tx_sf_seolighthouse_showlighthouse.success">
 				<source>Success</source>
 			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.list.heading" resname="tx_sf_seolighthouse_showlighthouse.list.heading">
+				<source>Listing for LighthouseStatistics</source>
+			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.listHeader.name" resname="tx_sf_seolighthouse_showlighthouse.listHeader.name">
 				<source>Lighthouse Property</source>
 			</trans-unit>

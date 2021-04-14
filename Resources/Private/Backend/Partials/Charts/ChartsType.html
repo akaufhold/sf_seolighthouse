@@ -1,9 +1,25 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <div class="col-md-3">
     <h4><f:translate key="tx_sf_seolighthouse_showlighthouse.chartsType" /></h4>
-    <select id="type-select" class="custom-control custom-select">
-        <option value="line"><f:translate key="tx_sf_seolighthouse_showlighthouse.chartsType.line" /></option>
-        <option value="bar"><f:translate key="tx_sf_seolighthouse_showlighthouse.chartsType.bar" /></option>
-    </select>
+    <div class="container-fluid container-control">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="custom-control custom-radio">
+                    <f:form.radio name="type-select" id="type-select1" class="custom-control type-select" value="line" checked="checked"/>
+                    <label class="custom-control-label btn btn-primary active" for="type-select1">
+                        <f:translate key="tx_sf_seolighthouse_showlighthouse.chartsType.line" />
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="custom-control custom-radio">
+                    <f:form.radio name="type-select" id="type-select2" class="custom-control type-select" value="bar" />
+                    <label class="custom-control-label btn btn-primary" for="type-select2">
+                        <f:translate key="tx_sf_seolighthouse_showlighthouse.chartsType.bar" />
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
