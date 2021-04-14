@@ -1,14 +1,14 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <div class="col-md-3">
     <h4><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.device" /></h4>
-    <div class="container-fluid">
+    <div class="container-fluid container-control">
         <div class="row">
             <f:if condition="{Desktop}">
                 <f:then>
                     <div class="col-md-6">
                         <div class="custom-control custom-radio" >
                             <f:form.radio name="device" id="device1" class="custom-control-input device" value="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.desktop')}" checked="checked"/>
-                            <label class="custom-control-label btn btn-primary" for="device1">
+                            <label class="custom-control-label btn btn-primary active" for="device1">
                                 <f:translate key="tx_sf_seolighthouse_showlighthouse.desktop" />
                             </label>
                         </div>
