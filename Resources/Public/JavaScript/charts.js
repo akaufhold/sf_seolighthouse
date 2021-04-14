@@ -76,28 +76,14 @@ requirejs(['jquery'], function ($) {
                     var dateLabelTime           = dateLabel +" "+ date.getHours()+":"+('0'+date.getMinutes()).slice(-2);
 
                     if (device==deviceIn){
-                        console.log(entryCounter+" Ite:"+entryiteration);
+
                         ch.addDataLabel(ChartObj,dateLabelTime);
-                        if (valueTypeIn=="value"){
-                            /* AUDIT VALUES */
-                            entryValues.fcp         = data.fcp; 
-                            entryValues.si          = data.si;
-                            entryValues.lcp         = data.lcp;
-                            entryValues.tti         = data.tti;
-                            entryValues.tbt         = data.tbt/1000;
-                            entryValues.cls         = data.cls;
-                        }else if(valueTypeIn=="score"){
-                            /* AUDIT SCORES */
-                            entryValues.fcps        = data.fcps;
-                            entryValues.sis         = data.sis;
-                            entryValues.lcps        = data.lcps;
-                            entryValues.ttis        = data.ttis;
-                            entryValues.tbts        = data.tbts;
-                            entryValues.clss        = data.clss;
-                            entryValues.os          = data.os; 
-                        }
+                        entryValues = ch.getEntryValues(data, valueTypeIn);
+                        //console.log(entryValues);
+
                         var auditIteration          = 0;
                         $.each(entryValues, function(auditKey,auditVal){
+                            //console.log(auditKey);
                             ch.addDataSet (ChartObj, auditKey, chartColors[auditKey], date, auditVal, ((entryiteration==1) ? '1' : '0'), ((entryiteration==entryCounter) ? '1' : '0'), auditIteration);
                             auditIteration++;
                         });
@@ -105,6 +91,33 @@ requirejs(['jquery'], function ($) {
                     }
                     lastDate = dateLabel;
                 });
+            }
+
+            ch.getEntryValues = function(dataIn, vti){
+                var entVal = {};
+                var dataType;
+                if (vti=="value"){
+                    /* AUDIT VALUES */
+                    $.each(dataIn, function(dataKey,dataVal){
+                        if (dataKey.match(/^value/)!=null){
+                            dataType = dataKey.split("value")[1].toLowerCase();
+                            if (dataType!="tbt"){
+                                entVal[dataType] = dataVal;
+                            }else{
+                                entVal[dataType] = dataVal/1000;
+                            }
+                        }
+                    });
+                }else if(vti=="score"){
+                    /* AUDIT SCORES */
+                    $.each(dataIn, function(dataKey,dataVal){
+                        if (dataKey.match(/^score/)!=null){
+                            dataType = dataKey.split("score")[1].toLowerCase();
+                            entVal[dataType] = dataVal;
+                        }
+                    });
+                }
+                return entVal;
             }
 
             ch.countEntries = function(entriesCountable, deviceCountable){
