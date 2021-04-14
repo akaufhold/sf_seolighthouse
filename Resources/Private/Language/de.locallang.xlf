@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="EXT:sf_seolighthouse/Resources/Private/Language/locallang" date="2021-04-14T21:33:18Z" product-name="sf_seolighthouse">
+		<header/>
+		<body>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics" resname="tx_sfseolighthouse_domain_model_lighthousestatistics" xml:space="preserve">
+				<target>Pagespeed Statistiken</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.get" resname="tx_sf_seolighthouse_showlighthouse.get" xml:space="preserve">
+				<target>Pagespeed Statistiken abrufen</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showEntries" resname="tx_sf_seolighthouse_showlighthouse.showEntries" xml:space="preserve">
+				<target>Zeige Statistik-Einträge</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.charts" resname="tx_sf_seolighthouse_showlighthouse.charts" xml:space="preserve">
+				<target>Charts</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.crdate" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.crdate" xml:space="preserve">
+				<target>Erstellungsdatum</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.target" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.target" xml:space="preserve">
+				<target>Page ID</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp">
+				<target>First Contentful Paint</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.si" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.si">
+				<target>Speed Index</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.lcp" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.lcp">
+				<target>Largest Contentful Paint</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.tti" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.tti">
+				<target>Time To Interactive</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.tbt" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.tbt">
+				<target>Total Blocking Time</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.cls" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.cls">
+				<target>Cumulative Layout Shift</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.fcps" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp">
+				<target>Punkte First Contentful Paint</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.sis" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.si">
+				<target>Punkte Speed Index</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.lcps" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.lcp">
+				<target>Punkte Largest Contentful Paint</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.ttis" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.tti">
+				<source>Punkte Time To Interactive</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.tbts" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.tbt">
+				<target>Punkte Total Blocking Time</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.clss" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.cls">
+				<target>Punkte Cumulative Layout Shift</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.os" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.os">
+				<target>Gesamtpunkte</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.device" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.device">
+				<target>Gerät</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.list.Header" resname="tx_sf_seolighthouse_showlighthouse.list.Header">
+				<target>Auflistung Pagespeed-Daten</target>
+			</trans-unit>
+            <trans-unit id="tx_sf_seolighthouse_showlighthouse.list.heading" resname="tx_sf_seolighthouse_showlighthouse.list.heading">
+				<source>Auflistung Pagespeed-Daten</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.list.vals" resname="tx_sf_seolighthouse_showlighthouse.list.vals">
+				<target>Absolutwerte</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.list.score" resname="tx_sf_seolighthouse_showlighthouse.list.score">
+				<target>Punkte</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.urlHeader" resname="tx_sf_seolighthouse_showlighthouse.urlHeader">
+				<target>Zieladresse</target>
+			</trans-unit>
+            <trans-unit id="tx_sf_seolighthouse_showlighthouse.desktop" resname="tx_sf_seolighthouse_showlighthouse.desktop">
+				<target>Desktop</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.mobile" resname="tx_sf_seolighthouse_showlighthouse.mobile">
+				<target>Mobil</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.status" resname="tx_sf_seolighthouse_showlighthouse.status">
+				<target>Status</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.progress" resname="tx_sf_seolighthouse_showlighthouse.progress">
+				<target>Fortschritt</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.error" resname="tx_sf_seolighthouse_showlighthouse.error">
+				<target>Fehler</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.success" resname="tx_sf_seolighthouse_showlighthouse.success">
+				<target>Erfolg</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.listHeader.name" resname="tx_sf_seolighthouse_showlighthouse.listHeader.name">
+				<target>Lighthouse Eigenschaft</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.listHeader.value" resname="tx_sf_seolighthouse_showlighthouse.listHeader.value">
+				<target>Wert</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.listHeader.score" resname="tx_sf_seolighthouse_showlighthouse.listHeader.score">
+				<target>Punkte</target>
+			</trans-unit>		
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.mainAudits" resname="tx_sf_seolighthouse_showlighthouse.mainAudits">
+				<target>Hauptprüfung</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.createNew" resname="tx_sf_seolighthouse_showlighthouse.createNew">
+				<target>Statistik speichern für Charts</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.additionalAudits" resname="tx_sf_seolighthouse_showlighthouse.additionalAudits">
+				<target>Weitere Prüfungen</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.formSubmit" resname="tx_sf_seolighthouse_showlighthouse.formSubmit">
+				<target>Lighthouse-Punkte analysieren</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.noPageInfo" resname="tx_sf_seolighthouse_showlighthouse.noPageInfo">
+				<target>Keine Seite ausgewählt</target>
+			</trans-unit>		
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsHeader" resname="tx_sf_seolighthouse_showlighthouse.chartsHeader">
+				<target>Lighthouse Charts</target>
+			</trans-unit>		
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType" resname="tx_sf_seolighthouse_showlighthouse.chartsType">
+				<target>Charts Typ</target>
+			</trans-unit>			
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType.line" resname="tx_sf_seolighthouse_showlighthouse.chartsType.line">
+				<target>Liniendiagramm</target>
+			</trans-unit>	
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType.bar" resname="tx_sf_seolighthouse_showlighthouse.chartsType.bar">
+				<target>Blakendiagramm</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType.day" resname="tx_sf_seolighthouse_showlighthouse.chartsType.day">
+				<target>Tag</target>
+			</trans-unit>	
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType.week" resname="tx_sf_seolighthouse_showlighthouse.chartsType.week">
+				<target>Woche</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType.month" resname="tx_sf_seolighthouse_showlighthouse.chartsType.month">
+				<target>Monat</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsType.year" resname="tx_sf_seolighthouse_showlighthouse.chartsType.year">
+				<target>Jahr</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsValueType" resname="tx_sf_seolighthouse_showlighthouse.chartsValueType">
+				<target>Werte-Typ</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsValueType.absolute" resname="tx_sf_seolighthouse_showlighthouse.chartsValueType.absolute">
+				<target>Absolute Werte</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsValueType.score" resname="tx_sf_seolighthouse_showlighthouse.chartsValueType.score">
+				<target>Punkte</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
