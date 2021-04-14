@@ -49,7 +49,7 @@
 				<target>Punkte Largest Contentful Paint</target>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.ttis" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.tti">
-				<source>Punkte Time To Interactive</source>
+				<target>Punkte Time To Interactive</target>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.tbts" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.tbt">
 				<target>Punkte Total Blocking Time</target>
@@ -67,7 +67,7 @@
 				<target>Auflistung Pagespeed-Daten</target>
 			</trans-unit>
             <trans-unit id="tx_sf_seolighthouse_showlighthouse.list.heading" resname="tx_sf_seolighthouse_showlighthouse.list.heading">
-				<source>Auflistung Pagespeed-Daten</source>
+				<target>Auflistung Pagespeed-Daten</target>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.list.vals" resname="tx_sf_seolighthouse_showlighthouse.list.vals">
 				<target>Absolutwerte</target>

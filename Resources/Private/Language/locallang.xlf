@@ -67,7 +67,7 @@
 				<source>Listing Lighthouse Data</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.list.vals" resname="tx_sf_seolighthouse_showlighthouse.list.vals">
-				<source>Absolute Values</source>
+				<source>Values</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.list.score" resname="tx_sf_seolighthouse_showlighthouse.list.score">
 				<source>Score</source>
