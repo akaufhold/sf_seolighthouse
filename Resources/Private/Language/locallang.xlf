@@ -4,10 +4,10 @@
 		<header/>
 		<body>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics" resname="tx_sfseolighthouse_domain_model_lighthousestatistics">
-				<source>Pagespeed Statistics</source>
+				<source>Lighthouse Statistics</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.get" resname="tx_sf_seolighthouse_showlighthouse.get">
-				<source>Get Pagespeed Statistics</source>
+				<source>Get Lighthouse Statistics</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showEntries" resname="tx_sf_seolighthouse_showlighthouse.showEntries">
 				<source>Show Statistics Entries</source>
@@ -78,11 +78,35 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.success" resname="tx_sf_seolighthouse_showlighthouse.success">
 				<source>Success</source>
 			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.formDevices" resname="tx_sf_seolighthouse_showlighthouse.formDevices">
+				<source>Choose Device</source>
+			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.desktop" resname="tx_sf_seolighthouse_showlighthouse.desktop">
 				<source>Desktop</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.mobile" resname="tx_sf_seolighthouse_showlighthouse.mobile">
 				<source>Mobile</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.category.formCategories" resname="tx_sf_seolighthouse_showlighthouse.category.formCategories">
+				<source>Lighthouse Categories</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.category.all" resname="tx_sf_seolighthouse_showlighthouse.category.all">
+				<source>All</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.category.accessibility" resname="tx_sf_seolighthouse_showlighthouse.category.accessibility">
+				<source>Accessibility</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.category.bestPractices" resname="tx_sf_seolighthouse_showlighthouse.category.bestPractices">
+				<source>Best Practices</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.category.performance" resname="tx_sf_seolighthouse_showlighthouse.category.performance">
+				<source>Performance</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.category.pwa" resname="tx_sf_seolighthouse_showlighthouse.category.pwa">
+				<source>PWA</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.category.seo" resname="tx_sf_seolighthouse_showlighthouse.category.seo">
+				<source>SEO</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.status" resname="tx_sf_seolighthouse_showlighthouse.status">
 				<source>Status</source>
@@ -99,21 +123,27 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.list.heading" resname="tx_sf_seolighthouse_showlighthouse.list.heading">
 				<source>Listing for LighthouseStatistics</source>
 			</trans-unit>
-			<trans-unit id="tx_sf_seolighthouse_showlighthouse.listHeader.name" resname="tx_sf_seolighthouse_showlighthouse.listHeader.name">
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.analyseHeader.name" resname="tx_sf_seolighthouse_showlighthouse.analyseHeader.name">
 				<source>Lighthouse Property</source>
 			</trans-unit>
-			<trans-unit id="tx_sf_seolighthouse_showlighthouse.listHeader.value" resname="tx_sf_seolighthouse_showlighthouse.listHeader.value">
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.analyseHeader.value" resname="tx_sf_seolighthouse_showlighthouse.analyseHeader.value">
 				<source>Value</source>
 			</trans-unit>
-			<trans-unit id="tx_sf_seolighthouse_showlighthouse.listHeader.score" resname="tx_sf_seolighthouse_showlighthouse.listHeader.score">
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.analyseHeader.score" resname="tx_sf_seolighthouse_showlighthouse.analyseHeader.score">
 				<source>Score</source>
 			</trans-unit>		
-			<trans-unit id="tx_sf_seolighthouse_showlighthouse.mainAudits" resname="tx_sf_seolighthouse_showlighthouse.mainAudits">
-				<source>Main Audits</source>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.performanceAudits" resname="tx_sf_seolighthouse_showlighthouse.performanceAudits">
+				<source>Performance Audits</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.createNew" resname="tx_sf_seolighthouse_showlighthouse.createNew">
 				<source>Save Statistics for Charts</source>
 			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showMainAuditCharts" resname="tx_sf_seolighthouse_showlighthouse.showMainAuditCharts">
+				<source>Show Charts</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showAdditionalAudits" resname="tx_sf_seolighthouse_showlighthouse.showAdditionalAudits">
+				<source>Show Additional Audits</source>
+			</trans-unit>	
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.additionalAudits" resname="tx_sf_seolighthouse_showlighthouse.additionalAudits">
 				<source>Additional Audits</source>
 			</trans-unit>

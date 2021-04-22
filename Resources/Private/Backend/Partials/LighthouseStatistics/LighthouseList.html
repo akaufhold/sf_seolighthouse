@@ -4,13 +4,13 @@
 			<ul class="list-lighthouse list-header list-group">
 				<li class="list-group-item">
 					<span class="label">
-						<f:translate key="tx_sf_seolighthouse_showlighthouse.listHeader.name"/>
+						<f:translate key="tx_sf_seolighthouse_showlighthouse.analyseHeader.name"/>
 					</span>
 					<span class="value">
-						<f:translate key="tx_sf_seolighthouse_showlighthouse.listHeader.value"/>
+						<f:translate key="tx_sf_seolighthouse_showlighthouse.analyseHeader.value"/>
 					</span>
 					<span class="score">
-						<f:translate key="tx_sf_seolighthouse_showlighthouse.listHeader.score"/>
+						<f:translate key="tx_sf_seolighthouse_showlighthouse.analyseHeader.score"/>
 					</span>
 				</li>
 			</ul>
@@ -18,23 +18,37 @@
 	</div>
 	<div class="row">
 		<div class="col-md-9">
-			<h2><f:translate key="tx_sf_seolighthouse_showlighthouse.mainAudits"/></h2>
-			<ul class="list-lighthouse list-main list-group"></ul>
+			<h2><f:translate key="tx_sf_seolighthouse_showlighthouse.performanceAudits"/></h2>
+			<div class="list-Audits">
+
+			</div>
 			<f:form.submit value="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.createNew')}" class="btn btn-default"/>
 		</div>
 		<div class="col-md-3">
 			<canvas id="overallChart" class="lighthouseCharts"></canvas>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row auditButtons">
+		<div class="col-md-12">
+			<a class="btn btn-primary" id="showMainAuditCharts">
+				<f:translate key="tx_sf_seolighthouse_showlighthouse.showMainAuditCharts"/>
+			</a>
+			<a class="btn btn-primary" id="showAdditionalAudits">
+				<f:translate key="tx_sf_seolighthouse_showlighthouse.showAdditionalAudits"/>
+			</a>
+		</div>
+	</div>
+	<div class="row mainAuditCharts">
 		<div class="col-md-12">
 			<canvas id="mainAuditsChart" class="lighthouseCharts"></canvas>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row additionalAudits">
 		<div class="col-md-12">
 			<h2><f:translate key="tx_sf_seolighthouse_showlighthouse.additionalAudits"/></h2>
-			<ul class="list-lighthouse list-additional list-group"></ul>
+			<div class="list-Addtional-Audits">
+				
+			</div>
 		</div>
 	</div>
 </html>

@@ -6,6 +6,10 @@
     width: 100%;
   }
 }
+h5 {
+  font-weight: bold;
+}
+
 #typo3-inner-docbody {
   padding: 0;
 }
@@ -14,8 +18,24 @@
   margin-top: 0.5em;
 }
 
+.panel-heading > h1 {
+  margin: 0;
+}
+.panel-heading > h2 {
+  margin: 6px 0 6px;
+}
+
+.tx_sfseolighthouse {
+  /* LIGHTHOUSE RESULT OUTPUT */
+}
+.tx_sfseolighthouse .topMarg {
+  margin-top: 1em;
+}
 .tx_sfseolighthouse .targetUrl {
   padding: 0.5em 1.25em;
+}
+.tx_sfseolighthouse .categoriesCheck > * {
+  display: flex;
 }
 .tx_sfseolighthouse .custom-control {
   position: relative;
@@ -25,6 +45,14 @@
 .tx_sfseolighthouse .custom-control.custom-radio {
   min-height: 3em;
 }
+.tx_sfseolighthouse .custom-control.form-check {
+  width: 100%;
+  min-height: 3.1em;
+}
+.tx_sfseolighthouse .custom-control.form-check label {
+  position: absolute;
+  margin: 0;
+}
 .tx_sfseolighthouse .custom-control label {
   position: absolute;
   left: 0;
@@ -32,7 +60,7 @@
   width: 100%;
 }
 .tx_sfseolighthouse .progressBar * {
-  line-height: 0.35;
+  line-height: 0.3;
 }
 .tx_sfseolighthouse .progressBar .counterContainer {
   padding: 0em 0.25em;
@@ -129,63 +157,72 @@
 .tx_sfseolighthouse.table tr > th:last-child {
   text-align: center;
 }
-
-.newLighthouseStatistics {
+.tx_sfseolighthouse form.newLighthouseStatistics {
   display: none;
 }
-.newLighthouseStatistics.container-fluid {
+.tx_sfseolighthouse form.newLighthouseStatistics.container-fluid {
   padding: 0;
 }
-.newLighthouseStatistics .list-lighthouse {
+.tx_sfseolighthouse form.newLighthouseStatistics .mainAuditCharts,
+.tx_sfseolighthouse form.newLighthouseStatistics .additionalAudits {
+  display: none;
+}
+.tx_sfseolighthouse form.newLighthouseStatistics .performanceButtons {
+  margin-top: 1em;
+}
+.tx_sfseolighthouse form.newLighthouseStatistics .performanceButtons a.btn:first-child {
+  margin-right: 1em;
+}
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse {
   margin-top: 1em;
   margin-bottom: 1em;
   display: block;
 }
-.newLighthouseStatistics .list-lighthouse.list-header {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse.list-header {
   font-weight: 700;
 }
-.newLighthouseStatistics .list-lighthouse.list-header li {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse.list-header li {
   border: 0;
   border-bottom: 1px solid #ddd;
 }
-.newLighthouseStatistics .list-lighthouse.list-header li > span {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse.list-header li > span {
   color: #000;
   text-transform: unset;
 }
-.newLighthouseStatistics .list-lighthouse li {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li {
   height: 3.3em;
   cursor: pointer;
   padding: 0;
 }
-.newLighthouseStatistics .list-lighthouse li:hover {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li:hover {
   background-color: #ebf3fb;
   transform: scale(1.01);
   transition-duration: 0.25s;
   position: relative;
   z-index: 2;
 }
-.newLighthouseStatistics .list-lighthouse li:hover .label .icon-actions-chevron-down {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li:hover .label .icon-actions-chevron-down {
   display: inline-block;
 }
-.newLighthouseStatistics .list-lighthouse li > span {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li > span {
   color: #222;
   text-transform: uppercase;
   font-size: 0.9em;
 }
-.newLighthouseStatistics .list-lighthouse li > span .icon-size-small {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li > span .icon-size-small {
   height: 12px;
   width: 12px;
   line-height: 12px;
 }
-.newLighthouseStatistics .list-lighthouse li .label {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li .label {
   display: inline-block;
   padding: 1.2em 1em 1.2em;
 }
-.newLighthouseStatistics .list-lighthouse li .label .icon-actions-chevron-down {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li .label .icon-actions-chevron-down {
   padding-right: 1em;
   display: none;
 }
-.newLighthouseStatistics .list-lighthouse li .value {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li .value {
   position: absolute;
   height: 100%;
   display: block;
@@ -197,7 +234,7 @@
   padding-right: 1em;
   text-transform: lowercase;
 }
-.newLighthouseStatistics .list-lighthouse li .score {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li .score {
   position: absolute;
   height: 100%;
   width: 5em;
@@ -209,42 +246,42 @@
   text-align: center;
   color: white;
 }
-.newLighthouseStatistics .list-lighthouse li .score.slow {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li .score.slow {
   background-color: #D8000C;
 }
-.newLighthouseStatistics .list-lighthouse li .score.average {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li .score.average {
   background-color: #ffa400;
 }
-.newLighthouseStatistics .list-lighthouse li .score.fast {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li .score.fast {
   background-color: #28a745;
 }
-.newLighthouseStatistics .list-lighthouse li .description {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li .description {
   display: block;
   width: 100%;
   padding: 0em 6% 0em 1em;
   height: 0px;
   overflow: hidden;
 }
-.newLighthouseStatistics .list-lighthouse li .description > b {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li .description > b {
   width: 100%;
   display: block;
   text-transform: inherit;
   margin-bottom: 1em;
 }
-.newLighthouseStatistics .list-lighthouse li.active {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li.active {
   height: auto;
   background-color: #ebf3fb;
   border-color: #bdc5cd;
   transform: scale(1.01);
 }
-.newLighthouseStatistics .list-lighthouse li.active .label .icon-actions-chevron-down {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li.active .label .icon-actions-chevron-down {
   display: inline-block;
 }
-.newLighthouseStatistics .list-lighthouse li.active .description {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li.active .description {
   height: 100%;
   padding-bottom: 1em;
 }
-.newLighthouseStatistics .list-lighthouse.list-additional li .value {
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse.list-additional li .value {
   max-width: 75%;
 }
 
@@ -255,13 +292,6 @@
 /* CHARTS TAB */
 .lighthouseCharts {
   padding-top: 2em;
-}
-
-.panel-heading > h1 {
-  margin: 0;
-}
-.panel-heading > h2 {
-  margin: 6px 0 6px;
 }
 
 .outputControl {

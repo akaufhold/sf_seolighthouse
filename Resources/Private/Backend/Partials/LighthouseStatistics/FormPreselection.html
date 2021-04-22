@@ -1,0 +1,105 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<h1>
+    <f:translate key="tx_sf_seolighthouse_showlighthouse.name"/>
+</h1>
+<div class="row">
+    <div class="col-md-9">
+            <h5><f:translate key="tx_sf_seolighthouse_showlighthouse.urlHeader"/></h5>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-9 targetUrl callout-info">
+        {ajaxGetUrlDesktop}
+    </div>
+</div>
+<div class="row topMarg">
+    <div class="col-md-9">
+        <h5>
+            <f:translate key="tx_sf_seolighthouse_showlighthouse.formDevices"/>
+        </h5>
+    </div>
+</div>
+<div class="row deviceRadio">
+    <div class="col-md-1">
+        <div class="custom-control custom-radio" >
+            <f:form.radio name="device" id="device1" class="custom-control-input device" value="desktop" checked="checked"/>
+            <label class="custom-control-label btn btn-primary active" for="device1">
+                <f:translate key="tx_sf_seolighthouse_showlighthouse.desktop" />
+            </label>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="custom-control custom-radio" >
+            <f:form.radio name="device" id="device2" class="custom-control-input device" value="mobile" />
+            <label class="custom-control-label btn btn-primary" for="device2">
+                <f:translate key="tx_sf_seolighthouse_showlighthouse.mobile" />
+            </label>
+        </div>
+    </div>
+</div>
+<div class="row topMarg">
+    <div class="col-md-9">
+        <h5>
+            <f:translate key="tx_sf_seolighthouse_showlighthouse.category.formCategories"/>
+        </h5>
+    </div>
+</div>
+<div class="row categoriesCheck">
+    <div class="col-md-1">
+        <div class="form-check custom-control custom-check" >
+            <f:form.checkbox name="category1" id="category1" class="form-check-input category" value="all" checked="checked"/>
+            <label class="form-check-label btn btn-primary active" for="category1">
+                <f:translate key="tx_sf_seolighthouse_showlighthouse.category.all" />
+            </label>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-check custom-control custom-check" >
+            <f:form.checkbox name="category2" id="category2" class="form-check-input category" value="accessibility" />
+            <label class="form-check-label btn btn-primary" for="category2">
+                <f:translate key="tx_sf_seolighthouse_showlighthouse.category.accessibility" />
+            </label>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-check custom-control custom-check" >
+            <f:form.checkbox name="category3" id="category3" class="form-check-input category" value="best_practices" />
+            <label class="form-check-label btn btn-primary" for="category3">
+                <f:translate key="tx_sf_seolighthouse_showlighthouse.category.bestPractices" />
+            </label>
+        </div>
+    </div>    
+    <div class="col-md-2">
+        <div class="form-check custom-control custom-check" >
+            <f:form.checkbox name="category4" id="category4" class="form-check-input category" value="performance" />
+            <label class="form-check-label btn btn-primary" for="category4">
+                <f:translate key="tx_sf_seolighthouse_showlighthouse.category.performance" />
+            </label>
+        </div>
+    </div>    
+    <div class="col-md-1">    
+        <div class="form-check custom-control custom-check" >
+            <f:form.checkbox name="category5" id="category5" class="form-check-input category" value="pwa" />
+            <label class="form-check-label btn btn-primary" for="category5">
+                <f:translate key="tx_sf_seolighthouse_showlighthouse.category.pwa" />
+            </label>
+        </div>
+    </div>    
+    <div class="col-md-1">
+        <div class="form-check custom-control custom-check" >
+            <f:form.checkbox name="category6" id="category6" class="form-check-input category" value="seo" />
+            <label class="form-check-label btn btn-primary" for="category6">
+                <f:translate key="tx_sf_seolighthouse_showlighthouse.category.seo" />
+            </label>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-9">
+        <f:render partial="LighthouseStatistics/ProgressBar" />
+    </div>
+</div>
+<a class="btn btn-default getLighthouseData" data-format="jsonp" data-desktop="{ajaxGetUrlDesktop}" data-mobile="{ajaxGetUrlMobile}" data-url="{f:uri.action(action: 'analyse', controller: '', pluginName: 'getLighthouseData', pageType:'{settings.ajax.getLighthouseData}')}">
+    <f:translate key="tx_sf_seolighthouse_showlighthouse.formSubmit" />
+</a>
+</html>
