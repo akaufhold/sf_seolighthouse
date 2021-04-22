@@ -11,16 +11,32 @@ $highlightBorderColor:#bdc5cd;
     0% { width:0%; }
     100% { width:100%;}
 }
-
+h5{
+    font-weight:bold;
+}
 #typo3-inner-docbody{
     padding:0;
 }
 .custom-control{
     margin-top:0.5em;
 }
+.panel-heading{
+    > h1{
+        margin:0; 
+    }
+    > h2 {
+        margin: 6px 0 6px;
+    }
+} 
 .tx_sfseolighthouse{
+    .topMarg{
+        margin-top:1em;
+    }
     .targetUrl{
         padding: 0.5em 1.25em;
+    }
+    .categoriesCheck > *{
+        display:flex;
     }
     .custom-control {
         position: relative;
@@ -28,6 +44,14 @@ $highlightBorderColor:#bdc5cd;
         padding-top: 0px;
         &.custom-radio{
             min-height: 3em;
+        }
+        &.form-check{
+            width:100%;
+            min-height: 3.1em;
+            label{
+                position: absolute;
+                margin:0;
+            }
         }
         label{
             position: absolute;
@@ -38,7 +62,7 @@ $highlightBorderColor:#bdc5cd;
     }
     .progressBar{
         *{
-            line-height: 0.35;
+            line-height: 0.3;
         }
         .counterContainer {
             padding: 0em 0.25em;
@@ -152,127 +176,140 @@ $highlightBorderColor:#bdc5cd;
             }
         }
     }
-}
-.newLighthouseStatistics{
-    &.container-fluid{
-        padding:0;
-    }
-    display:none;
-    .list-lighthouse{
-        margin-top:1em;
-        margin-bottom: 1em;
-        display:block;
-        &.list-header{
-            font-weight:700;
-            li{
-                border:0;
-                border-bottom:1px solid #ddd;
-                > span{
-                    color:#000;
-                    text-transform: unset;
+    /* LIGHTHOUSE RESULT OUTPUT */
+    form.newLighthouseStatistics{
+        &.container-fluid{
+            padding:0;
+        }
+        .mainAuditCharts, 
+        .additionalAudits{
+            display:none;
+        }
+        .performanceButtons{
+            margin-top:1em;
+            a.btn{
+                &:first-child{
+                    margin-right:1em;
                 }
             }
         }
-        li{
-            height: 3.3em;
-            cursor: pointer;
-            &:hover{
-                background-color: $highlightColor;
-                transform:scale(1.01);
-                transition-duration:0.25s;
-                position:relative;
-                z-index:2;
-                .label {
-                    .icon-actions-chevron-down{
-                        display:inline-block;
+        display:none;
+        .list-lighthouse{
+            margin-top:1em;
+            margin-bottom: 1em;
+            display:block;
+            &.list-header{
+                font-weight:700;
+                li{
+                    border:0;
+                    border-bottom:1px solid #ddd;
+                    > span{
+                        color:#000;
+                        text-transform: unset;
                     }
                 }
             }
-            padding: 0;
-            > span{ 
-                color: #222;
-                text-transform: uppercase;
-                font-size: 0.9em;
-                .icon-size-small {
-                    height: 12px;
-                    width: 12px;
-                    line-height: 12px;
+            li{
+                height: 3.3em;
+                cursor: pointer;
+                &:hover{
+                    background-color: $highlightColor;
+                    transform:scale(1.01);
+                    transition-duration:0.25s;
+                    position:relative;
+                    z-index:2;
+                    .label {
+                        .icon-actions-chevron-down{
+                            display:inline-block;
+                        }
+                    }
                 }
-            }
-            .label {
-                display: inline-block;
-                padding: 1.2em 1em 1.2em;
-                .icon-actions-chevron-down{
-                    padding-right:1em;
-                    display:none;
+                padding: 0;
+                > span{ 
+                    color: #222;
+                    text-transform: uppercase;
+                    font-size: 0.9em;
+                    .icon-size-small {
+                        height: 12px;
+                        width: 12px;
+                        line-height: 12px;
+                    }
                 }
-            }
-            .value{
-                position: absolute;
-                height: 100%;
-                display: block;
-                right: 5em;
-                top:0;
-                padding: 1em 0; 
-                font-weight: 700;
-                text-align: center;
-                padding-right:1em;
-                text-transform: lowercase;
-            }
-            .score{
-                position: absolute;
-                height: 100%;
-                width:5em;
-                display: block;
-                right: 0em;
-                top:0;
-                padding: 1em 0;
-                font-weight: 700;
-                text-align: center;
-                color:white;
-                &.slow{
-                    background-color:$errorColor;
-                }
-                &.average{
-                    background-color:$averageColor;
-                }
-                &.fast{
-                    background-color:$successColor;
-                }
-            }
-            .description{
-                display:block;
-                width:100%;
-                padding: 0em 6% 0em 1em;
-                height:0px;
-                overflow:hidden;
-                > b{
-                    width:100%;
-                    display:block;
-                    text-transform: inherit;
-                    margin-bottom:1em;
-                }
-            }
-            &.active{
-                height: auto;
-                background-color: $highlightColor;
-                border-color: $highlightBorderColor;
-                transform:scale(1.01);
                 .label {
+                    display: inline-block;
+                    padding: 1.2em 1em 1.2em;
                     .icon-actions-chevron-down{
-                        display:inline-block;
+                        padding-right:1em;
+                        display:none;
+                    }
+                }
+                .value{
+                    position: absolute;
+                    height: 100%;
+                    display: block;
+                    right: 5em;
+                    top:0;
+                    padding: 1em 0; 
+                    font-weight: 700;
+                    text-align: center;
+                    padding-right:1em;
+                    text-transform: lowercase;
+                }
+                .score{
+                    position: absolute;
+                    height: 100%;
+                    width:5em;
+                    display: block;
+                    right: 0em;
+                    top:0;
+                    padding: 1em 0;
+                    font-weight: 700;
+                    text-align: center;
+                    color:white;
+                    &.slow{
+                        background-color:$errorColor;
+                    }
+                    &.average{
+                        background-color:$averageColor;
+                    }
+                    &.fast{
+                        background-color:$successColor;
                     }
                 }
                 .description{
-                    height:100%;
-                    padding-bottom:1em;
+                    display:block;
+                    width:100%;
+                    padding: 0em 6% 0em 1em;
+                    height:0px;
+                    overflow:hidden;
+                    > b{
+                        width:100%;
+                        display:block;
+                        text-transform: inherit;
+                        margin-bottom:1em;
+                    }
+                }
+                &.active{
+                    height: auto;
+                    background-color: $highlightColor;
+                    border-color: $highlightBorderColor;
+                    transform:scale(1.01);
+                    .label {
+                        .icon-actions-chevron-down{
+                            display:inline-block;
+                        }
+                    }
+                    .description{
+                        height:100%;
+                        padding-bottom:1em;
+                    }
                 }
             }
-        }
-        &.list-additional{
-            li{
-                .value{
-                    max-width:75%;
+            &.list-additional{
+                li{
+                    .value{
+                        max-width:75%;
+                    }
                 }
             }
         }
@@ -285,14 +322,6 @@ $highlightBorderColor:#bdc5cd;
 .lighthouseCharts{
     padding-top:2em;
 }
-.panel-heading{
-    > h1{
-        margin:0; 
-    }
-    > h2 {
-        margin: 6px 0 6px;
-    }
-} 
 .outputControl{
     margin:0;
     padding:0;
