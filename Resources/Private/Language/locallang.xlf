@@ -21,6 +21,21 @@
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.target" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.target">
 				<source>Page ID</source>
 			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.acs" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.acs">
+				<source>Accessibility Score</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.bps" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.bps">
+				<source>Best-Practice Score</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.pes" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.pes">
+				<source>Performance Score</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.pwas" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.pwas">
+				<source>PWA Score</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.seos" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.seos">
+				<source>SEO Score</source>
+			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp">
 				<source>First Contentful Paint</source>
 			</trans-unit>
@@ -120,6 +135,12 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.success" resname="tx_sf_seolighthouse_showlighthouse.success">
 				<source>Success</source>
 			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showPerformanceAuditList" resname="tx_sf_seolighthouse_showlighthouse.showPerformanceAuditList">
+				<source>Show Performance List</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showPerformanceAuditCharts" resname="tx_sf_seolighthouse_showlighthouse.showPerformanceAuditCharts">
+				<source>Show Performance Charts</source>
+			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.list.heading" resname="tx_sf_seolighthouse_showlighthouse.list.heading">
 				<source>Listing for LighthouseStatistics</source>
 			</trans-unit>
@@ -132,13 +153,16 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.analyseHeader.score" resname="tx_sf_seolighthouse_showlighthouse.analyseHeader.score">
 				<source>Score</source>
 			</trans-unit>		
-			<trans-unit id="tx_sf_seolighthouse_showlighthouse.performanceAudits" resname="tx_sf_seolighthouse_showlighthouse.performanceAudits">
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.auditsHeadline" resname="tx_sf_seolighthouse_showlighthouse.auditsHeadline">
+				<source>Lighthouse Audits</source>
+			</trans-unit>	
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.performanceHeadline" resname="tx_sf_seolighthouse_showlighthouse.performanceHeadline">
 				<source>Performance Audits</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.createNew" resname="tx_sf_seolighthouse_showlighthouse.createNew">
 				<source>Save Statistics for Charts</source>
 			</trans-unit>
-			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showMainAuditCharts" resname="tx_sf_seolighthouse_showlighthouse.showMainAuditCharts">
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showPerformanceAudits" resname="tx_sf_seolighthouse_showlighthouse.showPerformanceAudits">
 				<source>Show Charts</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showAdditionalAudits" resname="tx_sf_seolighthouse_showlighthouse.showAdditionalAudits">
@@ -188,6 +212,9 @@
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsValueType" resname="tx_sf_seolighthouse_showlighthouse.chartsValueType">
 				<source>Value Type</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsValueType.catscore" resname="tx_sf_seolighthouse_showlighthouse.chartsValueType.catscore">
+				<source>Category Score</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsValueType.absolute" resname="tx_sf_seolighthouse_showlighthouse.chartsValueType.absolute">
 				<source>Absolute Values</source>

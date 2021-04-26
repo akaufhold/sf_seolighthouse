@@ -120,6 +120,12 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.success" resname="tx_sf_seolighthouse_showlighthouse.success">
 				<target>Erfolg</target>
 			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showPerformanceAuditList" resname="tx_sf_seolighthouse_showlighthouse.showPerformanceAuditList">
+				<target>Zeige Geschwindigkeitspunkte-Liste</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showPerformanceAuditCharts" resname="tx_sf_seolighthouse_showlighthouse.showPerformanceAuditCharts">
+				<target>Zeige Geschwindigkeitspunkte-Diagramm</target>
+			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.analyseHeader.name" resname="tx_sf_seolighthouse_showlighthouse.analyseHeader.name">
 				<target>Lighthouse Eigenschaft</target>
 			</trans-unit>
@@ -128,14 +134,17 @@
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.analyseHeader.score" resname="tx_sf_seolighthouse_showlighthouse.analyseHeader.score">
 				<target>Punkte</target>
-			</trans-unit>		
-			<trans-unit id="tx_sf_seolighthouse_showlighthouse.performanceAudits" resname="tx_sf_seolighthouse_showlighthouse.performanceAudits">
+			</trans-unit>	
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.auditsHeadline" resname="tx_sf_seolighthouse_showlighthouse.auditsHeadline">
+				<target>Lighthouse Prüfungen</target>
+			</trans-unit>	
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.performanceHeadline" resname="tx_sf_seolighthouse_showlighthouse.performanceHeadline">
 				<target>Geschwindigkeits-Prüfung</target>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.createNew" resname="tx_sf_seolighthouse_showlighthouse.createNew">
 				<target>Statistik speichern für Charts</target>
 			</trans-unit>
-			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showMainAuditCharts" resname="tx_sf_seolighthouse_showlighthouse.showMainAuditCharts">
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showPerformanceAudits" resname="tx_sf_seolighthouse_showlighthouse.showPerformanceAudits">
 				<target>Zeige Diagramm</target>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showAdditionalAudits" resname="tx_sf_seolighthouse_showlighthouse.showAdditionalAudits">
@@ -176,6 +185,9 @@
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsValueType" resname="tx_sf_seolighthouse_showlighthouse.chartsValueType">
 				<target>Werte-Typ</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsValueType.catscore" resname="tx_sf_seolighthouse_showlighthouse.chartsValueType.catscore">
+				<target>Kategorien Punkte</target>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsValueType.absolute" resname="tx_sf_seolighthouse_showlighthouse.chartsValueType.absolute">
 				<target>Absolute Werte</target>

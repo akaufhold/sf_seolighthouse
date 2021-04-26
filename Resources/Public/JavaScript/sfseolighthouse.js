@@ -19,46 +19,54 @@ requirejs(['jquery'], function ($) {
       Icons.getIcon('actions-chevron-down', Icons.sizes.small).done(function(icon) {
         chevronDown = icon;
       });
+      Icons.getIcon('content-widget-chart-bar', Icons.sizes.default).done(function(icon) {
+        chartsBar = icon;
+      });
     });
     //var color = Chart.helpers.color;
     var LighthouseData = function () {
         /* DECLARATION AUDIT CONSTANTS */
-        const mainAuditsPerformance        = [
-            ["first-contentful-paint", "fcp",0.15,"rgba(255, 159, 64, 1)"],
-            ["speed-index", "si",0.15,"rgba(255, 99, 132, 1)"],
-            ["interactive", "tti",0.25,"rgba(255, 205, 86, 1)"],
-            ["largest-contentful-paint", "lcp",0.15,"rgba(75, 192, 192, 1)"],
-            ["total-blocking-time", "tbt",0.25,"rgba(54, 162, 235, 1)"],
-            ["cumulative-layout-shift", "cls",0.05,"rgba(153, 102, 255, 1)"]
+        const mainAudits        = [
+          ["accessibility", "acs"],
+          ["best-practices", "bps"],
+          ["performance", "pes"],
+          ["pwa", "pwas"],
+          ["seo", "seos"]
         ];
-        const individualAudits  = [
-            ["Overall Score","os"]
+        const mainAuditsPerformance        = [
+          ["first-contentful-paint", "fcp",0.15,"rgba(255, 159, 64, 1)"],
+          ["speed-index", "si",0.15,"rgba(255, 99, 132, 1)"],
+          ["interactive", "tti",0.25,"rgba(255, 205, 86, 1)"],
+          ["largest-contentful-paint", "lcp",0.15,"rgba(75, 192, 192, 1)"],
+          ["total-blocking-time", "tbt",0.25,"rgba(54, 162, 235, 1)"],
+          ["cumulative-layout-shift", "cls",0.05,"rgba(153, 102, 255, 1)"]
         ];
         /* DECLARATION VARS */
-        var scoreChart;
-        var auditsChart;
-
         var lh = this;
         /* LIGHTHOUSE */
-        var OutputAuditName, OutputAuditsHtml;
+        var OutputAuditName, OutputAuditsHtml, OutputPerformanceAuditsHtml, OutputAdditionalAuditsHtml;
         var categoryUrl;
 
         /* PROGRESS BAR */
         var pb = $(".progressBar");
         var cc = $(".progressBar").find(".counterContainer");
-        /* CHARTS */
-        var oac,mac;
+
         lh.init = function () {
           categoryUrl =  lh.getCategoryList();
           lh.addCategoriesToTargetUrl(categoryUrl);
-
+          //console.log(mainAudits);
           $('.getLighthouseData').on('click', function(){
-              var thisis = $(this);
               /* PREFILL TARGET INPUT */
               $("#target").val($('.newLighthouseStatistics').attr("id"));
-              /* SAVE CHARTS CANVAS */
-              oac = document.getElementById('overallChart').getContext('2d');
-              mac = document.getElementById('mainAuditsChart').getContext('2d');
+
+              /* INIT CHARTS CANVAS */
+              window.oacacc = document.getElementById('overallChartAccessibilty').getContext('2d');
+              window.oacbes = document.getElementById('overallChartBestPractices').getContext('2d');
+              window.oacper = document.getElementById('overallChartPerformance').getContext('2d');
+              window.oacpwa = document.getElementById('overallChartPwa').getContext('2d');
+              window.oacseo = document.getElementById('overallChartSeo').getContext('2d');
+              window.pac    = document.getElementById('performanceAuditsChart').getContext('2d');
+
               /* SETTING DATA FORMAT */
               var format = 'html'; 
               if($(this).data('format')){
@@ -95,7 +103,6 @@ requirejs(['jquery'], function ($) {
               }  
               categoryUrl =  lh.getCategoryList();
               lh.addCategoriesToTargetUrl(categoryUrl);
-
           });
 
           $(".auditButtons").find("a").click(function(){
@@ -103,10 +110,21 @@ requirejs(['jquery'], function ($) {
               $("."+idTarget).css({display:"block"});
           })
 
+          $(".performanceMenu").find("a").click(function(){
+            var idTarget = $(this).attr("id").split("show")[1].charAt(0).toLowerCase()+$(this).attr("id").split("show")[1].substring(1);
+            $(".performanceAudits").css({display:"none"});
+            if (idTarget=="performanceAuditCharts"){
+                $(".performanceListHeader").css({display:"none"});
+            }else{
+                $(".performanceListHeader").css({display:"block"});
+            }
+            $("."+idTarget).css({display:"block"});
+          }) 
+
           /* ACTIVE LIST ENTRY ON CLICK */
-          $(".list-main").on("click","li",function(){
+          $(".list-lighthouse").on("click","li",function(){
               var listItem = $(this);
-              $(".list-main").find("li").removeClass("active");
+              $(".list-lighthouse").find("li").removeClass("active");
               if (!$(listItem).hasClass("active")){
                   $(listItem).addClass("active");
               }
@@ -145,7 +163,7 @@ requirejs(['jquery'], function ($) {
           var categoryUrl = categoriesUrl.split(",");
           $(categoryUrl).each(function(key,category){
               curTargetUrl = lh.addUrlParam(curTargetUrl,"category",category);
-          })
+          });
           lh.setTargetUrl(lh.getDeviceUrl(lh.getDevice())+curTargetUrl);
       }
 
@@ -206,31 +224,52 @@ requirejs(['jquery'], function ($) {
             if (!json.hasOwnProperty("error")){
               const lighthouse      = json.lighthouseResult, 
                     auditResults    = lighthouse.audits;
+                    auditCategories = lighthouse.categories;
               var   lhCategoryList  = lh.getCategoryList().split(",");
-              $(lhCategoryList).each(function(key,category){
-                  var overallScore  = lighthouse.categories[category.toLowerCase()].score;
-                  $("#os").val(overallScore);
-                  lh.pbReset();
-                  lh.setPbStatus("success");
+              var   lhCategoryListLength = $(lhCategoryList).length;
+              lh.pbReset();
+              lh.setPbStatus("success");
+              $(".list-audits,.list-Addtional-Audits,.list-performance-audits").html("");
+              /* SET DEVICE HIDDEN FIELD */
+              $("#device").val(lh.getDevice().charAt(0).toUpperCase() + lh.getDevice().slice(1));
+              OutputAuditsHtml  = "<ul class='list-lighthouse list-score list-main list-group'>";
+
+              $(lhCategoryList).each(function(catIt,category){
+                  catIt++;
+                  var curCategory   = category.toLowerCase().replace("_","-");
+                  var curChart      = "oac"+curCategory.substring(0,3);
+                  var overallScore  = lighthouse.categories[curCategory].score;
+
                   /* CREATE CHARTS OUTPUT */
                   var missingScore  = 1-overallScore;
                   var speedColor    = lh.getSpeedColor(overallScore);
-                  lh.createCharts(oac,"pie","score");
-                  lh.addDataSet(scoreChart,"Score",speedColor,overallScore*100,1,0);
-                  lh.addDataSet(scoreChart,"","rgba(255, 255, 255, 1)",missingScore*100,0,1);
-                  lh.createCharts(mac,"bar","audits");
-                  scoreChart.options.plugins.title.display = true;
-                  scoreChart.options.plugins.title.text    = "Overall Score";
-                  /* MAIN AUDIT PROPERTIES */
-                  OutputAuditsHtml  = "<ul class='list-lighthouse list-lighthouse-"+category+" list-main list-group'>"+lh.getMainAudits(mainAuditsPerformance,auditResults)+"</ul>";
-                  $(".list-Audits").append(OutputAuditsHtml);
+                  lh.createCharts(window[curChart],"pie",curCategory,curCategory+" Score");
+
+                  lh.addDataSet(window[curCategory+"Chart"],"Score",speedColor,overallScore*100,1,0);
+                  lh.addDataSet(window[curCategory+"Chart"],"","rgba(255, 255, 255, 1)",missingScore*100,0,1);
+  
+                  OutputAuditsHtml    += lh.getMainAudits(curCategory,auditCategories,catIt,lhCategoryListLength);
+
+                  /* PERFORMANCE AUDIT PROPERTIES */
+                  if (category=="PERFORMANCE"){
+                      lh.createCharts(window.pac,"bar","audits");
+                      OutputPerformanceAuditsHtml  = ""; 
+                      OutputPerformanceAuditsHtml  += "<ul class='list-lighthouse list-lighthouse-"+curCategory+" list-group'>"+lh.getPerformanceAudits(mainAuditsPerformance,auditResults)+"</ul>";
+                      $(".list-performance-audits").append(OutputPerformanceAuditsHtml);
+                      $(".performanceAuditCharts").css({display:"none"});
+                      $(".performanceHeadline").css({display:"block"});
+                      $(".performanceListHeader").css({display:"block"});
+                  }
                   /* ADDTIONAL AUDIT PROPERTIES*/
-                  OutputAuditsHtml  = "";
-                  OutputAuditsHtml  = "<ul class='list-lighthouse list-additional-"+category+" list-group'>"+lh.getAddionalAudits(auditResults)+'</ul>';
-                  $(".list-Addtional-Audits").append(OutputAuditsHtml);
+                  OutputAdditionalAuditsHtml  =  "";
+                  OutputAdditionalAuditsHtml  += "<ul class='list-lighthouse list-additional-"+curCategory+" list-group'><li class='list-additional-header list-group-item'><span class='label'>"+auditCategories[curCategory].title+"</span></li>";
+                  OutputAdditionalAuditsHtml  += lh.getAddionalAudits(auditResults);
+                  OutputAdditionalAuditsHtml  += "</ul>";
+                  $(".list-Addtional-Audits").append(OutputAdditionalAuditsHtml);
                   $(".newLighthouseStatistics").css({display:"block"});
               })
-              
+              OutputAuditsHtml  += "</ul>";
+              $(".list-audits").append(OutputAuditsHtml);
               lh.setTotalTime(lighthouse.timing.total);
             }else{
               /* ERROR HANDLING */
@@ -252,67 +291,101 @@ requirejs(['jquery'], function ($) {
         else
           $(cc).find(".totalTime").html((timer/1000).toFixed(2)+" s");
       }
-      /* GET MAIN AUDITS */
-      lh.getMainAudits = function(auditCategory,auditResults){
+        /* GET MAIN AUDITS */
+        lh.getMainAudits = function(auditItem,auditResult,mainIteration,mainCounter){
+          var speed, score, displayValue, chartVal;
+          var htmlAuditsOut = "";
+          $(mainAudits).each(function(key,value){
+            if (value[0]==auditItem){
+              score             = auditResult[auditItem].score;
+              speed             = lh.getSpeedClass(score);
+              color             = lh.getSpeedColor(score);
+              OutputAuditName   = auditResult[auditItem].title.replace("-"," ");
+              OutputAuditsHtml  = "";
+              htmlAuditsOut     +='<li class="list-group-item" id="list-'+auditItem+'">';
+              htmlAuditsOut     +=    lh.addSpan("label",OutputAuditName);
+              htmlAuditsOut     +=    lh.addSpan("score "+speed,score);
+              htmlAuditsOut     +='</li>';
+              console.log(value);
+              //console.log(mainAudits[auditItem]);
+              $("#"+value[1]).val(score);
+            }
+
+          })
+
+          /* ADD CHARTS DATA TO ARRAY */
+          /*chartVal = score*100;
+          if (mainCounter==mainIteration){
+            lh.addDataSet(window.auditsChart,OutputAuditName,color,chartVal,((mainIteration==1) ? '1' : '0'),1);
+          }else{
+            lh.addDataSet(window.auditsChart,OutputAuditName,color,chartVal,((mainIteration==1) ? '1' : '0'),0);
+          }*/
+          return htmlAuditsOut;
+      }
+      /* GET PERFORMANCE AUDITS */
+      lh.getPerformanceAudits = function(auditItemList,auditResults){
           var speed, score, displayValue, chartVal;
           var mainCounter = 1;
-          auditCategory.forEach(function(value){
-            displayValue      = auditResults[value[0]].displayValue;
-            score             = auditResults[value[0]].score;
-            speed             = lh.getSpeedClass(score);
-            color             = lh.getSpeedColor(score);
-            OutputAuditName   = value[0].replace("-"," ");
-            OutputAuditsHtml += '<li class="list-group-item" id="list-'+value[1]+'">';
-            OutputAuditsHtml +=     lh.addSpan("label",OutputAuditName);
-            OutputAuditsHtml +=     lh.addSpan("value", displayValue);
-            OutputAuditsHtml +=     lh.addSpan("score "+speed,score);
-            OutputAuditsHtml += '</li>';
+          var htmlPerformanceOut="";
+          auditItemList.forEach(function(value){
+            displayValue          = auditResults[value[0]].displayValue;
+            score                 = auditResults[value[0]].score;
+            speed                 = lh.getSpeedClass(score);
+            color                 = lh.getSpeedColor(score);
+            OutputAuditName       = value[0].replace("-"," ");
+            htmlPerformanceOut    += '<li class="list-group-item" id="list-'+((value[1])?value[1]:"")+'">';
+            htmlPerformanceOut    +=     lh.addSpan("label",OutputAuditName);
+            htmlPerformanceOut    +=     lh.addSpan("value", displayValue);
+            htmlPerformanceOut    +=     lh.addSpan("score "+speed,score);
+            htmlPerformanceOut    += '</li>';
             $("#"+value[1]).val(parseFloat(displayValue.replace(',', '.')));
             $("#"+value[1]+"s").val(parseFloat(score)); 
             /* ADD CHARTS DATA TO ARRAY */
             chartVal = score*100;
             if (mainAuditsPerformance.length==mainCounter){
-              lh.addDataSet(auditsChart,OutputAuditName,color,chartVal,((mainCounter==1) ? '1' : '0'),1);
+              lh.addDataSet(window.auditsChart,OutputAuditName,color,chartVal,((mainCounter==1) ? '1' : '0'),1);
             }else{
-              lh.addDataSet(auditsChart,OutputAuditName,color,chartVal,((mainCounter==1) ? '1' : '0'),0);
+              lh.addDataSet(window.auditsChart,OutputAuditName,color,chartVal,((mainCounter==1) ? '1' : '0'),0);
             }
             mainCounter++; 
           });
-          return OutputAuditsHtml;
+          return htmlPerformanceOut;
       }
       /* GET ADDITIONAL AUDITS */
       lh.getAddionalAudits = function(auditResults){
           var speed, score, displayValue, screenshot, displayMode, description;
+          var htmlAdditionalOut = "";
+
           Object.keys(auditResults).sort().forEach(function(key){
-            description         = auditResults[key].description;
-            displayMode         = String(auditResults[key].scoreDisplayMode);
+            description                        = auditResults[key].description;
+            displayMode                        = String(auditResults[key].scoreDisplayMode);
             if (auditResults[key].hasOwnProperty("details.screenshot")){
                 screenshot = auditResults[key].details.screenshot;
             }
-            displayValue            = auditResults[key].displayValue;
-            score                   = auditResults[key].score;
+            displayValue                       = auditResults[key].displayValue;
+            score                              = auditResults[key].score;
             if (displayMode!="notApplicable"){
-              OutputAuditName       = key.replace("-"," ");
-              OutputAuditsHtml      += '<li class="list-group-item" id="'+key+'">';
-              OutputAuditsHtml      += lh.addSpan("label",((description) ? chevronDown : '')+OutputAuditName);
+              OutputAuditName                  = key.replace("-"," ");
+              htmlAdditionalOut                += '<li class="list-group-item" id="'+key+'">';
+              htmlAdditionalOut                += lh.addSpan("label",((description) ? chevronDown : '')+OutputAuditName);
               if (displayValue!=undefined){
-                  OutputAuditsHtml  += lh.addSpan("value",displayValue);
+                  htmlAdditionalOut            += lh.addSpan("value",displayValue);
               }
               if (score){
-                  speed             =  lh.getSpeedClass(score);
-                  OutputAuditsHtml  += lh.addSpan("score "+speed,score);
+                  speed                        =  lh.getSpeedClass(score);
+                  htmlAdditionalOut            += lh.addSpan("score "+speed,score);
               }
               if (auditResults[key].description){  
-                  OutputAuditsHtml  += "<span class='description'>"+((auditResults[key].title)?"<b>"+auditResults[key].title+"</b>":"")+auditResults[key].description;
+                htmlAdditionalOut              += "<span class='description'>"+((auditResults[key].title)?"<b>"+auditResults[key].title+"</b>":"")+auditResults[key].description;
                   if (auditResults[key].hasOwnProperty("details.screenshot")){
-                      OutputAuditsHtml += screenshot;
+                    htmlAdditionalOut          += screenshot;
                   }
-                  OutputAuditsHtml += "</span>";
+                  htmlAdditionalOut            += "</span>";
               }
-              OutputAuditsHtml +=  '</li>';
+              htmlAdditionalOut                +=  '</li>';
             }
           });
-          return OutputAuditsHtml;
+          return htmlAdditionalOut;
       }
       /* HTML SPAN OUTPUT */
       lh.addSpan = function(htmlClass,value){
@@ -329,9 +402,9 @@ requirejs(['jquery'], function ($) {
         return speedOut;
       }
       /* CHARTS */
-      lh.createCharts = function (chartIn,typeIn,target) {
-        if (target=="score"){
-          scoreChart = new Chart(chartIn, {
+      lh.createCharts = function (chartIn,typeIn,target,titleText) {
+          var targetChart = target+"Chart";
+          window[targetChart] = new Chart(chartIn, {
             type: typeIn,
             data: {
               datasets: [{ 
@@ -342,34 +415,21 @@ requirejs(['jquery'], function ($) {
               plugins:{
                 legend:{
                   display:false,
+                },
+                title:{
+                  display:true,
+                  text:titleText,
                 }
               },
+              responsive: true,
+              maintainAspectRatio: false,
               scales: {
 
               }
             }
         });
-        }else if(target="audits"){
-          auditsChart = new Chart(chartIn, {
-            type: typeIn,
-            data: {
-              datasets: [{ 
-                      data: [] 
-                      }]
-            },
-            options: {
-              plugins:{
-                legend:{
-                  display:false,
-                }
-              },
-              scales: {
-
-              }
-            }
-          });
-        }
       }
+
       var newDataset = [];
       lh.addDataSet = function (chart, label, color, data, createDataset, datasetReady) {
         chart.data.labels.push(label);

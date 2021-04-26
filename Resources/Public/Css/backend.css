@@ -6,6 +6,7 @@
     width: 100%;
   }
 }
+
 h5 {
   font-weight: bold;
 }
@@ -21,6 +22,7 @@ h5 {
 .panel-heading > h1 {
   margin: 0;
 }
+
 .panel-heading > h2 {
   margin: 6px 0 6px;
 }
@@ -28,40 +30,50 @@ h5 {
 .tx_sfseolighthouse {
   /* LIGHTHOUSE RESULT OUTPUT */
 }
+
 .tx_sfseolighthouse .topMarg {
   margin-top: 1em;
 }
+
 .tx_sfseolighthouse .targetUrl {
   padding: 0.5em 1.25em;
 }
+
 .tx_sfseolighthouse .categoriesCheck > * {
   display: flex;
 }
+
 .tx_sfseolighthouse .custom-control {
   position: relative;
   padding-left: 5px;
   padding-top: 0px;
 }
+
 .tx_sfseolighthouse .custom-control.custom-radio {
   min-height: 3em;
 }
+
 .tx_sfseolighthouse .custom-control.form-check {
   width: 100%;
   min-height: 3.1em;
 }
+
 .tx_sfseolighthouse .custom-control.form-check label {
   position: absolute;
   margin: 0;
 }
+
 .tx_sfseolighthouse .custom-control label {
   position: absolute;
   left: 0;
   z-index: 10;
   width: 100%;
 }
+
 .tx_sfseolighthouse .progressBar * {
   line-height: 0.3;
 }
+
 .tx_sfseolighthouse .progressBar .counterContainer {
   padding: 0em 0.25em;
   display: inline-block;
@@ -72,128 +84,188 @@ h5 {
   overflow: hidden;
   max-width: 100%;
 }
+
 .tx_sfseolighthouse .progressBar .counterContainer .counterTitle {
   min-width: 10em;
-  height: 0.6em;
+  height: .6em;
   display: inline-block;
   position: relative;
   z-index: 10;
 }
+
 .tx_sfseolighthouse .progressBar .counterContainer .counterTitle > * {
-  font-size: 0.6em;
+  font-size: .6em;
   text-transform: uppercase;
   font-weight: bold;
   height: 100%;
   display: inline-block;
   line-height: 1em;
 }
+
 .tx_sfseolighthouse .progressBar .counterContainer .counterAmount {
   background: #003ea1;
-  min-height: 0.8em;
+  min-height: .8em;
   min-height: 100%;
   top: 0;
   left: 0;
   width: 0%;
   position: absolute;
 }
+
 .tx_sfseolighthouse .progressBar .counterContainer .counterAmount .totalTime {
   display: inline-block;
 }
+
 .tx_sfseolighthouse .progressBar .counterContainer .progressMessage,
 .tx_sfseolighthouse .progressBar .counterContainer .errorMessage,
 .tx_sfseolighthouse .progressBar .counterContainer .successMessage {
   display: none;
 }
+
 .tx_sfseolighthouse .progressBar .counterContainer.progress {
   height: auto;
   margin: 0;
 }
+
 .tx_sfseolighthouse .progressBar .counterContainer.progress .counterAmount {
   width: 0%;
   animation: runProgressBar 18s linear 2s 1 forwards;
 }
+
 .tx_sfseolighthouse .progressBar .counterContainer.progress .counterTitle > * {
   display: none;
 }
+
 .tx_sfseolighthouse .progressBar .counterContainer.progress .counterTitle .progressMessage {
   display: inline-block;
   color: white;
 }
+
 .tx_sfseolighthouse .progressBar .counterContainer.done .counterTitle > * {
   display: none;
 }
+
 .tx_sfseolighthouse .progressBar .counterContainer.done .counterTitle .successMessage {
   display: inline-block;
 }
+
 .tx_sfseolighthouse .progressBar .counterContainer.error .counterAmount {
   width: 100%;
   transition-duration: 0.5s;
   background: #D8000C;
 }
+
 .tx_sfseolighthouse .progressBar .counterContainer.error .counterTitle > * {
   display: none;
 }
+
 .tx_sfseolighthouse .progressBar .counterContainer.error .counterTitle .errorMessage {
   display: inline-block;
   color: white;
 }
+
 .tx_sfseolighthouse .progressBar .counterContainer.success .counterAmount {
   width: 100% !important;
   transition-duration: 0.5s !important;
   background: #28a745;
 }
+
 .tx_sfseolighthouse .progressBar .counterContainer.success .counterTitle > * {
   display: none;
 }
+
 .tx_sfseolighthouse .progressBar .counterContainer.success .counterTitle .totalTime,
 .tx_sfseolighthouse .progressBar .counterContainer.success .counterTitle .successMessage {
   display: inline-block;
   color: white;
 }
+
 .tx_sfseolighthouse.table {
   position: relative;
 }
+
 .tx_sfseolighthouse.table tr > td:last-child,
 .tx_sfseolighthouse.table tr > th:last-child {
   text-align: center;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics {
   display: none;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics.container-fluid {
   padding: 0;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .mainAuditCharts,
 .tx_sfseolighthouse form.newLighthouseStatistics .additionalAudits {
   display: none;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .performanceButtons {
   margin-top: 1em;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .performanceButtons a.btn:first-child {
   margin-right: 1em;
 }
+
+.tx_sfseolighthouse form.newLighthouseStatistics .performanceHeadline,
+.tx_sfseolighthouse form.newLighthouseStatistics .performanceListHeader {
+  display: none;
+}
+
+.tx_sfseolighthouse form.newLighthouseStatistics .performanceMenu {
+  position: absolute;
+  right: 1.5em;
+  top: 1.8em;
+}
+
+.tx_sfseolighthouse form.newLighthouseStatistics .performanceMenu a {
+  display: inline-block;
+}
+
+.tx_sfseolighthouse form.newLighthouseStatistics .performanceMenu .icon {
+  border: 1px solid #aaa;
+  padding: 1em;
+}
+
+.tx_sfseolighthouse form.newLighthouseStatistics .performanceMenu .icon .icon-markup {
+  padding: 0.25em;
+}
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse {
   margin-top: 1em;
   margin-bottom: 1em;
   display: block;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse.list-header {
   font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 0;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse.list-header li {
   border: 0;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 0px solid #ddd;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse.list-header li > span {
   color: #000;
   text-transform: unset;
 }
+
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse.list-score, .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse.list-lighthouse-performance {
+  margin: 0;
+}
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li {
   height: 3.3em;
   cursor: pointer;
   padding: 0;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li:hover {
   background-color: #ebf3fb;
   transform: scale(1.01);
@@ -201,27 +273,33 @@ h5 {
   position: relative;
   z-index: 2;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li:hover .label .icon-actions-chevron-down {
   display: inline-block;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li > span {
   color: #222;
   text-transform: uppercase;
   font-size: 0.9em;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li > span .icon-size-small {
   height: 12px;
   width: 12px;
   line-height: 12px;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li .label {
   display: inline-block;
   padding: 1.2em 1em 1.2em;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li .label .icon-actions-chevron-down {
   padding-right: 1em;
   display: none;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li .value {
   position: absolute;
   height: 100%;
@@ -234,6 +312,7 @@ h5 {
   padding-right: 1em;
   text-transform: lowercase;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li .score {
   position: absolute;
   height: 100%;
@@ -246,15 +325,19 @@ h5 {
   text-align: center;
   color: white;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li .score.slow {
   background-color: #D8000C;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li .score.average {
   background-color: #ffa400;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li .score.fast {
   background-color: #28a745;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li .description {
   display: block;
   width: 100%;
@@ -262,25 +345,38 @@ h5 {
   height: 0px;
   overflow: hidden;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li .description > b {
   width: 100%;
   display: block;
   text-transform: inherit;
   margin-bottom: 1em;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li.active {
   height: auto;
   background-color: #ebf3fb;
   border-color: #bdc5cd;
   transform: scale(1.01);
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li.active .label .icon-actions-chevron-down {
   display: inline-block;
 }
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li.active .description {
   height: 100%;
   padding-bottom: 1em;
 }
+
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li.list-additional-header {
+  background: #003ea1;
+}
+
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse li.list-additional-header > .label {
+  color: #fff;
+}
+
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse.list-additional li .value {
   max-width: 75%;
 }
@@ -294,16 +390,34 @@ h5 {
   padding-top: 2em;
 }
 
+.overallCharts {
+  max-width: 200px;
+  padding-top: 3em;
+}
+
+.overallCharts > div {
+  display: flex;
+  max-height: 100%;
+}
+
+.overallCharts > div .lighthouseCharts {
+  padding-top: 0;
+  max-height: auto;
+}
+
 .outputControl {
   margin: 0;
   padding: 0;
 }
+
 .outputControl .custom-control {
   position: relative;
 }
+
 .outputControl .custom-control.custom-radio {
   min-height: 3em;
 }
+
 .outputControl .custom-control label {
   position: absolute;
   left: 0;
@@ -314,6 +428,7 @@ h5 {
 .recordlist tr {
   display: none;
 }
+
 .recordlist tr.active {
   display: table-row;
 }
@@ -321,4 +436,5 @@ h5 {
 .container-control .col-md-6 {
   padding: 0;
   padding-right: 10px;
-}/*# sourceMappingURL=backend.css.map */
+}
+/*# sourceMappingURL=backend.css.map */

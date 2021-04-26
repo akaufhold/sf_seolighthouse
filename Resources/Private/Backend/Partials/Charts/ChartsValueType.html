@@ -1,22 +1,30 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true"></html>
-<div class="col-md-3">
+<div class="col-md-6">
     <h4>
         <f:translate key="tx_sf_seolighthouse_showlighthouse.chartsValueType" />
     </h4>
     <div class="container-fluid container-control">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="custom-control custom-radio">
-                    <f:form.radio name="valueType-select" id="valueType-select1" class="custom-control valueType-select" value="value" checked="checked"/>
+                    <f:form.radio name="valueType-select" id="valueType-select1" class="custom-control valueType-select" value="catscore" checked="checked"/>
                     <label class="custom-control-label btn btn-primary active" for="valueType-select1">
+                        <f:translate key="tx_sf_seolighthouse_showlighthouse.chartsValueType.catscore" />
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="custom-control custom-radio">
+                    <f:form.radio name="valueType-select" id="valueType-select2" class="custom-control valueType-select" value="value"/>
+                    <label class="custom-control-label btn btn-primary" for="valueType-select2">
                         <f:translate key="tx_sf_seolighthouse_showlighthouse.chartsValueType.absolute" />
                     </label>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="custom-control custom-radio">
-                    <f:form.radio name="valueType-select" id="valueType-select2" class="custom-control valueType-select" value="score" />
-                    <label class="custom-control-label btn btn-primary" for="valueType-select2">
+                    <f:form.radio name="valueType-select" id="valueType-select3" class="custom-control valueType-select" value="score" />
+                    <label class="custom-control-label btn btn-primary" for="valueType-select3">
                         <f:translate key="tx_sf_seolighthouse_showlighthouse.chartsValueType.score" />
                     </label>
                 </div>
