@@ -14,10 +14,9 @@ requirejs(['jquery'], function ($) {
     require(["moment","chart"], function(moment, chart) {
         var LighthouseCharts = function () {
             var ch = this;
-            var lhc;
-            let newDataset = [];
             /* DECLARATION CHARTS VARS */
-            var ChartObj;
+            let newDataset = [];
+            var lhc,data,ChartObj;
             var chartColors = {
                 acs: 'rgb(255, 99, 132)', fcp: 'rgb(255, 99, 132)', fcps: 'rgb(255, 99, 132)',
                 bps: 'rgb(255, 159, 64)', si:  'rgb(255, 159, 64)', sis:  'rgb(255, 159, 64)',
@@ -28,7 +27,6 @@ requirejs(['jquery'], function ($) {
             };
             /* INIT */
             ch.init = function () {
-                var data;
                 var entries = $(".chartsEntries").find(".entry"); 
 
                 lhc         = document.getElementById('lighthouseChart').getContext('2d');
@@ -62,7 +60,7 @@ requirejs(['jquery'], function ($) {
                 var entryiteration              = 1;
                 var entryCounter                = ch.countEntries($(entriesIn), deviceIn);
                 var lastDate;
-                console.log(valueTypeIn);
+                //console.log(valueTypeIn);
                 $(entriesIn).each(function(key,value) {
                     data                        = $(this).data();
                     device                      = data.device.toLowerCase();
@@ -74,12 +72,14 @@ requirejs(['jquery'], function ($) {
                     var dateLabelTime           = dateLabel +" "+ date.getHours()+":"+('0'+date.getMinutes()).slice(-2);
 
                     if (device==deviceIn){
-                        console.log(valueTypeIn);
+                        //console.log(valueTypeIn);
                         var auditIteration      = 0;
                         entryValues             = ch.getEntryValues(data, valueTypeIn);
                         ch.addDataLabel(ChartObj,dateLabelTime);     
                         $.each(entryValues, function(auditKey,auditVal){
-                            ch.addDataSet (ChartObj, auditKey, chartColors[auditKey], date, auditVal, ((entryiteration==1) ? '1' : '0'), ((entryiteration==entryCounter) ? '1' : '0'), auditIteration);
+                            var labelChart = $(".entryLabels").attr("data-label-"+auditKey);
+                            console.log(labelChart);
+                            ch.addDataSet (ChartObj, labelChart, chartColors[auditKey], date, auditVal, ((entryiteration==1) ? '1' : '0'), ((entryiteration==entryCounter) ? '1' : '0'), auditIteration);
                             auditIteration++;
                         });
                         entryiteration++;
