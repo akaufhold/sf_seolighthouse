@@ -21,6 +21,23 @@
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.target" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.target" xml:space="preserve">
 				<target>Page ID</target>
 			</trans-unit>
+
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.acs" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.acs">
+				<target>Barrierefreiheit Punkte</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.bps" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.bps">
+				<target>Beste Vorgehensweise Punkte</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.pes" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.pes">
+				<target>Geschwindigkeit Punkte</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.pwas" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.pwas">
+				<target>Progressive Web App Punkte</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.seos" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.seos">
+				<target>Suchmaschinenoptimierung Punkte</target>
+			</trans-unit>
+
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp">
 				<target>First Contentful Paint</target>
 			</trans-unit>
@@ -40,25 +57,22 @@
 				<target>Cumulative Layout Shift</target>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.fcps" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp">
-				<target>Punkte First Contentful Paint</target>
+				<target>First Contentful Paint Punkte</target>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.sis" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.si">
-				<target>Punkte Speed Index</target>
+				<target>Speed Index Punkte</target>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.lcps" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.lcp">
-				<target>Punkte Largest Contentful Paint</target>
+				<target>Largest Contentful Paint Punkte</target>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.ttis" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.tti">
-				<target>Punkte Time To Interactive</target>
+				<target>Time To Interactive Punkte</target>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.tbts" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.tbt">
-				<target>Punkte Total Blocking Time</target>
+				<target>Total Blocking Time Punkte</target>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.clss" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.cls">
-				<target>Punkte Cumulative Layout Shift</target>
-			</trans-unit>
-			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.os" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.os">
-				<target>Gesamtpunkte</target>
+				<target>Cumulative Layout Shift Punkte</target>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.device" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.device">
 				<target>Gerät</target>

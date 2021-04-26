@@ -3,6 +3,25 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:layout name="Default" />
 <div class="chartsEntries">
+    <div class="entryLabels"
+        data-label-acs="{f:translate(key: 'tx_sfseolighthouse_domain_model_lighthousestatistics.acs')}"
+        data-label-bps="{f:translate(key: 'tx_sfseolighthouse_domain_model_lighthousestatistics.bps')}"
+        data-label-pes="{f:translate(key: 'tx_sfseolighthouse_domain_model_lighthousestatistics.pes')}"
+        data-label-pwas="{f:translate(key: 'tx_sfseolighthouse_domain_model_lighthousestatistics.pwas')}"
+        data-label-seos="{f:translate(key: 'tx_sfseolighthouse_domain_model_lighthousestatistics.seos')}"
+        data-label-fcp="{f:translate(key: 'tx_sfseolighthouse_domain_model_lighthousestatistics.fcp')}"
+        data-label-si="{f:translate(key: 'tx_sfseolighthouse_domain_model_lighthousestatistics.si')}"
+        data-label-lcp="{f:translate(key: 'tx_sfseolighthouse_domain_model_lighthousestatistics.lcp')}"
+        data-label-tti="{f:translate(key: 'tx_sfseolighthouse_domain_model_lighthousestatistics.tti')}"
+        data-label-tbt="{f:translate(key: 'tx_sfseolighthouse_domain_model_lighthousestatistics.tbt')}"
+        data-label-cls="{f:translate(key: 'tx_sfseolighthouse_domain_model_lighthousestatistics.cls')}"
+        data-label-fcps="{f:translate(key: 'tx_sfseolighthouse_domain_model_lighthousestatistics.fcps')}"
+        data-label-sis="{f:translate(key: 'tx_sfseolighthouse_domain_model_lighthousestatistics.sis')}"
+        data-label-lcps="{f:translate(key: 'tx_sfseolighthouse_domain_model_lighthousestatistics.lcps')}"
+        data-label-ttis="{f:translate(key: 'tx_sfseolighthouse_domain_model_lighthousestatistics.ttis')}"
+        data-label-tbts="{f:translate(key: 'tx_sfseolighthouse_domain_model_lighthousestatistics.tbts')}"
+        data-label-clss="{f:translate(key: 'tx_sfseolighthouse_domain_model_lighthousestatistics.clss')}"
+    ></div>
     <f:for each="{lighthouseStatistics}" as="lighthouseStatistics">
         <div class="entry" 
             data-crdate="<f:format.date format='d.m.Y - H:i'>{lighthouseStatistics.crdate}</f:format.date>"
@@ -11,9 +30,9 @@
             data-device="{lighthouseStatistics.device}"
             data-catscore-acs="{lighthouseStatistics.acs}"
             data-catscore-bps="{lighthouseStatistics.bps}"
-            data-catscore-pes="{lighthouseStatistics.pes}"
-            data-catscore-pwas="{lighthouseStatistics.pwas}"
-            data-catscore-seos="{lighthouseStatistics.seos}"
+            data-catscore-pes="{lighthouseStatistics.pes}" 
+            data-catscore-pwas="{lighthouseStatistics.pwas}" 
+            data-catscore-seos="{lighthouseStatistics.seos}" 
             data-value-fcp="{lighthouseStatistics.fcp}"
             data-value-si="{lighthouseStatistics.si}"
             data-value-lcp="{lighthouseStatistics.lcp}"
