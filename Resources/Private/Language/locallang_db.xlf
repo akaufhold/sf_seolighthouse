@@ -9,6 +9,21 @@
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.target" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.target">
 				<source>Target Url</source>
 			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.acs" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.acs">
+				<source>Accessibility</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.bps" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.bps">
+				<source>Best-Practice</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.pes" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.pes">
+				<source>Performance</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.pwa" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.pwa">
+				<source>Progressive Web App</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.seos" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.seos">
+				<source>SEO</source>
+			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp">
 				<source>First Contentful Paint</source>
 			</trans-unit>

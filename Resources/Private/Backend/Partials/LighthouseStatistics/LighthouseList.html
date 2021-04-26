@@ -1,6 +1,46 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+	<div class="row overallCharts">
+		<div class="col-md-12">
+			<canvas id="overallChartAccessibilty" class="lighthouseCharts"></canvas>
+			<canvas id="overallChartBestPractices" class="lighthouseCharts"></canvas>
+			<canvas id="overallChartPerformance" class="lighthouseCharts"></canvas>
+			<canvas id="overallChartPwa" class="lighthouseCharts"></canvas>
+			<canvas id="overallChartSeo" class="lighthouseCharts"></canvas>
+		</div>
+	</div>
+	<div class="row auditsHeadline">
+		<div class="col-md-6">
+			<h2><f:translate key="tx_sf_seolighthouse_showlighthouse.auditsHeadline"/></h2>
+		</div>
+		<div class="col-md-6 performanceHeadline">
+			<h2><f:translate key="tx_sf_seolighthouse_showlighthouse.performanceHeadline"/></h2>
+			<span class="performanceMenu">
+				<a id="showPerformanceAuditList" title="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.showPerformanceAuditList')}">
+					<core:icon identifier="content-listgroup" size="small" />
+				</a>
+				<a id="showPerformanceAuditCharts" title="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.showPerformanceAuditCharts')}">
+					<core:icon identifier="content-widget-chart-bar" size="small" />
+				</a>
+			</span>
+		</div>
+	</div>
 	<div class="row">
-		<div class="col-md-9">
+		<div class="col-md-6">
+			<ul class="list-lighthouse list-header list-group">
+				<li class="list-group-item">
+					<span class="label">
+						<f:translate key="tx_sf_seolighthouse_showlighthouse.analyseHeader.name"/>
+					</span>
+					<span class="value">
+						
+					</span>
+					<span class="score">
+						<f:translate key="tx_sf_seolighthouse_showlighthouse.analyseHeader.score"/>
+					</span>
+				</li>
+			</ul>
+		</div>
+		<div class="col-md-6 performanceListHeader">
 			<ul class="list-lighthouse list-header list-group">
 				<li class="list-group-item">
 					<span class="label">
@@ -16,31 +56,25 @@
 			</ul>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-md-9">
-			<h2><f:translate key="tx_sf_seolighthouse_showlighthouse.performanceAudits"/></h2>
-			<div class="list-Audits">
+	<div class="row audits">
+		<div class="col-md-6">
+			<div class="list-audits"></div>
+		</div>
+		<div class="col-md-6 performanceAudits performanceAuditList">
+			<div class="list-performance-audits">
 
 			</div>
-			<f:form.submit value="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.createNew')}" class="btn btn-default"/>
 		</div>
-		<div class="col-md-3">
-			<canvas id="overallChart" class="lighthouseCharts"></canvas>
+		<div class="col-md-6 performanceAudits performanceAuditCharts">
+			<canvas id="performanceAuditsChart" class="lighthouseCharts"></canvas>
 		</div>
 	</div>
 	<div class="row auditButtons">
 		<div class="col-md-12">
-			<a class="btn btn-primary" id="showMainAuditCharts">
-				<f:translate key="tx_sf_seolighthouse_showlighthouse.showMainAuditCharts"/>
-			</a>
+			<f:form.submit value="{f:translate(key: 'tx_sf_seolighthouse_showlighthouse.createNew')}" class="btn btn-default"/>
 			<a class="btn btn-primary" id="showAdditionalAudits">
 				<f:translate key="tx_sf_seolighthouse_showlighthouse.showAdditionalAudits"/>
 			</a>
-		</div>
-	</div>
-	<div class="row mainAuditCharts">
-		<div class="col-md-12">
-			<canvas id="mainAuditsChart" class="lighthouseCharts"></canvas>
 		</div>
 	</div>
 	<div class="row additionalAudits">

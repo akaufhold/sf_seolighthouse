@@ -7,6 +7,8 @@ $averageColor:#ffa400;
 $highlightColor:#ebf3fb;
 $highlightBorderColor:#bdc5cd;
 
+$borderColor:#aaa;
+
 @keyframes runProgressBar {
     0% { width:0%; }
     100% { width:100%;}
@@ -178,6 +180,7 @@ h5{
     }
     /* LIGHTHOUSE RESULT OUTPUT */
     form.newLighthouseStatistics{
+        display:none;
         &.container-fluid{
             padding:0;
         }
@@ -193,21 +196,45 @@ h5{
                 }
             }
         }
-        display:none;
+        .performanceHeadline,
+        .performanceListHeader{
+            display:none;
+        }
+        .performanceMenu{
+            position: absolute;
+            right: 1.5em;
+            top: 1.8em;
+            a{
+                display: inline-block;
+            }
+            .icon{
+                border: 1px solid $borderColor;
+                padding: 1em;
+                .icon-markup{
+                    padding: 0.25em;
+                }
+            }
+        }
         .list-lighthouse{
             margin-top:1em;
             margin-bottom: 1em;
             display:block;
             &.list-header{
-                font-weight:700;
+                font-weight:700; 
+                margin-top:0;
+                margin-bottom: 0; 
                 li{
                     border:0;
-                    border-bottom:1px solid #ddd;
+                    border-bottom:0px solid #ddd;
                     > span{
                         color:#000;
                         text-transform: unset;
                     }
                 }
+            }
+            &.list-score,
+            &.list-lighthouse-performance{
+                margin:0;
             }
             li{
                 height: 3.3em;
@@ -305,6 +332,15 @@ h5{
                     }
                 }
             }
+            li{
+                &.list-additional-header{
+                    background: $progressColor;
+                    >.label{
+                        color:#fff;
+                    }
+                }
+            }
+
             &.list-additional{
                 li{
                     .value{
@@ -318,9 +354,23 @@ h5{
 .getLighthouseData{
     margin-top:0.5em;
 }
+
 /* CHARTS TAB */
+
 .lighthouseCharts{
     padding-top:2em;
+}
+.overallCharts{
+    max-width:200px;
+    padding-top: 3em;
+    > div {
+        display:flex;
+        max-height: 100%;
+        .lighthouseCharts{
+            padding-top:0; 
+            max-height:auto;
+        }
+    }
 }
 .outputControl{
     margin:0;

@@ -121,6 +121,51 @@ return [
                 'eval' => 'int'
             ]
         ],
+        'acs' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.acs',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'double2'
+            ]
+        ],
+        'bps' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.bps',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'double2'
+            ]
+        ],
+        'pes' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.pes',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'double2'
+            ]
+        ],
+        'pwas' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.pwas',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'double2'
+            ]
+        ],
+        'seos' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.seos',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'double2'
+            ]
+        ],
         'fcp' => [
             'exclude' => true,
             'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.fcp',

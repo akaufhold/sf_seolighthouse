@@ -32,6 +32,41 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     protected $target = 0;
 
     /**
+     * Accessibility Score
+     * 
+     * @var float
+     */
+    protected $acs = 0.0;
+
+    /**
+     * Best-Practices Score
+     * 
+     * @var float
+     */
+    protected $bps = 0.0;
+
+    /**
+     * Performance Score
+     * 
+     * @var float
+     */
+    protected $pes = 0.0;
+
+    /**
+     * PWA Score
+     * 
+     * @var float
+     */
+    protected $pwas = 0.0;
+
+    /**
+     * SEO Score
+     * 
+     * @var float
+     */
+    protected $seos = 0.0;
+
+    /**
      * First Contentful Paint
      * 
      * @var float
@@ -160,6 +195,111 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
         $this->target = $target;
     }
 
+    /**
+     * Returns the acs
+     * 
+     * @return float $acs
+     */
+    public function getAcs()
+    {
+        return $this->acs;
+    }
+
+    /**
+     * Sets the acs
+     * 
+     * @param float $acs
+     * @return void
+     */
+    public function setAcs($acs)
+    {
+        $this->acs = $acs;
+    }
+
+    /**
+     * Returns the bps
+     * 
+     * @return float $bps
+     */
+    public function getBps()
+    {
+        return $this->bps;
+    }
+
+    /**
+     * Sets the bps
+     * 
+     * @param float $bps
+     * @return void
+     */
+    public function setBps($bps)
+    {
+        $this->bps = $bps;
+    }
+
+    /**
+     * Returns the pes
+     * 
+     * @return float $pes
+     */
+    public function getPes()
+    {
+        return $this->pes;
+    }
+
+    /**
+     * Sets the pes
+     * 
+     * @param float $pes
+     * @return void
+     */
+    public function setPes($pes)
+    {
+        $this->pes = $pes;
+    }
+
+    /**
+     * Returns the pwas
+     * 
+     * @return float $pwas
+     */
+    public function getPwas()
+    {
+        return $this->pwas;
+    }
+
+    /**
+     * Sets the pwas
+     * 
+     * @param float $pwas
+     * @return void
+     */
+    public function setPwas($pwas)
+    {
+        $this->pwas = $pwas;
+    }
+
+    /**
+     * Returns the seos
+     * 
+     * @return float $seos
+     */
+    public function getSeos()
+    {
+        return $this->seos;
+    }
+
+    /**
+     * Sets the seos
+     * 
+     * @param float $seos
+     * @return void
+     */
+    public function setSeos($seos)
+    {
+        $this->seos = $seos;
+    }
+    
     /**
      * Returns the fcp
      * 

@@ -6,7 +6,6 @@ requirejs(['jquery'], function ($) {
 
     $("input[type=radio][name=valueType]").change(function(){
         var deviceName = $(this).val();
-        console.log(deviceName);
         var classRow = ((deviceName=="Score")?"row-score":"row-vals");
         $(".recordlist").find("tr").removeClass("active");
         $("."+classRow).addClass("active");

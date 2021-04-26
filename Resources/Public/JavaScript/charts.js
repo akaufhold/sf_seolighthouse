@@ -19,13 +19,12 @@ requirejs(['jquery'], function ($) {
             /* DECLARATION CHARTS VARS */
             var ChartObj;
             var chartColors = {
-                fcp: 'rgb(255, 99, 132)', fcps: 'rgb(255, 99, 132)',
-                si:  'rgb(255, 159, 64)', sis:  'rgb(255, 159, 64)',
-                lcp: 'rgb(255, 205, 86)', lcps: 'rgb(255, 205, 86)',
-                tti: 'rgb(75, 192, 192)', ttis: 'rgb(75, 192, 192)',
-                tbt: 'rgb(54, 162, 235)', tbts: 'rgb(54, 162, 235)',
-                cls: 'rgb(153, 102, 255)', clss: 'rgb(153, 102, 255)',
-                os:  'rgb(40,167,69)'
+                acs: 'rgb(255, 99, 132)', fcp: 'rgb(255, 99, 132)', fcps: 'rgb(255, 99, 132)',
+                bps: 'rgb(255, 159, 64)', si:  'rgb(255, 159, 64)', sis:  'rgb(255, 159, 64)',
+                pes: 'rgb(255, 205, 86)', lcp: 'rgb(255, 205, 86)', lcps: 'rgb(255, 205, 86)',
+                pwas: 'rgb(75, 192, 192)', tti: 'rgb(75, 192, 192)', ttis: 'rgb(75, 192, 192)',
+                seos: 'rgb(54, 162, 235)', tbt: 'rgb(54, 162, 235)', tbts: 'rgb(54, 162, 235)',
+                cls: 'rgb(153, 102, 255)', clss: 'rgb(153, 102, 255)'
             };
             /* INIT */
             ch.init = function () {
@@ -63,6 +62,7 @@ requirejs(['jquery'], function ($) {
                 var entryiteration              = 1;
                 var entryCounter                = ch.countEntries($(entriesIn), deviceIn);
                 var lastDate;
+                console.log(valueTypeIn);
                 $(entriesIn).each(function(key,value) {
                     data                        = $(this).data();
                     device                      = data.device.toLowerCase();
@@ -74,9 +74,10 @@ requirejs(['jquery'], function ($) {
                     var dateLabelTime           = dateLabel +" "+ date.getHours()+":"+('0'+date.getMinutes()).slice(-2);
 
                     if (device==deviceIn){
-                        var auditIteration          = 0;
-                        ch.addDataLabel(ChartObj,dateLabelTime);
-                        entryValues = ch.getEntryValues(data, valueTypeIn);         
+                        console.log(valueTypeIn);
+                        var auditIteration      = 0;
+                        entryValues             = ch.getEntryValues(data, valueTypeIn);
+                        ch.addDataLabel(ChartObj,dateLabelTime);     
                         $.each(entryValues, function(auditKey,auditVal){
                             ch.addDataSet (ChartObj, auditKey, chartColors[auditKey], date, auditVal, ((entryiteration==1) ? '1' : '0'), ((entryiteration==entryCounter) ? '1' : '0'), auditIteration);
                             auditIteration++;
@@ -106,6 +107,14 @@ requirejs(['jquery'], function ($) {
                     $.each(dataIn, function(dataKey,dataVal){
                         if (dataKey.match(/^score/)!=null){
                             dataType = dataKey.split("score")[1].toLowerCase();
+                            entVal[dataType] = dataVal;
+                        }
+                    });
+                }else if(vti=="catscore"){
+                    /* AUDIT SCORES */
+                    $.each(dataIn, function(dataKey,dataVal){
+                        if (dataKey.match(/^catscore/)!=null){
+                            dataType = dataKey.split("catscore")[1].toLowerCase();
                             entVal[dataType] = dataVal;
                         }
                     });
