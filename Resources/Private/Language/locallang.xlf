@@ -141,7 +141,7 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showPerformanceAuditCharts" resname="tx_sf_seolighthouse_showlighthouse.showPerformanceAuditCharts">
 				<source>Show Performance Charts</source>
 			</trans-unit>
-			<trans-unit id="tx_sf_seolighthouse_showlighthouse.list.heading" resname="tx_sf_seolighthouse_showlighthouse.list.heading">
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.list.header" resname="tx_sf_seolighthouse_showlighthouse.list.header">
 				<source>Listing for LighthouseStatistics</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.analyseHeader.name" resname="tx_sf_seolighthouse_showlighthouse.analyseHeader.name">
@@ -217,10 +217,10 @@
 				<source>Category Score</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsValueType.absolute" resname="tx_sf_seolighthouse_showlighthouse.chartsValueType.absolute">
-				<source>Absolute Values</source>
+				<source>Performance Values</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsValueType.score" resname="tx_sf_seolighthouse_showlighthouse.chartsValueType.score">
-				<source>Scores</source>
+				<source>Performance Scores</source>
 			</trans-unit>
 		</body>
 	</file>

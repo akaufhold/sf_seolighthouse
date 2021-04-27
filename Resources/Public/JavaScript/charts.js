@@ -18,12 +18,12 @@ requirejs(['jquery'], function ($) {
             let newDataset = [];
             var lhc,data,ChartObj;
             var chartColors = {
-                acs: 'rgb(255, 99, 132)', fcp: 'rgb(255, 99, 132)', fcps: 'rgb(255, 99, 132)',
-                bps: 'rgb(255, 159, 64)', si:  'rgb(255, 159, 64)', sis:  'rgb(255, 159, 64)',
-                pes: 'rgb(255, 205, 86)', lcp: 'rgb(255, 205, 86)', lcps: 'rgb(255, 205, 86)',
-                pwas: 'rgb(75, 192, 192)', tti: 'rgb(75, 192, 192)', ttis: 'rgb(75, 192, 192)',
-                seos: 'rgb(54, 162, 235)', tbt: 'rgb(54, 162, 235)', tbts: 'rgb(54, 162, 235)',
-                cls: 'rgb(153, 102, 255)', clss: 'rgb(153, 102, 255)'
+                acs: 'rgb(46, 204, 113)', fcp: 'rgb(46, 204, 113)', fcps: 'rgb(46, 204, 113)',
+                bps: 'rgb(52, 152, 219)', si:  'rgb(52, 152, 219)', sis:  'rgb(52, 152, 219)',
+                pes: 'rgb(52, 73, 94)', lcp: 'rgb(52, 73, 94)', lcps: 'rgb(52, 73, 94)',
+                pwas: 'rgb(155, 89, 182)', tti: 'rgb(155, 89, 182)', ttis: 'rgb(155, 89, 182)',
+                seos: 'rgb(241, 196, 15)', tbt: 'rgb(241, 196, 15)', tbts: 'rgb(241, 196, 15)',
+                cls: 'rgb(231, 76, 60)', clss: 'rgb(231, 76, 60)'
             };
             /* INIT */
             ch.init = function () {
@@ -172,16 +172,24 @@ requirejs(['jquery'], function ($) {
                                     display: true,
                                     autoskip:true,
                                     stepSize: 1,
-                                    fixedStepSize: 1,
+                                    fixedStepSize: 1
                                 },
                                 gridLines: {
                                     display: false
                                 }
                             },
                             y: {
+                                min: 0,
+                                suggestedMin: 0,
+                                beginAtZero: true,
                                 ticks: {
-                                beginAtZero: true
+                                    display: true,
                                 }
+                            }
+                        },
+                        plugins:{
+                            legend:{
+                                reverse:1
                             }
                         }
                     }

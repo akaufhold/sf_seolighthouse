@@ -147,6 +147,7 @@ requirejs(['jquery'], function ($) {
             }
             else{
               allCategory = $(".categoriesCheck").find(".form-check-label").not(".active");
+              $(".saveCharts").css({display:"block"});
               $(allCategory).each(function(key,label){
                 val = $(label).parents(".custom-check").find(".category").val().toUpperCase();
                 targetCategory += val;
@@ -256,9 +257,8 @@ requirejs(['jquery'], function ($) {
                       OutputPerformanceAuditsHtml  = ""; 
                       OutputPerformanceAuditsHtml  += "<ul class='list-lighthouse list-lighthouse-"+curCategory+" list-group'>"+lh.getPerformanceAudits(mainAuditsPerformance,auditResults)+"</ul>";
                       $(".list-performance-audits").append(OutputPerformanceAuditsHtml);
+                      $(".performance,.performanceAudits,.performanceHeadline,.performanceListHeader").css({display:"block"});
                       $(".performanceAuditCharts").css({display:"none"});
-                      $(".performanceHeadline").css({display:"block"});
-                      $(".performanceListHeader").css({display:"block"});
                   }
                   /* ADDTIONAL AUDIT PROPERTIES*/
                   OutputAdditionalAuditsHtml  =  "";
