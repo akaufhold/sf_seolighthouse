@@ -4,6 +4,8 @@ $successColor:#28a745;
 $errorColor:#D8000C;
 $averageColor:#ffa400;
 
+$headerBackground:#d7dfe7;
+
 $highlightColor:#ebf3fb;
 $highlightBorderColor:#bdc5cd;
 
@@ -188,6 +190,9 @@ h5{
         .additionalAudits{
             display:none;
         }
+        .performance{
+            display:none;
+        }
         .performanceButtons{
             margin-top:1em;
             a.btn{
@@ -215,10 +220,26 @@ h5{
                 }
             }
         }
+        .audits{
+            .btn{
+                margin-top:0em;
+            }
+        }
+        .auditButtons{
+            margin-top:0.5em;
+            display: flex;
+            justify-content: space-between;
+            > *{
+                flex:49% 0 1;
+            }
+            .saveCharts{
+                display:none;
+            }
+        }
         .list-lighthouse{
-            margin-top:1em;
+            margin-top:0.5em;
             margin-bottom: 1em;
-            display:block;
+            display:block; 
             &.list-header{
                 font-weight:700; 
                 margin-top:0;
@@ -333,14 +354,13 @@ h5{
                 }
             }
             li{
-                &.list-additional-header{
-                    background: $progressColor;
+                &.list-additional-header{ 
+                    background: $headerBackground;
                     >.label{
-                        color:#fff;
+                        color:#000;
                     }
                 }
             }
-
             &.list-additional{
                 li{
                     .value{
@@ -358,17 +378,22 @@ h5{
 /* CHARTS TAB */
 
 .lighthouseCharts{
-    padding-top:2em;
+    padding-top:0em;
+    min-height: 20em;
+    &#performanceAuditsChart{
+        min-height:20em;
+    }
 }
 .overallCharts{
-    max-width:200px;
     padding-top: 3em;
     > div {
         display:flex;
         max-height: 100%;
+        padding: 0;
         .lighthouseCharts{
             padding-top:0; 
             max-height:auto;
+            width:20%;
         }
     }
 }
@@ -396,7 +421,7 @@ h5{
         }
     }
 }
-.container-control .col-md-6{
+.container-control .row > div{
     padding:0;
-    padding-right: 10px;
+    padding-right: 1em;
 }

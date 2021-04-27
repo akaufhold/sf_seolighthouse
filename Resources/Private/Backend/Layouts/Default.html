@@ -3,21 +3,23 @@
     <div class="module">
         <div class="module-docheader">
             <div class="module-docheader-bar module-docheader-bar-navigation row">
-                <div class="module-docheader-bar-column-left">
+                <div class="module-docheader-bar-column-left col-xs-12 col-sm-3">
                     <f:be.buttons.csh />
-                    <f:be.menus.actionMenu>
-                        <f:if condition="{storagePid}!={pageId}">
-                            <f:then>
-                                <f:be.menus.actionMenuItem label="<f:translate key='tx_sf_seolighthouse_showlighthouse.get' />" controller="LighthouseStatistics" action="analyse" />
-                            </f:then>
-                        </f:if>
-                        <f:be.menus.actionMenuItem label="<f:translate key='tx_sf_seolighthouse_showlighthouse.showEntries' />" controller="LighthouseStatistics" action="list" />
-                        <f:if condition="{storagePid}!={pageId}">
-                            <f:then>
-                                <f:be.menus.actionMenuItem label="<f:translate key='tx_sf_seolighthouse_showlighthouse.charts' />" controller="Charts" action="charts" />
-                            </f:then>
-                        </f:if>
-                    </f:be.menus.actionMenu>
+                    <div class="form-group form-group-sm">
+                        <f:be.menus.actionMenu additionalAttributes="{class: 'form-control'}">
+                            <f:if condition="{storagePid}!={pageId}">
+                                <f:then>
+                                    <f:be.menus.actionMenuItem label="<f:translate key='tx_sf_seolighthouse_showlighthouse.get' />" controller="LighthouseStatistics" action="analyse" />
+                                </f:then>
+                            </f:if>
+                            <f:be.menus.actionMenuItem label="<f:translate key='tx_sf_seolighthouse_showlighthouse.showEntries' />" controller="LighthouseStatistics" action="list" />
+                            <f:if condition="{storagePid}!={pageId}">
+                                <f:then>
+                                    <f:be.menus.actionMenuItem label="<f:translate key='tx_sf_seolighthouse_showlighthouse.charts' />" controller="Charts" action="charts" />
+                                </f:then>
+                            </f:if>
+                        </f:be.menus.actionMenu>
+                    </div>
                 </div>
                 <div class="module-docheader-bar-column-right">
                     <f:be.pagePath />
