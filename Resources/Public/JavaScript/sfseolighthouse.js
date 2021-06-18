@@ -1,8 +1,8 @@
 require.config({
   paths: {
     moment: "//cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min",
-    chartjs: "//cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min",
-    roughjs: "//cdn.jsdelivr.net/npm/roughjs@3.1.0/dist/rough"
+    chart: "//cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min",
+    roughjs: "https://unpkg.com/roughjs@4.3.1/bundled/rough"
   },
   shim: {
     chartjs: {
@@ -12,7 +12,7 @@ require.config({
 });
 
 requirejs(['jquery'], function ($) {
-  require(["moment", "chartjs","roughjs"], function(moment, chart) {
+  require(["moment","chart","roughjs"], function(moment, chart) {
     /* REQUIRED ICONS */
     var chevronDown;
     requirejs(['TYPO3/CMS/Backend/Icons'], function(Icons) {
@@ -139,9 +139,11 @@ requirejs(['jquery'], function ($) {
       lh.getCategoryList = function(){
         var targetCategory = "";
         category = $(".categoriesCheck").find(".form-check-label.active");
+        
         $(category).each(function(key,label){
             val = $(label).parents(".custom-check").find(".category").val().toUpperCase();
             if (val!="ALL"){
+                $(".saveCharts").css({display:"none"});
                 targetCategory += val;
                 targetCategory += (((key+1)!=category.length)?",":"");
             }
@@ -212,6 +214,9 @@ requirejs(['jquery'], function ($) {
           if ((status=="success") || (status=="error"))
               $(cc).find(".counterAmount").css({width:"100%"});
       }
+      lh.firstLetterUp = function(stringIn){
+        return stringIn.charAt(0).toUpperCase() + stringIn.slice(1).toLowerCase();
+      }
       /* FETCH API REQUEST FUNCTION */
       lh.fetchLighthouseData = function(targetUrl) {
         /* PROGRESS BAR */
@@ -232,7 +237,7 @@ requirejs(['jquery'], function ($) {
               lh.setPbStatus("success");
               $(".list-audits,.list-Addtional-Audits,.list-performance-audits").html("");
               /* SET DEVICE HIDDEN FIELD */
-              $("#device").val(lh.getDevice().charAt(0).toUpperCase() + lh.getDevice().slice(1));
+              $("#device").val(lh.firstLetterUp(lh.getDevice()));
               OutputAuditsHtml  = "<ul class='list-lighthouse list-score list-main list-group'>";
 
               $(lhCategoryList).each(function(catIt,category){
@@ -248,7 +253,8 @@ requirejs(['jquery'], function ($) {
 
                   lh.addDataSet(window[curCategory+"Chart"],"Score",speedColor,overallScore*100,1,0);
                   lh.addDataSet(window[curCategory+"Chart"],"","rgba(255, 255, 255, 1)",missingScore*100,0,1);
-  
+
+                  /* OVERALL AUDIT PROPERTIES */
                   OutputAuditsHtml    += lh.getMainAudits(curCategory,auditCategories,catIt,lhCategoryListLength);
 
                   /* PERFORMANCE AUDIT PROPERTIES */
@@ -306,11 +312,8 @@ requirejs(['jquery'], function ($) {
               htmlAuditsOut     +=    lh.addSpan("label",OutputAuditName);
               htmlAuditsOut     +=    lh.addSpan("score "+speed,score);
               htmlAuditsOut     +='</li>';
-              console.log(value);
-              //console.log(mainAudits[auditItem]);
               $("#"+value[1]).val(score);
             }
-
           })
 
           /* ADD CHARTS DATA TO ARRAY */
