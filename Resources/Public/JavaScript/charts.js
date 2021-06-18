@@ -1,7 +1,8 @@
 require.config({
     paths: {
-      moment: "//cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min",
-      chart: "//cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min"
+      chart: "//cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min",
+      roughjs: "https://unpkg.com/roughjs@4.3.1/bundled/rough",
+      roughjsplugin: "//unpkg.com/chartjs-plugin-rough@latest/dist/chartjs-plugin-rough.min"
     },
     shim: {
       chartjs: {
@@ -11,7 +12,7 @@ require.config({
 });
 
 requirejs(['jquery'], function ($) {
-    require(["moment","chart"], function(moment, chart) {
+    require(["chart","roughjs"], function(moment, chart) {
         var LighthouseCharts = function () {
             var ch = this;
             /* DECLARATION CHARTS VARS */
@@ -60,7 +61,6 @@ requirejs(['jquery'], function ($) {
                 var entryiteration              = 1;
                 var entryCounter                = ch.countEntries($(entriesIn), deviceIn);
                 var lastDate;
-                //console.log(valueTypeIn);
                 $(entriesIn).each(function(key,value) {
                     data                        = $(this).data();
                     device                      = data.device.toLowerCase();
@@ -72,13 +72,11 @@ requirejs(['jquery'], function ($) {
                     var dateLabelTime           = dateLabel +" "+ date.getHours()+":"+('0'+date.getMinutes()).slice(-2);
 
                     if (device==deviceIn){
-                        //console.log(valueTypeIn);
                         var auditIteration      = 0;
-                        entryValues             = ch.getEntryValues(data, valueTypeIn);
+                        entryValues             = ch.getEntryValues(data, valueTypeIn); 
                         ch.addDataLabel(ChartObj,dateLabelTime);     
                         $.each(entryValues, function(auditKey,auditVal){
                             var labelChart = $(".entryLabels").attr("data-label-"+auditKey);
-                            console.log(labelChart);
                             ch.addDataSet (ChartObj, labelChart, chartColors[auditKey], date, auditVal, ((entryiteration==1) ? '1' : '0'), ((entryiteration==entryCounter) ? '1' : '0'), auditIteration);
                             auditIteration++;
                         });
@@ -91,7 +89,7 @@ requirejs(['jquery'], function ($) {
                 var entVal = {};
                 var dataType;
                 if (vti=="value"){
-                    /* AUDIT VALUES */
+                    /* PERFORMANCE VALUES */
                     $.each(dataIn, function(dataKey,dataVal){
                         if (dataKey.match(/^value/)!=null){
                             dataType = dataKey.split("value")[1].toLowerCase();
@@ -103,7 +101,7 @@ requirejs(['jquery'], function ($) {
                         }
                     });
                 }else if(vti=="score"){
-                    /* AUDIT SCORES */
+                    /* PERFORMANCE SCORES */
                     $.each(dataIn, function(dataKey,dataVal){
                         if (dataKey.match(/^score/)!=null){
                             dataType = dataKey.split("score")[1].toLowerCase();
@@ -111,7 +109,7 @@ requirejs(['jquery'], function ($) {
                         }
                     });
                 }else if(vti=="catscore"){
-                    /* AUDIT SCORES */
+                    /* OVERALL SCORES */
                     $.each(dataIn, function(dataKey,dataVal){
                         if (dataKey.match(/^catscore/)!=null){
                             dataType = dataKey.split("catscore")[1].toLowerCase();
@@ -172,7 +170,8 @@ requirejs(['jquery'], function ($) {
                                     display: true,
                                     autoskip:true,
                                     stepSize: 1,
-                                    fixedStepSize: 1
+                                    fixedStepSize: 1,
+                                    maxTicksLimit: 10
                                 },
                                 gridLines: {
                                     display: false
@@ -185,11 +184,6 @@ requirejs(['jquery'], function ($) {
                                 ticks: {
                                     display: true,
                                 }
-                            }
-                        },
-                        plugins:{
-                            legend:{
-                                reverse:1
                             }
                         }
                     }

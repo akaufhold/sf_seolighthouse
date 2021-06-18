@@ -27,6 +27,7 @@ h5 {
   margin: 6px 0 6px;
 }
 
+/* LIGHTHOUSE PRESELECT */
 .tx_sfseolighthouse {
   /* LIGHTHOUSE RESULT OUTPUT */
 }
@@ -215,7 +216,8 @@ h5 {
 }
 
 .tx_sfseolighthouse form.newLighthouseStatistics .performanceHeadline,
-.tx_sfseolighthouse form.newLighthouseStatistics .performanceListHeader {
+.tx_sfseolighthouse form.newLighthouseStatistics .performanceListHeader,
+.tx_sfseolighthouse form.newLighthouseStatistics .performanceAuditCharts {
   display: none;
 }
 
@@ -431,6 +433,7 @@ h5 {
   padding-top: 0;
   max-height: auto;
   width: 20%;
+  display: none;
 }
 
 .outputControl {

@@ -32,6 +32,8 @@ h5{
         margin: 6px 0 6px;
     }
 } 
+
+/* LIGHTHOUSE PRESELECT */
 .tx_sfseolighthouse{
     .topMarg{
         margin-top:1em;
@@ -202,7 +204,8 @@ h5{
             }
         }
         .performanceHeadline,
-        .performanceListHeader{
+        .performanceListHeader,
+        .performanceAuditCharts{
             display:none;
         }
         .performanceMenu{
@@ -394,6 +397,7 @@ h5{
             padding-top:0; 
             max-height:auto;
             width:20%;
+            display:none;
         }
     }
 }
