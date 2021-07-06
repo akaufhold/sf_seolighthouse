@@ -52,8 +52,7 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     /**
      * get be-user language id
      * 
-     * @param SiteLanguage $language
-     * @return int
+     * @return string
      */
     public static function getBeUserLang(){
         return ($GLOBALS['BE_USER']->uc['lang'] == '') ? 'en' : $GLOBALS['BE_USER']->uc['lang'];
@@ -135,22 +134,6 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         if ($device)
             $this->targetUrl.="&strategy=".$device;
         return $this->targetUrl;
-    }
-
-    public function requiredJavascript($locale, $pageurl, $device){
-        $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
-        $pageRenderer->addRequireJsConfiguration(
-        [
-            'paths' => [
-                'jquery' => 'sysext/core/Resources/Public/JavaScript/Contrib/jquery/',
-                'plupload' => '../typo3conf/ext/your_extension/node_modules/plupload/js/plupload.full.min',
-            ],
-            'shim' => [
-                'deps' => ['jquery'],
-                'plupload' => ['exports' => 'plupload'],
-            ],
-        ]
-        );
     }
     
     /**
