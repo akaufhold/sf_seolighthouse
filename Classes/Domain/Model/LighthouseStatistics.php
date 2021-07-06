@@ -151,13 +151,6 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     protected $clss = 0.0;
 
     /**
-     * Overall Score
-     * 
-     * @var float
-     */
-    protected $os = 0.0;
-
-    /**
      * Device 
      * 
      * @var string
