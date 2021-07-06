@@ -3,11 +3,13 @@
 
 namespace Stackfactory\SfSeolighthouse\Controller;
 
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Context\Context; 
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Beuser;
 
 /**
  *
@@ -48,6 +50,16 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     }
 
     /**
+     * get be-user language id
+     * 
+     * @param SiteLanguage $language
+     * @return int
+     */
+    public static function getBeUserLang(){
+        return ($GLOBALS['BE_USER']->uc['lang'] == '') ? 'en' : $GLOBALS['BE_USER']->uc['lang'];
+    }
+
+    /**
      * get language id
      * 
      * @return int
@@ -55,7 +67,6 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     public function getLangId(){
         $context = GeneralUtility::makeInstance(Context::class);
         /** @var TYPO3\CMS\Core\Site\Entity\Site */
-        $site = $GLOBALS['TYPO3_REQUEST']->getAttribute('site');
         $langId = $context->getPropertyFromAspect('language', 'id');
         return $langId;
     }
@@ -151,19 +162,18 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     {
         $lighthouseStatistics = $this->lighthouseStatisticsRepository->findAll();
         $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
-
         $storagePid = $this->getStoragePid();
         $this->view->assign('storagePid', $storagePid);
         /* GET URL PARAMS FOR GENERATING LIGHTHOUSE AJAX GET*/
-        $this->locale = $this->getLocale();
+        $lang = $this->getBeUserLang();
         /* GET FE URL OF SELECTED PAGE IN PAGETREE*/
         //$lightHouseGetUrl   = $this->getBaseUrl()."/index.php?id=".$this->getSelectedPage();
         $lightHouseGetUrl   = "https://www.stackfactory.de";
 
-        $ajaxGetUrlDesktop  = $this->getTargetUrl($this->locale,$lightHouseGetUrl,"desktop");
-        $ajaxGetUrlMobile  = $this->getTargetUrl($this->locale,$lightHouseGetUrl,"mobile");
+        $ajaxGetUrlDesktop  = $this->getTargetUrl($lang,$lightHouseGetUrl,"desktop");
+        $ajaxGetUrlMobile  = $this->getTargetUrl($lang,$lightHouseGetUrl,"mobile");
 
-        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($ajaxGetUrlMobile); 
+
         
         $this->view->assign('pageId', $this->getSelectedPage());
         $this->view->assign('ajaxGetUrlDesktop', $ajaxGetUrlDesktop);
