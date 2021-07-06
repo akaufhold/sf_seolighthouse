@@ -156,8 +156,6 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $ajaxGetUrlDesktop  = $this->getTargetUrl($lang,$lightHouseGetUrl,"desktop");
         $ajaxGetUrlMobile  = $this->getTargetUrl($lang,$lightHouseGetUrl,"mobile");
 
-
-        
         $this->view->assign('pageId', $this->getSelectedPage());
         $this->view->assign('ajaxGetUrlDesktop', $ajaxGetUrlDesktop);
         $this->view->assign('ajaxGetUrlMobile', $ajaxGetUrlMobile);
