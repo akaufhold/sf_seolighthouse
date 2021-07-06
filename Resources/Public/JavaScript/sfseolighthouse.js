@@ -104,11 +104,8 @@ requirejs(['jquery'], function ($) {
               categoryUrl =  lh.getCategoryList();
               lh.addCategoriesToTargetUrl(categoryUrl);
           });
-
-          $(".auditButtons").find("a").click(function(){
-              var idTarget = $(this).attr("id").split("show")[1].charAt(0).toLowerCase()+$(this).attr("id").split("show")[1].substring(1);
-              $("."+idTarget).css({display:"block"});
-          })
+          
+          lh.showAddionalAudits();
 
           $(".performanceMenu").find("a").click(function(){
             var idTarget = $(this).attr("id").split("show")[1].charAt(0).toLowerCase()+$(this).attr("id").split("show")[1].substring(1);
@@ -121,6 +118,14 @@ requirejs(['jquery'], function ($) {
             $("."+idTarget).css({display:"block"});
           }) 
       };
+
+      lh.showAddionalAudits = function(){
+        $(".auditButtons").find("a").click(function(){
+          var idTarget = $(this).attr("id").split("show")[1].charAt(0).toLowerCase()+$(this).attr("id").split("show")[1].substring(1);
+          $("."+idTarget).css({display:"block"});
+        })
+      }
+
       /* SET TARGET URL */
       lh.setTargetUrl = function(targetUrl){
         $(".targetUrl").html(targetUrl);
@@ -278,6 +283,7 @@ requirejs(['jquery'], function ($) {
                   $(".newLighthouseStatistics").css({display:"block"});
               })
               OutputAuditsHtml  += "</ul>";
+              $(".list-audits").html("");
               $(".list-audits").append(OutputAuditsHtml);
               lh.setTotalTime(lighthouse.timing.total);
               lh.activeListClick();
@@ -395,8 +401,8 @@ requirejs(['jquery'], function ($) {
           return htmlAdditionalOut;
       }
       /* HTML SPAN OUTPUT */
-      lh.addSpan = function(htmlClass,value){
-        var htmlOut  = '<span class="'+htmlClass+'">';
+      lh.addSpan = function(cssClass,value){
+        var htmlOut  = '<span class="'+cssClass+'">';
         htmlOut      +=    value;
         htmlOut      += '</span>';
         return htmlOut;
@@ -411,6 +417,9 @@ requirejs(['jquery'], function ($) {
       /* CHARTS */
       lh.createCharts = function (chartIn,typeIn,target,titleText) {
           var targetChart = target+"Chart";
+          if(typeof window[targetChart] !== "undefined"){
+            window[targetChart].destroy();
+          }
           window[targetChart] = new Chart(chartIn, {
             type: typeIn,
             data: {
