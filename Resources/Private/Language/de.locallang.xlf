@@ -130,10 +130,10 @@
 				<target>Erfolg</target>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showPerformanceAuditList" resname="tx_sf_seolighthouse_showlighthouse.showPerformanceAuditList" xml:space="preserve">
-				<target>Zeige Geschwindigkeitspunkte-Liste</target>
+				<target>Zeige Liste</target>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showPerformanceAuditCharts" resname="tx_sf_seolighthouse_showlighthouse.showPerformanceAuditCharts" xml:space="preserve">
-				<target>Zeige Geschwindigkeitspunkte-Diagramm</target>
+				<target>Zeige Diagramm</target>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.analyseHeader.name" resname="tx_sf_seolighthouse_showlighthouse.analyseHeader.name" xml:space="preserve">
 				<target>Lighthouse Eigenschaft</target>
