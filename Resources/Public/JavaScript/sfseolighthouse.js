@@ -268,9 +268,10 @@ requirejs(['jquery'], function ($) {
                   }
                   /* ADDTIONAL AUDIT PROPERTIES*/
                   OutputAdditionalAuditsHtml  =  "";
-                  OutputAdditionalAuditsHtml  += "<ul class='list-lighthouse list-additional-"+curCategory+" list-group'><li class='list-additional-header list-group-item'><span class='label'>"+auditCategories[curCategory].title+"</span></li>";
-                  OutputAdditionalAuditsHtml  += lh.getAddionalAudits(auditResults);
-                  OutputAdditionalAuditsHtml  += "</ul>";
+                  OutputAdditionalAuditsHtml  += "<div class='label toggle list-lighthouse collapsed' data-toggle='collapse' data-target='#list-additional-"+curCategory+"' aria-expanded='false' aria-controls='list-additional-"+curCategory+"'>"+auditCategories[curCategory].title+chevronDown+"</div>";
+                  OutputAdditionalAuditsHtml  += "<ol class='collapse list-lighthouse list-group' id='list-additional-"+curCategory+"'>";
+                  OutputAdditionalAuditsHtml  +=     lh.getAdditionalAudits(auditResults);
+                  OutputAdditionalAuditsHtml  += "</ol>";
                   $(".list-Addtional-Audits").append(OutputAdditionalAuditsHtml);
                   $(".newLighthouseStatistics").css({display:"block"});
               })
@@ -355,7 +356,7 @@ requirejs(['jquery'], function ($) {
           return htmlPerformanceOut;
       }
       /* GET ADDITIONAL AUDITS */
-      lh.getAddionalAudits = function(auditResults){
+      lh.getAdditionalAudits = function(auditResults){
           var speed, score, displayValue, screenshot, displayMode, description;
           var htmlAdditionalOut = "";
 
