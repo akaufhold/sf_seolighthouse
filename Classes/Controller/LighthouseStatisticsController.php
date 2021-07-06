@@ -72,6 +72,9 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $langId = $this->getLangId();
         $language = $site->getLanguageById($langId);
         $langCode = $language->getLocale();
+        if (str_contains($langCode,".")){
+            $langCode = explode(".",$langCode)[0];
+        }
         return $langCode;
     }
 
@@ -174,7 +177,6 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
      */
     public function listAction()
     {
-        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($this->getSelectedPage()); 
         $lighthouseStatistics = $this->lighthouseStatisticsRepository->findByTarget($this->getSelectedPage());
         $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
         $this->view->assign('pageId', $this->getSelectedPage());
