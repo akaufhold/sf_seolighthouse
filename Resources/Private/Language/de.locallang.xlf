@@ -145,7 +145,7 @@
 				<target>Punkte</target>
 			</trans-unit>	
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.auditsHeadline" resname="tx_sf_seolighthouse_showlighthouse.auditsHeadline">
-				<target>Lighthouse Prüfungen</target>
+				<target>Lighthouse-Prüfung</target>
 			</trans-unit>	
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.performanceHeadline" resname="tx_sf_seolighthouse_showlighthouse.performanceHeadline">
 				<target>Geschwindigkeits-Prüfung</target>
