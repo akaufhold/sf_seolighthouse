@@ -31,43 +31,48 @@
         <th><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.tti" /></th>
         <th><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.tbt" /></th>
         <th><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.cls" /></th>
-        <th><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.os" /></th>
+        <th><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.pes" /></th>
         <th> </th>
         <th> </th>
     </tr>
 
     <tr class="score"> 
+        <th><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.acs" /></th>
+        <th><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.bps" /></th>
+        <th><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.pes" /></th>
+        <th><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.pwas" /></th>
+        <th><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.seos" /></th>
         <th><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.fcps" /></th>
         <th><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.sis" /></th>
         <th><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.lcps" /></th>
         <th><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.ttis" /></th>
         <th><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.tbts" /></th>
         <th><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.clss" /></th>
-        <th> </th>
+        <th><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.pes" /></th>
         <th> </th>
         <th> </th>
     </tr>
 
     <f:for each="{lighthouseStatisticss}" as="lighthouseStatistics">
         <tr class="vals">
-            <td><f:link.action action="show" arguments="{lighthouseStatistics : lighthouseStatistics}"> {lighthouseStatistics.fcp}</f:link.action></td>
-            <td><f:link.action action="show" arguments="{lighthouseStatistics : lighthouseStatistics}"> {lighthouseStatistics.si}</f:link.action></td>
-            <td><f:link.action action="show" arguments="{lighthouseStatistics : lighthouseStatistics}"> {lighthouseStatistics.lcp}</f:link.action></td>
-            <td><f:link.action action="show" arguments="{lighthouseStatistics : lighthouseStatistics}"> {lighthouseStatistics.tti}</f:link.action></td>
-            <td><f:link.action action="show" arguments="{lighthouseStatistics : lighthouseStatistics}"> {lighthouseStatistics.tbt}</f:link.action></td>
-            <td><f:link.action action="show" arguments="{lighthouseStatistics : lighthouseStatistics}"> {lighthouseStatistics.cls}</f:link.action></td>
-            <td><f:link.action action="show" arguments="{lighthouseStatistics : lighthouseStatistics}"> {lighthouseStatistics.os}</f:link.action></td>
+            <td>{lighthouseStatistics.fcp}</td>
+            <td>{lighthouseStatistics.si}</td>
+            <td>{lighthouseStatistics.lcp}</td>
+            <td>{lighthouseStatistics.tti}</td>
+            <td>{lighthouseStatistics.tbt}</td>
+            <td>{lighthouseStatistics.cls}</td>
+            <td>{lighthouseStatistics.pes}</td>
             <td><f:link.action action="edit" arguments="{lighthouseStatistics : lighthouseStatistics}">Edit</f:link.action></td>
             <td><f:link.action action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">Delete</f:link.action></td>
         </tr>
         <tr class="score">
-            <td><f:link.action action="show" arguments="{lighthouseStatistics : lighthouseStatistics}"> {lighthouseStatistics.fcps}</f:link.action></td>
-            <td><f:link.action action="show" arguments="{lighthouseStatistics : lighthouseStatistics}"> {lighthouseStatistics.sis}</f:link.action></td>
-            <td><f:link.action action="show" arguments="{lighthouseStatistics : lighthouseStatistics}"> {lighthouseStatistics.lcps}</f:link.action></td>
-            <td><f:link.action action="show" arguments="{lighthouseStatistics : lighthouseStatistics}"> {lighthouseStatistics.ttis}</f:link.action></td>
-            <td><f:link.action action="show" arguments="{lighthouseStatistics : lighthouseStatistics}"> {lighthouseStatistics.tbts}</f:link.action></td>
-            <td><f:link.action action="show" arguments="{lighthouseStatistics : lighthouseStatistics}"> {lighthouseStatistics.clss}</f:link.action></td>
-            <td><f:link.action action="show" arguments="{lighthouseStatistics : lighthouseStatistics}"> {lighthouseStatistics.os}</f:link.action></td>
+            <td>{lighthouseStatistics.fcps}</td>
+            <td>{lighthouseStatistics.sis}</td>
+            <td>{lighthouseStatistics.lcps}</td>
+            <td>{lighthouseStatistics.ttis}</td>
+            <td>{lighthouseStatistics.tbts}</td>
+            <td>{lighthouseStatistics.clss}</td>
+            <td>{lighthouseStatistics.pes}</td>
             <td><f:link.action action="edit" arguments="{lighthouseStatistics : lighthouseStatistics}">Edit</f:link.action></td>
             <td><f:link.action action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">Delete</f:link.action></td>
         </tr>
