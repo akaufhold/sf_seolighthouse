@@ -222,6 +222,9 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsValueType.score" resname="tx_sf_seolighthouse_showlighthouse.chartsValueType.score">
 				<source>Performance Scores</source>
 			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.error.emptyList" resname="tx_sf_seolighthouse_showlighthouse.error.emptyList">
+				<source>No Lighthouse Data found.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

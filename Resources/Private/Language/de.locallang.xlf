@@ -21,7 +21,6 @@
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.target" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.target" xml:space="preserve">
 				<target>Page ID</target>
 			</trans-unit>
-
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.acs" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.acs">
 				<target>Barrierefreiheit Punkte</target>
 			</trans-unit>
@@ -37,7 +36,6 @@
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.seos" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.seos">
 				<target>Suchmaschinenoptimierung Punkte</target>
 			</trans-unit>
-
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.fcp">
 				<target>First Contentful Paint</target>
 			</trans-unit>
@@ -205,6 +203,9 @@
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.chartsValueType.score" resname="tx_sf_seolighthouse_showlighthouse.chartsValueType.score">
 				<target>Geschwindigkeit Punkte</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.error.emptyList" resname="tx_sf_seolighthouse_showlighthouse.error.emptyList">
+				<target>Keine Lighthouse-Daten gefunden.</target>
 			</trans-unit>
 		</body>
 	</file>
