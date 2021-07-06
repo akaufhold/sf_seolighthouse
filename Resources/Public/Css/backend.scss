@@ -9,7 +9,8 @@ $headerBackground:#d7dfe7;
 $highlightColor:#ebf3fb;
 $highlightBorderColor:#bdc5cd;
 
-$borderColor:#aaa;
+$borderColor:#aaa; 
+$background-color-bs: #0078e6;
 
 @keyframes runProgressBar {
     0% { width:0%; }
@@ -58,7 +59,7 @@ h5{
                 position: absolute;
                 margin:0;
             }
-        }
+        } 
         label{
             position: absolute;
             left:0;
@@ -72,7 +73,7 @@ h5{
         }
         .counterContainer {
             padding: 0em 0.25em;
-            display: inline-block;
+            display: inline-block; 
             width: 100%;
             background: $progressBackColor;
             border-radius: 0.3em;
@@ -240,9 +241,32 @@ h5{
             }
         }
         .list-lighthouse{
-            margin-top:0.5em;
+            &.label{
+                display:flex;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+                width: 100%;
+                cursor:pointer;
+                text-align: left;
+                font-size: 1em;
+                line-height: 1.25;
+                min-height: 3em;
+                color: #000;
+                margin:1em 0 0;
+                padding:1em 1em;
+                background:$background-color-bs; 
+                color:white; 
+                &.collapsed{
+                    .icon{
+                        transform: rotateZ(0deg);
+                    }   
+                }
+                .icon{
+                    transform: rotateZ(180deg);
+                    align-self: flex-end;
+                }
+            }
             margin-bottom: 1em;
-            display:block; 
             &.list-header{
                 font-weight:700; 
                 margin-top:0;
