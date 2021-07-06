@@ -120,19 +120,21 @@ requirejs(['jquery'], function ($) {
             }
             $("."+idTarget).css({display:"block"});
           }) 
-
-          /* ACTIVE LIST ENTRY ON CLICK */
-          $(".list-lighthouse").on("click","li",function(){
-              var listItem = $(this);
-              $(".list-lighthouse").find("li").removeClass("active");
-              if (!$(listItem).hasClass("active")){
-                  $(listItem).addClass("active");
-              }
-          });
       };
       /* SET TARGET URL */
       lh.setTargetUrl = function(targetUrl){
         $(".targetUrl").html(targetUrl);
+      }
+
+      lh.activeListClick = function(){
+        $(".list-lighthouse").on("click","li",function(){
+            var listItem = $(this);
+            console.log(listItem);
+            $(".list-lighthouse").find("li").removeClass("active");
+            if (!$(listItem).hasClass("active")){
+                $(listItem).addClass("active");
+            }
+        });
       }
 
       /* GET CATEGORY URL PARAMS */
@@ -278,6 +280,7 @@ requirejs(['jquery'], function ($) {
               OutputAuditsHtml  += "</ul>";
               $(".list-audits").append(OutputAuditsHtml);
               lh.setTotalTime(lighthouse.timing.total);
+              lh.activeListClick();
             }else{
               /* ERROR HANDLING */
               lh.errorHandling(json.error.message);
@@ -299,7 +302,7 @@ requirejs(['jquery'], function ($) {
           $(cc).find(".totalTime").html((timer/1000).toFixed(2)+" s");
       }
         /* GET MAIN AUDITS */
-        lh.getMainAudits = function(auditItem,auditResult,mainIteration,mainCounter){
+      lh.getMainAudits = function(auditItem,auditResult,mainIteration,mainCounter){
           var speed, score, displayValue, chartVal;
           var htmlAuditsOut = "";
           $(mainAudits).each(function(key,value){
