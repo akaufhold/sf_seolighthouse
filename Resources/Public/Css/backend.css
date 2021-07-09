@@ -354,6 +354,27 @@ h5 {
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse.list-additional li .value {
   max-width: 75%;
 }
+.tx_sfseolighthouse form.newLighthouseStatistics .list-screenshots {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.tx_sfseolighthouse form.newLighthouseStatistics .list-screenshots.collapse {
+  display: none;
+}
+.tx_sfseolighthouse form.newLighthouseStatistics .list-screenshots.collapse.in {
+  display: flex;
+}
+.tx_sfseolighthouse form.newLighthouseStatistics .list-screenshots li {
+  flex-basis: 20%;
+  list-style: none;
+  text-align: center;
+}
+.tx_sfseolighthouse form.newLighthouseStatistics .list-screenshots li.list-group-item {
+  border-right: #aaa;
+}
+.tx_sfseolighthouse form.newLighthouseStatistics .list-screenshots li.list-group-item:first-child {
+  border-left: #aaa;
+}
 
 .getLighthouseData {
   margin-top: 0.5em;
@@ -413,13 +434,13 @@ h5 {
   width: 120px;
 }
 .recordlist table.table tr td.fast {
-  background-color: #28a745;
+  background-color: rgba(40, 167, 69, 0.5);
 }
 .recordlist table.table tr td.average {
-  background-color: #ffa400;
+  background-color: rgba(255, 164, 0, 0.5);
 }
 .recordlist table.table tr td.slow {
-  background-color: #D8000C;
+  background-color: rgba(216, 0, 12, 0.5);
 }
 
 .container-control .row > div {

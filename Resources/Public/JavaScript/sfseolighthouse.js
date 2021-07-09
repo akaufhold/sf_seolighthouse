@@ -281,7 +281,7 @@ requirejs(['jquery'], function ($) {
               OutputAuditsHtml  += "</ul>";
               $(".list-audits").html("");
               $(".list-audits").append(OutputAuditsHtml);
-              $(".list-audits").append(lh.getScreenshots(auditScreenshots));
+              $(".list-Addtional-Audits").append(lh.getScreenshots(auditScreenshots));
               lh.setTotalTime(lighthouse.timing.total);
               lh.activeListClick();
             }else{
@@ -303,10 +303,6 @@ requirejs(['jquery'], function ($) {
           $(cc).find(".counterTitle").append("<span class='totalTime'>"+(timer/1000).toFixed(2)+" s</span>");
         else
           $(cc).find(".totalTime").html((timer/1000).toFixed(2)+" s");
-      }
-
-      lh.getScreenshots = function(auditScreenshot){
-        auditScreenshot["details"]["items"];
       }
 
         /* GET MAIN AUDITS */
@@ -401,6 +397,23 @@ requirejs(['jquery'], function ($) {
             }
           });
           return htmlAdditionalOut;
+      }
+
+      
+      lh.getScreenshots = function(auditScreenshot){
+        var screens = auditScreenshot["details"]["items"];
+        console.log(screens);
+        var screenData;
+        var screenTime;
+        var screenOutput  ="<div class='label toggle list-lighthouse collapsed' data-toggle='collapse' data-target='#list-screenshots' aria-expanded='false' aria-controls='list-screenshots'>Screenshots"+chevronDown+"</div>";
+        screenOutput     +="<ul id='list-screenshots' class='collapse list-screenshots list-group'>";
+        $(screens).each(function(key,screen){
+            screenData = screen['data'];
+            screenTime = screen['timing'];
+            screenOutput+="<li class='list-group-item'>"+screenTime+" ms<br /><img class='screenshot' src='"+screenData+"'/></li>";
+        })
+        screenOutput+="</ul>";
+        return screenOutput;
       }
       /* HTML SPAN OUTPUT */
       lh.addSpan = function(cssClass,value){
