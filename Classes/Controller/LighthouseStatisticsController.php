@@ -3,13 +3,22 @@
 
 namespace Stackfactory\SfSeolighthouse\Controller;
 
+use Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics;
+use Stackfactory\SfSeolighthouse\Domain\Repository\LighthouseStatisticsRepository;
+use Stackfactory\SfSeolighthouse\Domain\Repository\LogEntryLighthouseRepository;
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Context\Context; 
+use TYPO3\CMS\Belog\Domain\Model\LogEntry;
+use TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\SysLog\Action\Database;
 use TYPO3\CMS\Beuser;
+
+
 
 /**
  *
@@ -37,16 +46,29 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     /**
      * lighthouseStatisticsRepository
      * 
-     * @var \Stackfactory\SfSeolighthouse\Domain\Repository\LighthouseStatisticsRepository
+     * @var LighthouseStatisticsRepository
      */
     protected $lighthouseStatisticsRepository = null;
 
     /**
-     * @param \Stackfactory\SfSeolighthouse\Domain\Repository\LighthouseStatisticsRepository $lighthouseStatisticsRepository
+     * @param LighthouseStatisticsRepository $lighthouseStatisticsRepository
      */
-    public function injectLighthouseStatisticsRepository(\Stackfactory\SfSeolighthouse\Domain\Repository\LighthouseStatisticsRepository $lighthouseStatisticsRepository)
+    public function injectLighthouseStatisticsRepository(LighthouseStatisticsRepository $lighthouseStatisticsRepository)
     {
         $this->lighthouseStatisticsRepository = $lighthouseStatisticsRepository;
+    }
+
+    /**
+     * @var LogEntryLighthouseRepository
+     */
+    protected $logEntryLighthouseRepository;
+
+    /**
+     * @param LogEntryLighthouseRepository $logEntryLighthouseRepository
+     */
+    public function injectLogEntryLighthouseRepository(LogEntryLighthouseRepository $logEntryLighthouseRepository)
+    {
+        $this->logEntryLighthouseRepository = $logEntryLighthouseRepository;
     }
 
     /**
@@ -169,18 +191,22 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     public function listAction()
     {
         $lighthouseStatistics = $this->lighthouseStatisticsRepository->findByTarget($this->getSelectedPage());
+        $pageId     = $this->getSelectedPage();
         $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
-        $this->view->assign('pageId', $this->getSelectedPage());
-        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($lighthouseStatistics);  
+        $this->view->assign('pageId', $pageId);
+        /*$constraint = null;
+        $constraint->setPageId($pageId);
+        $beLogOutput = $this->beLogRepository->findByConstraint($constraint);*/
+        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($pageId);  
     }
 
     /**
      * action show
      * 
-     * @param \Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $lighthouseStatistics
+     * @param LighthouseStatistics $lighthouseStatistics
      * @return string|object|null|void
      */
-    public function showAction(\Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $lighthouseStatistics)
+    public function showAction(LighthouseStatistics $lighthouseStatistics)
     {
         $this->view->assign('lighthouseStatistics', $lighthouseStatistics);
     }
@@ -188,10 +214,10 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     /**
      * action delete
      * 
-     * @param \Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $lighthouseStatistics
+     * @param LighthouseStatistics $lighthouseStatistics
      * @return string|object|null|void
      */
-    public function deleteAction(\Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $lighthouseStatistics)
+    public function deleteAction(LighthouseStatistics $lighthouseStatistics)
     {
         if ($GLOBALS['BE_USER']->isAdmin()){
             $this->lighthouseStatisticsRepository->remove($lighthouseStatistics);
@@ -213,10 +239,10 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     /**
      * action create
      * 
-     * @param \Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $newLighthouseStatistics
+     * @param $newLighthouseStatistics
      * @return string|object|null|void
      */
-    public function createAction(\Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $newLighthouseStatistics)
+    public function createAction(LighthouseStatistics $newLighthouseStatistics)
     {
         if ($GLOBALS['BE_USER']->isAdmin()){
             $this->lighthouseStatisticsRepository->add($newLighthouseStatistics);
