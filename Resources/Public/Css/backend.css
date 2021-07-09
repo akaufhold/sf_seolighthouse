@@ -212,9 +212,30 @@ h5 {
   display: none;
 }
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse {
-  margin-top: 0.5em;
   margin-bottom: 1em;
-  display: block;
+}
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse.label {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+  font-size: 1em;
+  line-height: 1.25;
+  min-height: 3em;
+  color: #000;
+  margin: 1em 0 0;
+  padding: 1em 1em;
+  background: #0078e6;
+  color: white;
+}
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse.label.collapsed .icon {
+  transform: rotateZ(0deg);
+}
+.tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse.label .icon {
+  transform: rotateZ(180deg);
+  align-self: flex-end;
 }
 .tx_sfseolighthouse form.newLighthouseStatistics .list-lighthouse.list-header {
   font-weight: 700;
@@ -379,11 +400,26 @@ h5 {
   width: 100%;
 }
 
-.recordlist tr {
+.recordlist table.table tr {
   display: none;
 }
-.recordlist tr.active {
+.recordlist table.table tr.active {
   display: table-row;
+}
+.recordlist table.table tr td.date {
+  width: 160px;
+}
+.recordlist table.table tr td.device, .recordlist table.table tr td.delete {
+  width: 120px;
+}
+.recordlist table.table tr td.fast {
+  background-color: #28a745;
+}
+.recordlist table.table tr td.average {
+  background-color: #ffa400;
+}
+.recordlist table.table tr td.slow {
+  background-color: #D8000C;
 }
 
 .container-control .row > div {

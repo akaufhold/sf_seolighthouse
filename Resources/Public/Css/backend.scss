@@ -443,10 +443,29 @@ h5{
     }
 }
 .recordlist{
-    tr{
-        display:none;
-        &.active{
-            display: table-row;
+    table.table{
+        tr{
+            display:none; 
+            &.active{
+                display: table-row;
+            }
+            td{
+                &.date{
+                    width:160px;
+                }
+                &.device,&.delete{
+                    width:120px;
+                }
+                &.fast{
+                    background-color:$successColor;
+                }
+                &.average{
+                    background-color:$averageColor;
+                }
+                &.slow{
+                    background-color:$errorColor;
+                }
+            }
         }
     }
 }
