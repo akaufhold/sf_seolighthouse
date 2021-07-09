@@ -126,11 +126,6 @@ requirejs(['jquery'], function ($) {
         })
       }
 
-      /* SET TARGET URL */
-      lh.setTargetUrl = function(targetUrl){
-        $(".targetUrl").html(targetUrl);
-      }
-
       lh.activeListClick = function(){
         $(".list-lighthouse").on("click","li",function(){
             var listItem = $(this);
@@ -237,6 +232,7 @@ requirejs(['jquery'], function ($) {
             if (!json.hasOwnProperty("error")){
               const lighthouse      = json.lighthouseResult, 
                     auditResults    = lighthouse.audits;
+                    auditScreenshots= auditResults['screenshot-thumbnails'];
                     auditCategories = lighthouse.categories;
               var   lhCategoryList  = lh.getCategoryList().split(",");
               var   lhCategoryListLength = $(lhCategoryList).length;
@@ -246,7 +242,7 @@ requirejs(['jquery'], function ($) {
               /* SET DEVICE HIDDEN FIELD */
               $("#device").val(lh.firstLetterUp(lh.getDevice()));
               OutputAuditsHtml  = "<ul class='list-lighthouse list-score list-main list-group'>";
-
+              console.log($(lhCategoryList));
               $(lhCategoryList).each(function(catIt,category){
                   catIt++;
                   var curCategory   = category.toLowerCase().replace("_","-");
@@ -285,6 +281,7 @@ requirejs(['jquery'], function ($) {
               OutputAuditsHtml  += "</ul>";
               $(".list-audits").html("");
               $(".list-audits").append(OutputAuditsHtml);
+              $(".list-audits").append(lh.getScreenshots(auditScreenshots));
               lh.setTotalTime(lighthouse.timing.total);
               lh.activeListClick();
             }else{
@@ -307,6 +304,11 @@ requirejs(['jquery'], function ($) {
         else
           $(cc).find(".totalTime").html((timer/1000).toFixed(2)+" s");
       }
+
+      lh.getScreenshots = function(auditScreenshot){
+        auditScreenshot["details"]["items"];
+      }
+
         /* GET MAIN AUDITS */
       lh.getMainAudits = function(auditItem,auditResult,mainIteration,mainCounter){
           var speed, score, displayValue, chartVal;
