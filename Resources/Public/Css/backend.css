@@ -421,6 +421,9 @@ h5 {
   width: 100%;
 }
 
+.recordlist {
+  overflow-x: scroll;
+}
 .recordlist table.table tr {
   display: none;
 }
