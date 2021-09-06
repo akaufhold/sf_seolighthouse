@@ -3,14 +3,15 @@
 
 namespace Stackfactory\SfSeolighthouse\Controller;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Context\Context; 
+
 use Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics;
 use Stackfactory\SfSeolighthouse\Domain\Repository\LighthouseStatisticsRepository;
 use Stackfactory\SfSeolighthouse\Domain\Repository\LogEntryLighthouseRepository;
-
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Context\Context; 
-use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository;
+use TYPO3\CMS\Belog\Domain\BackendLog;
+
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Page\PageRenderer;
