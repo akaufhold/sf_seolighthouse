@@ -211,11 +211,13 @@ requirejs(['jquery'], function ($) {
           $(cc).removeClass("progress").removeClass("error").removeClass("success");
           $(cc).find(".counterTitle").find(".errorMessage").html("error");
       }
+      /* SET PROGRESS BAR STATUS */
       lh.setPbStatus = function(status){
           $(cc).addClass(status);
           if ((status=="success") || (status=="error"))
               $(cc).find(".counterAmount").css({width:"100%"});
       }
+      /* CHANGE FIRST LETTER FROM STRING */
       lh.firstLetterUp = function(stringIn){
         return stringIn.charAt(0).toUpperCase() + stringIn.slice(1).toLowerCase();
       }
@@ -236,13 +238,14 @@ requirejs(['jquery'], function ($) {
                     auditCategories = lighthouse.categories;
               var   lhCategoryList  = lh.getCategoryList().split(",");
               var   lhCategoryListLength = $(lhCategoryList).length;
+              console.log(lighthouse);
               lh.pbReset();
               lh.setPbStatus("success");
               $(".list-audits,.list-Addtional-Audits,.list-performance-audits").html("");
               /* SET DEVICE HIDDEN FIELD */
               $("#device").val(lh.firstLetterUp(lh.getDevice()));
               OutputAuditsHtml  = "<ul class='list-lighthouse list-score list-main list-group'>";
-              console.log($(lhCategoryList));
+              //console.log($(lhCategoryList));
               $(lhCategoryList).each(function(catIt,category){
                   catIt++;
                   var curCategory   = category.toLowerCase().replace("_","-");
@@ -273,10 +276,11 @@ requirejs(['jquery'], function ($) {
                   OutputAdditionalAuditsHtml  =  "";
                   OutputAdditionalAuditsHtml  += "<div class='label toggle list-lighthouse collapsed' data-toggle='collapse' data-target='#list-additional-"+curCategory+"' aria-expanded='false' aria-controls='list-additional-"+curCategory+"'>"+auditCategories[curCategory].title+chevronDown+"</div>";
                   OutputAdditionalAuditsHtml  += "<ol class='collapse list-lighthouse list-group' id='list-additional-"+curCategory+"'>";
-                  OutputAdditionalAuditsHtml  +=     lh.getAdditionalAudits(auditResults);
+                  OutputAdditionalAuditsHtml  +=     lh.getAdditionalAudits(auditResults,auditCategories[curCategory]);
                   OutputAdditionalAuditsHtml  += "</ol>";
                   $(".list-Addtional-Audits").append(OutputAdditionalAuditsHtml);
                   $(".newLighthouseStatistics").css({display:"block"});
+                  console.log(auditCategories[curCategory]);
               })
               OutputAuditsHtml  += "</ul>";
               $(".list-audits").html("");
@@ -363,21 +367,28 @@ requirejs(['jquery'], function ($) {
           return htmlPerformanceOut;
       }
       /* GET ADDITIONAL AUDITS */
-      lh.getAdditionalAudits = function(auditResults){
+      lh.getAdditionalAudits = function(auditResults,auditResultsInCategory){
+        const auditRefs = auditResultsInCategory['auditRefs'];
           var speed, score, displayValue, screenshot, displayMode, description;
           var htmlAdditionalOut = "";
 
-          Object.keys(auditResults).sort().forEach(function(key){
-            description                        = auditResults[key].description;
-            displayMode                        = String(auditResults[key].scoreDisplayMode);
-            if (auditResults[key].hasOwnProperty("details.screenshot")){
-                screenshot = auditResults[key].details.screenshot;
+          Object.keys(auditRefs).sort().forEach(function(key){
+            type                               = key.id;
+            console.log(type);
+            currentAudit                       = auditResults[type];
+            console.log(currentAudit);
+
+            description                        = currentAudit.description;
+            displayMode                        = String(currentAudit.scoreDisplayMode);
+
+            if (currentAudit.hasOwnProperty("details.screenshot")){
+                screenshot = currentAudit.details.screenshot;
             }
-            displayValue                       = auditResults[key].displayValue;
-            score                              = auditResults[key].score;
+            displayValue                       = currentAudit.displayValue;
+            score                              = currentAudit.score;
             if (displayMode!="notApplicable"){
-              OutputAuditName                  = key.replace("-"," ");
-              htmlAdditionalOut                += '<li class="list-group-item" id="'+key+'">';
+              OutputAuditName                  = category.replace("-"," ");
+              htmlAdditionalOut                += '<li class="list-group-item" id="'+category+'">';
               htmlAdditionalOut                += lh.addSpan("label",((description) ? chevronDown : '')+OutputAuditName);
               if (displayValue!=undefined){
                   htmlAdditionalOut            += lh.addSpan("value",displayValue);
@@ -386,8 +397,8 @@ requirejs(['jquery'], function ($) {
                   speed                        =  lh.getSpeedClass(score);
                   htmlAdditionalOut            += lh.addSpan("score "+speed,score);
               }
-              if (auditResults[key].description){  
-                htmlAdditionalOut              += "<span class='description'>"+((auditResults[key].title)?"<b>"+auditResults[key].title+"</b>":"")+auditResults[key].description;
+              if (currentAudit.description){  
+                htmlAdditionalOut              += "<span class='description'>"+((currentAudit.title)?"<b>"+currentAudit.title+"</b>":"")+currentAudit.description;
                   if (auditResults[key].hasOwnProperty("details.screenshot")){
                     htmlAdditionalOut          += screenshot;
                   }
@@ -402,7 +413,7 @@ requirejs(['jquery'], function ($) {
       
       lh.getScreenshots = function(auditScreenshot){
         var screens = auditScreenshot["details"]["items"];
-        console.log(screens);
+        //console.log(screens);
         var screenData;
         var screenTime;
         var screenOutput  ="<div class='label toggle list-lighthouse collapsed' data-toggle='collapse' data-target='#list-screenshots' aria-expanded='false' aria-controls='list-screenshots'>Screenshots"+chevronDown+"</div>";
