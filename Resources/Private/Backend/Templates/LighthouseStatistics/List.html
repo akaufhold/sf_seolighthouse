@@ -112,12 +112,12 @@
               </tr>
               <tr class="row row-vals-performance list-group">
                 <td class="date"><f:format.date format="d.m.Y - H:i">{lighthouseStatistics.crdate}</f:format.date></td>
-                <td>{lighthouseStatistics.fcp}</td>
-                <td>{lighthouseStatistics.si}</td>
-                <td>{lighthouseStatistics.lcp}</td>
-                <td>{lighthouseStatistics.tti}</td>
-                <td>{lighthouseStatistics.tbt}</td>
-                <td>{lighthouseStatistics.cls}</td>
+                <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.fcps})}">{lighthouseStatistics.fcp}</td>
+                <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.sis})}">{lighthouseStatistics.si}</td>
+                <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.lcps})}">{lighthouseStatistics.lcp}</td>
+                <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.ttis})}">{lighthouseStatistics.tti}</td>
+                <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.tbts})}">{lighthouseStatistics.tbt}</td>
+                <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.clss})}">{lighthouseStatistics.cls}</td>
                 <td class="device">{lighthouseStatistics.device}</td>
                 <td class="delete">
                   <f:link.action action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">
