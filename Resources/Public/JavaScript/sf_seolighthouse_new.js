@@ -391,9 +391,11 @@ requirejs(['jquery'], function ($) {
        /* GET ADDITIONAL AUDITS */
       lh.getAdditionalAudits = function(auditResults,auditResultsInCategory){
           var auditRefs = auditResultsInCategory['auditRefs'];
+          //console.log(auditRefs);
           var speed, score, displayValue, screenshot, displayMode, description, currentAudit;
           var htmlAdditionalOut = "";
           auditRefs = sortKeys(auditRefs);
+          //console.log(auditResultsInCategory);
           Object.keys(auditRefs).forEach(function(key,audit){
             type                                = auditResultsInCategory.auditRefs[key].id;
             currentAudit                        = auditResults[type];
@@ -402,35 +404,33 @@ requirejs(['jquery'], function ($) {
             displayMode                         = String(currentAudit.scoreDisplayMode);
             
             displayValue                        = currentAudit.displayValue;
-            if (currentAudit.score!=null){
-              score                             = currentAudit.score;
-            }
-            OutputAuditName                     = type.replace("-"," ");
-            htmlAdditionalOut                   += '<li class="list-group-item" id="'+type+'">';
-            htmlAdditionalOut                   += lh.addSpan("label",((description) ? chevronDown : '')+OutputAuditName);
-            if (displayValue!=undefined){
-                htmlAdditionalOut               += lh.addSpan("value",displayValue);
-            }
-            if (score){
-                speed                           =  lh.getSpeedClass(score);
-                htmlAdditionalOut               += lh.addSpan("score "+speed,score);
-            }
-            if (currentAudit.description){  
-              htmlAdditionalOut                 += '<span class="description">';
-              if (currentAudit.title){
-                htmlAdditionalOut               += "<b>";
-                htmlAdditionalOut               += JSON.stringify(currentAudit.title.toString());
-                htmlAdditionalOut               += "</b>";
+            score                               = currentAudit.score;
+            if (displayMode!="notApplicable"){
+              OutputAuditName                     = type.replace("-"," ");
+              htmlAdditionalOut                   += '<li class="list-group-item" id="'+type+'">';
+              htmlAdditionalOut                   += lh.addSpan("label",((description) ? chevronDown : '')+OutputAuditName);
+              if (displayValue!=undefined){
+                  htmlAdditionalOut               += lh.addSpan("value",displayValue);
               }
-              htmlAdditionalOut                 += currentAudit.description;
-              if (typeof currentAudit.details != "undefined"){
-                htmlAdditionalOut               += lh.getAdditionalAuditsDetails(currentAudit.details);
+              if (score){
+                  speed                           =  lh.getSpeedClass(score);
+                  htmlAdditionalOut               += lh.addSpan("score "+speed,score);
               }
-              htmlAdditionalOut                 += '</span>';
+              if (currentAudit.description){  
+                htmlAdditionalOut                 += '<span class="description">';
+                if (currentAudit.title){
+                  console.log(currentAudit);
+                  htmlAdditionalOut               += "<b>"+JSON.stringify(currentAudit.title.toString())+"</b>";
+                }
+                //htmlAdditionalOut              += currentAudit.description;
+                if (typeof currentAudit.details != "undefined"){
+                  htmlAdditionalOut               += lh.getAdditionalAuditsDetails(currentAudit.details);
+                }
+                htmlAdditionalOut                 += '</span>';
+              }
+              htmlAdditionalOut                   += '</li>';
             }
-            htmlAdditionalOut                   += '</li>';
-
-          });
+          );
           return htmlAdditionalOut;
       }
 
@@ -548,5 +548,6 @@ requirejs(['jquery'], function ($) {
 
     var lighthouseData = new LighthouseData();
     lighthouseData.init();
+    
   });  
 });
