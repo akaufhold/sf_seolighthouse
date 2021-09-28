@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Stackfactory\SfSeolighthouse\Domain\Model;
-
 
 /**
  *
@@ -149,13 +149,6 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
      * @var float
      */
     protected $clss = 0.0;
-
-    /**
-     * Overall Score
-     * 
-     * @var float
-     */
-    protected $os = 0.0;
 
     /**
      * Device 
@@ -551,29 +544,7 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     {
         $this->clss = $clss;
     }
-
     
-    /**
-     * Returns the os
-     * 
-     * @return float $os
-     */
-    public function getOs()
-    {
-        return $this->os;
-    }
-
-    /**
-     * Sets the os
-     * 
-     * @param float $os
-     * @return void
-     */
-    public function setOs($os)
-    {
-        $this->os = $os;
-    }
-
     /**
      * Returns the device
      * 

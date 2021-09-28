@@ -1,15 +1,21 @@
 $progressColor:#003ea1;
 $progressBackColor:#ccc;
+
 $successColor:#28a745;
-$errorColor:#D8000C;
 $averageColor:#ffa400;
+$errorColor:#D8000C;
+
+$successColor_50:rgba(40,167,69,0.50);
+$averageColor_50:rgba(255,164,0,0.50);
+$errorColor_50:rgba(216,0,12,0.5);
 
 $headerBackground:#d7dfe7;
 
 $highlightColor:#ebf3fb;
 $highlightBorderColor:#bdc5cd;
 
-$borderColor:#aaa;
+$borderColor:#aaa; 
+$background-color-bs: #0078e6;
 
 @keyframes runProgressBar {
     0% { width:0%; }
@@ -58,7 +64,7 @@ h5{
                 position: absolute;
                 margin:0;
             }
-        }
+        } 
         label{
             position: absolute;
             left:0;
@@ -72,7 +78,7 @@ h5{
         }
         .counterContainer {
             padding: 0em 0.25em;
-            display: inline-block;
+            display: inline-block; 
             width: 100%;
             background: $progressBackColor;
             border-radius: 0.3em;
@@ -240,9 +246,32 @@ h5{
             }
         }
         .list-lighthouse{
-            margin-top:0.5em;
+            &.label{
+                display:flex;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+                width: 100%;
+                cursor:pointer;
+                text-align: left;
+                font-size: 1em;
+                line-height: 1.25;
+                min-height: 3em;
+                color: #000;
+                margin:1em 0 0;
+                padding:1em 1em;
+                background:$background-color-bs; 
+                color:white; 
+                &.collapsed{
+                    .icon{
+                        transform: rotateZ(0deg);
+                    }   
+                }
+                .icon{
+                    transform: rotateZ(180deg);
+                    align-self: flex-end;
+                }
+            }
             margin-bottom: 1em;
-            display:block; 
             &.list-header{
                 font-weight:700; 
                 margin-top:0;
@@ -320,10 +349,10 @@ h5{
                     &.slow{
                         background-color:$errorColor;
                     }
-                    &.average{
+                    &.average{ 
                         background-color:$averageColor;
                     }
-                    &.fast{
+                    &.fast{ 
                         background-color:$successColor;
                     }
                 }
@@ -368,6 +397,28 @@ h5{
                 li{
                     .value{
                         max-width:75%;
+                    }
+                }
+            }
+        }
+        
+        .list-screenshots{
+            &.collapse{
+                display:none;
+                &.in{
+                    display: flex; 
+                }
+            }
+            flex-wrap: wrap;
+            justify-content: center;
+            li{
+                flex-basis: 20%;
+                list-style: none;
+                text-align: center;
+                &.list-group-item {
+                    border-right:$borderColor;
+                    &:first-child{
+                        border-left:$borderColor;
                     }
                 }
             }
@@ -418,10 +469,30 @@ h5{
     }
 }
 .recordlist{
-    tr{
-        display:none;
-        &.active{
-            display: table-row;
+    overflow-x: scroll;
+    table.table{
+        tr{
+            display:none; 
+            &.active{
+                display: table-row;
+            }
+            td{
+                &.date{
+                    width:160px;
+                }
+                &.device,&.delete{
+                    width:120px;
+                }
+                &.fast{
+                    background-color:$successColor_50;
+                }
+                &.average{
+                    background-color:$averageColor_50;
+                }
+                &.slow{
+                    background-color:$errorColor_50;
+                }
+            }
         }
     }
 }

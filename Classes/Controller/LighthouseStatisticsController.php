@@ -3,11 +3,22 @@
 
 namespace Stackfactory\SfSeolighthouse\Controller;
 
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics;
+use Stackfactory\SfSeolighthouse\Domain\Repository\LighthouseStatisticsRepository;
+use Stackfactory\SfSeolighthouse\Domain\Repository\LogEntryLighthouseRepository;
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Context\Context; 
+use TYPO3\CMS\Belog\Domain\Model\LogEntry;
+use TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\SysLog\Action\Database;
+use TYPO3\CMS\Beuser;
+
+
 
 /**
  *
@@ -35,16 +46,38 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     /**
      * lighthouseStatisticsRepository
      * 
-     * @var \Stackfactory\SfSeolighthouse\Domain\Repository\LighthouseStatisticsRepository
+     * @var LighthouseStatisticsRepository
      */
     protected $lighthouseStatisticsRepository = null;
 
     /**
-     * @param \Stackfactory\SfSeolighthouse\Domain\Repository\LighthouseStatisticsRepository $lighthouseStatisticsRepository
+     * @param LighthouseStatisticsRepository $lighthouseStatisticsRepository
      */
-    public function injectLighthouseStatisticsRepository(\Stackfactory\SfSeolighthouse\Domain\Repository\LighthouseStatisticsRepository $lighthouseStatisticsRepository)
+    public function injectLighthouseStatisticsRepository(LighthouseStatisticsRepository $lighthouseStatisticsRepository)
     {
         $this->lighthouseStatisticsRepository = $lighthouseStatisticsRepository;
+    }
+
+    /**
+     * @var LogEntryLighthouseRepository
+     */
+    protected $logEntryLighthouseRepository;
+
+    /**
+     * @param LogEntryLighthouseRepository $logEntryLighthouseRepository
+     */
+    public function injectLogEntryLighthouseRepository(LogEntryLighthouseRepository $logEntryLighthouseRepository)
+    {
+        $this->logEntryLighthouseRepository = $logEntryLighthouseRepository;
+    }
+
+    /**
+     * get be-user language id
+     * 
+     * @return string
+     */
+    public static function getBeUserLang(){
+        return ($GLOBALS['BE_USER']->uc['lang'] == '') ? 'en' : $GLOBALS['BE_USER']->uc['lang'];
     }
 
     /**
@@ -55,7 +88,6 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     public function getLangId(){
         $context = GeneralUtility::makeInstance(Context::class);
         /** @var TYPO3\CMS\Core\Site\Entity\Site */
-        $site = $GLOBALS['TYPO3_REQUEST']->getAttribute('site');
         $langId = $context->getPropertyFromAspect('language', 'id');
         return $langId;
     }
@@ -72,6 +104,9 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $langId = $this->getLangId();
         $language = $site->getLanguageById($langId);
         $langCode = $language->getLocale();
+        if (str_contains($langCode,".")){
+            $langCode = explode(".",$langCode)[0];
+        }
         return $langCode;
     }
 
@@ -122,22 +157,6 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
             $this->targetUrl.="&strategy=".$device;
         return $this->targetUrl;
     }
-
-    public function requiredJavascript($locale, $pageurl, $device){
-        $pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
-        $pageRenderer->addRequireJsConfiguration(
-        [
-            'paths' => [
-                'jquery' => 'sysext/core/Resources/Public/JavaScript/Contrib/jquery/',
-                'plupload' => '../typo3conf/ext/your_extension/node_modules/plupload/js/plupload.full.min',
-            ],
-            'shim' => [
-                'deps' => ['jquery'],
-                'plupload' => ['exports' => 'plupload'],
-            ],
-        ]
-        );
-    }
     
     /**
      * action analyse
@@ -148,20 +167,17 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     {
         $lighthouseStatistics = $this->lighthouseStatisticsRepository->findAll();
         $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
-
         $storagePid = $this->getStoragePid();
         $this->view->assign('storagePid', $storagePid);
         /* GET URL PARAMS FOR GENERATING LIGHTHOUSE AJAX GET*/
-        $this->locale = $this->getLocale();
+        $lang = $this->getBeUserLang();
         /* GET FE URL OF SELECTED PAGE IN PAGETREE*/
         //$lightHouseGetUrl   = $this->getBaseUrl()."/index.php?id=".$this->getSelectedPage();
         $lightHouseGetUrl   = "https://www.stackfactory.de";
 
-        $ajaxGetUrlDesktop  = $this->getTargetUrl($this->locale,$lightHouseGetUrl,"desktop");
-        $ajaxGetUrlMobile  = $this->getTargetUrl($this->locale,$lightHouseGetUrl,"mobile");
+        $ajaxGetUrlDesktop  = $this->getTargetUrl($lang,$lightHouseGetUrl,"desktop");
+        $ajaxGetUrlMobile  = $this->getTargetUrl($lang,$lightHouseGetUrl,"mobile");
 
-        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($ajaxGetUrlMobile); 
-        
         $this->view->assign('pageId', $this->getSelectedPage());
         $this->view->assign('ajaxGetUrlDesktop', $ajaxGetUrlDesktop);
         $this->view->assign('ajaxGetUrlMobile', $ajaxGetUrlMobile);
@@ -174,20 +190,23 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
      */
     public function listAction()
     {
-        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($this->getSelectedPage()); 
         $lighthouseStatistics = $this->lighthouseStatisticsRepository->findByTarget($this->getSelectedPage());
+        $pageId     = $this->getSelectedPage();
         $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
-        $this->view->assign('pageId', $this->getSelectedPage());
-        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($lighthouseStatistics);  
+        $this->view->assign('pageId', $pageId);
+        /*$constraint = null;
+        $constraint->setPageId($pageId);
+        $beLogOutput = $this->beLogRepository->findByConstraint($constraint);*/
+        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($pageId);  
     }
 
     /**
      * action show
      * 
-     * @param \Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $lighthouseStatistics
+     * @param LighthouseStatistics $lighthouseStatistics
      * @return string|object|null|void
      */
-    public function showAction(\Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $lighthouseStatistics)
+    public function showAction(LighthouseStatistics $lighthouseStatistics)
     {
         $this->view->assign('lighthouseStatistics', $lighthouseStatistics);
     }
@@ -195,10 +214,10 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     /**
      * action delete
      * 
-     * @param \Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $lighthouseStatistics
+     * @param LighthouseStatistics $lighthouseStatistics
      * @return string|object|null|void
      */
-    public function deleteAction(\Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $lighthouseStatistics)
+    public function deleteAction(LighthouseStatistics $lighthouseStatistics)
     {
         if ($GLOBALS['BE_USER']->isAdmin()){
             $this->lighthouseStatisticsRepository->remove($lighthouseStatistics);
@@ -220,10 +239,10 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     /**
      * action create
      * 
-     * @param \Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $newLighthouseStatistics
+     * @param $newLighthouseStatistics
      * @return string|object|null|void
      */
-    public function createAction(\Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics $newLighthouseStatistics)
+    public function createAction(LighthouseStatistics $newLighthouseStatistics)
     {
         if ($GLOBALS['BE_USER']->isAdmin()){
             $this->lighthouseStatisticsRepository->add($newLighthouseStatistics);

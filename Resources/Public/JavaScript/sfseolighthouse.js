@@ -104,11 +104,8 @@ requirejs(['jquery'], function ($) {
               categoryUrl =  lh.getCategoryList();
               lh.addCategoriesToTargetUrl(categoryUrl);
           });
-
-          $(".auditButtons").find("a").click(function(){
-              var idTarget = $(this).attr("id").split("show")[1].charAt(0).toLowerCase()+$(this).attr("id").split("show")[1].substring(1);
-              $("."+idTarget).css({display:"block"});
-          })
+          
+          lh.showAddionalAudits();
 
           $(".performanceMenu").find("a").click(function(){
             var idTarget = $(this).attr("id").split("show")[1].charAt(0).toLowerCase()+$(this).attr("id").split("show")[1].substring(1);
@@ -120,19 +117,24 @@ requirejs(['jquery'], function ($) {
             }
             $("."+idTarget).css({display:"block"});
           }) 
-
-          /* ACTIVE LIST ENTRY ON CLICK */
-          $(".list-lighthouse").on("click","li",function(){
-              var listItem = $(this);
-              $(".list-lighthouse").find("li").removeClass("active");
-              if (!$(listItem).hasClass("active")){
-                  $(listItem).addClass("active");
-              }
-          });
       };
-      /* SET TARGET URL */
-      lh.setTargetUrl = function(targetUrl){
-        $(".targetUrl").html(targetUrl);
+
+      lh.showAddionalAudits = function(){
+        $(".auditButtons").find("a").click(function(){
+          var idTarget = $(this).attr("id").split("show")[1].charAt(0).toLowerCase()+$(this).attr("id").split("show")[1].substring(1);
+          $("."+idTarget).css({display:"block"});
+        })
+      }
+
+      lh.activeListClick = function(){
+        $(".list-lighthouse").on("click","li",function(){
+            var listItem = $(this);
+            console.log(listItem);
+            $(".list-lighthouse").find("li").removeClass("active");
+            if (!$(listItem).hasClass("active")){
+                $(listItem).addClass("active");
+            }
+        });
       }
 
       /* GET CATEGORY URL PARAMS */
@@ -230,6 +232,7 @@ requirejs(['jquery'], function ($) {
             if (!json.hasOwnProperty("error")){
               const lighthouse      = json.lighthouseResult, 
                     auditResults    = lighthouse.audits;
+                    auditScreenshots= auditResults['screenshot-thumbnails'];
                     auditCategories = lighthouse.categories;
               var   lhCategoryList  = lh.getCategoryList().split(",");
               var   lhCategoryListLength = $(lhCategoryList).length;
@@ -239,7 +242,7 @@ requirejs(['jquery'], function ($) {
               /* SET DEVICE HIDDEN FIELD */
               $("#device").val(lh.firstLetterUp(lh.getDevice()));
               OutputAuditsHtml  = "<ul class='list-lighthouse list-score list-main list-group'>";
-
+              console.log($(lhCategoryList));
               $(lhCategoryList).each(function(catIt,category){
                   catIt++;
                   var curCategory   = category.toLowerCase().replace("_","-");
@@ -268,15 +271,19 @@ requirejs(['jquery'], function ($) {
                   }
                   /* ADDTIONAL AUDIT PROPERTIES*/
                   OutputAdditionalAuditsHtml  =  "";
-                  OutputAdditionalAuditsHtml  += "<ul class='list-lighthouse list-additional-"+curCategory+" list-group'><li class='list-additional-header list-group-item'><span class='label'>"+auditCategories[curCategory].title+"</span></li>";
-                  OutputAdditionalAuditsHtml  += lh.getAddionalAudits(auditResults);
-                  OutputAdditionalAuditsHtml  += "</ul>";
+                  OutputAdditionalAuditsHtml  += "<div class='label toggle list-lighthouse collapsed' data-toggle='collapse' data-target='#list-additional-"+curCategory+"' aria-expanded='false' aria-controls='list-additional-"+curCategory+"'>"+auditCategories[curCategory].title+chevronDown+"</div>";
+                  OutputAdditionalAuditsHtml  += "<ol class='collapse list-lighthouse list-group' id='list-additional-"+curCategory+"'>";
+                  OutputAdditionalAuditsHtml  +=     lh.getAdditionalAudits(auditResults);
+                  OutputAdditionalAuditsHtml  += "</ol>";
                   $(".list-Addtional-Audits").append(OutputAdditionalAuditsHtml);
                   $(".newLighthouseStatistics").css({display:"block"});
               })
               OutputAuditsHtml  += "</ul>";
+              $(".list-audits").html("");
               $(".list-audits").append(OutputAuditsHtml);
+              $(".list-Addtional-Audits").append(lh.getScreenshots(auditScreenshots));
               lh.setTotalTime(lighthouse.timing.total);
+              lh.activeListClick();
             }else{
               /* ERROR HANDLING */
               lh.errorHandling(json.error.message);
@@ -297,8 +304,9 @@ requirejs(['jquery'], function ($) {
         else
           $(cc).find(".totalTime").html((timer/1000).toFixed(2)+" s");
       }
+
         /* GET MAIN AUDITS */
-        lh.getMainAudits = function(auditItem,auditResult,mainIteration,mainCounter){
+      lh.getMainAudits = function(auditItem,auditResult,mainIteration,mainCounter){
           var speed, score, displayValue, chartVal;
           var htmlAuditsOut = "";
           $(mainAudits).each(function(key,value){
@@ -355,7 +363,7 @@ requirejs(['jquery'], function ($) {
           return htmlPerformanceOut;
       }
       /* GET ADDITIONAL AUDITS */
-      lh.getAddionalAudits = function(auditResults){
+      lh.getAdditionalAudits = function(auditResults){
           var speed, score, displayValue, screenshot, displayMode, description;
           var htmlAdditionalOut = "";
 
@@ -390,9 +398,26 @@ requirejs(['jquery'], function ($) {
           });
           return htmlAdditionalOut;
       }
+
+      
+      lh.getScreenshots = function(auditScreenshot){
+        var screens = auditScreenshot["details"]["items"];
+        console.log(screens);
+        var screenData;
+        var screenTime;
+        var screenOutput  ="<div class='label toggle list-lighthouse collapsed' data-toggle='collapse' data-target='#list-screenshots' aria-expanded='false' aria-controls='list-screenshots'>Screenshots"+chevronDown+"</div>";
+        screenOutput     +="<ul id='list-screenshots' class='collapse list-screenshots list-group'>";
+        $(screens).each(function(key,screen){
+            screenData = screen['data'];
+            screenTime = screen['timing'];
+            screenOutput+="<li class='list-group-item'>"+screenTime+" ms<br /><img class='screenshot' src='"+screenData+"'/></li>";
+        })
+        screenOutput+="</ul>";
+        return screenOutput;
+      }
       /* HTML SPAN OUTPUT */
-      lh.addSpan = function(htmlClass,value){
-        var htmlOut  = '<span class="'+htmlClass+'">';
+      lh.addSpan = function(cssClass,value){
+        var htmlOut  = '<span class="'+cssClass+'">';
         htmlOut      +=    value;
         htmlOut      += '</span>';
         return htmlOut;
@@ -407,6 +432,9 @@ requirejs(['jquery'], function ($) {
       /* CHARTS */
       lh.createCharts = function (chartIn,typeIn,target,titleText) {
           var targetChart = target+"Chart";
+          if(typeof window[targetChart] !== "undefined"){
+            window[targetChart].destroy();
+          }
           window[targetChart] = new Chart(chartIn, {
             type: typeIn,
             data: {

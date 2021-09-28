@@ -7,13 +7,13 @@
       includeJsFiles="{0: '{f:uri.resource(path:\'JavaScript/sfseolighthouse.js\')}'}"/>
     <f:flashMessages />
     <div class="tx_sfseolighthouse container-fluid">
-        <f:render partial="LighthouseStatistics/FormPreselection" arguments="{_all}"/>
+        <f:render partial="LighthouseStatistics/AnalyseFormPreselection" arguments="{_all}"/>
         <div class="row">
             <div class="col-md-9">
                 <f:render partial="FormErrors" />
                 <f:form id="{pageId}" action="create" class="newLighthouseStatistics container-fluid" name="newLighthouseStatistics" object="{newLighthouseStatistics}">
-                    <f:render partial="LighthouseStatistics/FormFieldsHidden" arguments="{_all}"/>
-                    <f:render partial="LighthouseStatistics/LighthouseList" arguments="{_all}"/>
+                    <f:render partial="LighthouseStatistics/AnalyseFormFieldsHidden" arguments="{_all}"/>
+                    <f:render partial="LighthouseStatistics/AnalyseLighthouseOutput" arguments="{_all}"/>
                 </f:form>
             </div>
         </div>
