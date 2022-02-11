@@ -1,0 +1,26 @@
+{
+  "typo3": {
+    "webpack": {
+      "paths": {
+        "output": "../Resources/Public/",
+        "public": "/typo3conf/ext/[EXTENSION_NAME]/Resources/Public",
+        "manifest": "Public/"
+      }
+    },
+    "paths": {
+      "assets": "./Assets",
+      "public": {
+        "javascripts": "JavaScripts/",
+        "stylesheets": "StyleSheets/",
+        "images": "Images/",
+        "fonts": "Fonts/"
+      }
+    },
+    "copyFiles": [
+      {
+        "from": "./Assets/Static",
+        "to": "[path][name].[ext]"
+      }
+    ]
+  }
+}
