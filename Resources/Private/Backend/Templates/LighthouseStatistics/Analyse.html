@@ -2,9 +2,10 @@
 <f:layout name="Default" />
 
 <f:section name="content">
-    <f:be.pageRenderer pageTitle="analyse" 
-      includeCssFiles="{0: '{f:uri.resource(path:\'StyleSheet/backend.min.css\')}'}"
-      includeJsFiles="{0: '{f:uri.resource(path:\'JavaScript/request.js\')}'}"/>
+    <f:be.pageRenderer pageTitle="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.page.title.analyse' />" 
+      includeCssFiles="{0: '{f:uri.resource(path:\'StyleSheet/request.css\')}'}"
+      includeJsFiles="{0: '{f:uri.resource(path:\'JavaScript/runtime.js\')}',
+                       1: '{f:uri.resource(path:\'JavaScript/request.js\')}'}"/>
     <f:flashMessages />
     <div class="tx_sfseolighthouse container-fluid">
         <f:render partial="LighthouseStatistics/AnalyseFormPreselection" arguments="{_all}"/>

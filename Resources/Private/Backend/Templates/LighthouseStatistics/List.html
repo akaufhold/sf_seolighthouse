@@ -5,9 +5,10 @@
 
 <f:section name="content">
   <f:flashMessages />
-  <f:be.pageRenderer pageTitle="analyse" 
-    includeCssFiles="{0: '{f:uri.resource(path:\'StyleSheet/backend.min.css\')}'}"
-    includeJsFiles="{0: '{f:uri.resource(path:\'JavaScript/list.js\')}'}"/>
+  <f:be.pageRenderer pageTitle="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.page.title.list' />" 
+    includeCssFiles="{0: '{f:uri.resource(path:\'StyleSheet/list.css\')}'}"
+    includeJsFiles="{0: '{f:uri.resource(path:\'JavaScript/runtime.js\')}',
+                     1: '{f:uri.resource(path:\'JavaScript/list.js\')}'}"/>
 
   <f:if condition="{lighthouseStatistics}">
     <f:then>

@@ -1,4 +1,5 @@
 import '../Scss/backend.scss';
+import Chart from 'chart.js/auto';
 
 /*require.config({
   paths: {
@@ -43,9 +44,10 @@ function sortKeys(o) {
 };
 
 requirejs(['jquery'], function ($) {
-  require(["moment","chart.js","roughjs"], function(moment, chart) {
+  require(["moment", "chart.js","roughjs"], function(moment, chart) {
     /* REQUIRED ICONS */
-    var chevronDown;
+    var chevronDown,
+        chartsBar;
     requirejs(['TYPO3/CMS/Backend/Icons'], function(Icons) {
       Icons.getIcon('actions-chevron-down', Icons.sizes.small).done(function(icon) {
         chevronDown = icon;
@@ -174,17 +176,17 @@ requirejs(['jquery'], function ($) {
       /* GET CATEGORY URL PARAMS */
       lh.getCategoryList = function(){
         var targetCategory = "";
-        category = $(".categoriesCheck").find(".form-check-label.active");
+        var category = $(".categoriesCheck").find(".form-check-label.active");
         
         $(category).each(function(key,label){
-            val = $(label).parents(".custom-check").find(".category").val().toUpperCase();
+            var val = $(label).parents(".custom-check").find(".category").val().toUpperCase();
             if (val!="ALL"){
                 $(".saveCharts").css({display:"none"});
                 targetCategory += val;
                 targetCategory += (((key+1)!=category.length)?",":"");
             }
             else{
-              allCategory = $(".categoriesCheck").find(".form-check-label").not(".active");
+              var allCategory = $(".categoriesCheck").find(".form-check-label").not(".active");
               $(".saveCharts").css({display:"block"});
               $(allCategory).each(function(key,label){
                 val = $(label).parents(".custom-check").find(".category").val().toUpperCase();
@@ -234,6 +236,7 @@ requirejs(['jquery'], function ($) {
       }
       /* COLOR FOR SPEED STATUS */
       lh.getSpeedColor = function(scoreIn){
+          let speedOut;
           if (scoreIn < 0.5){speedOut = '#d8000c';} 
           else if (scoreIn < 0.9){speedOut = '#ffa400';} 
           else if (scoreIn <= 1){speedOut = '#28a745';}
@@ -267,8 +270,8 @@ requirejs(['jquery'], function ($) {
           .then(json => {
             if (!json.hasOwnProperty("error")){
               const lighthouse      = json.lighthouseResult, 
-                    auditResults    = lighthouse.audits;
-                    auditScreenshots= auditResults['screenshot-thumbnails'];
+                    auditResults    = lighthouse.audits,
+                    auditScreenshots= auditResults['screenshot-thumbnails'],
                     auditCategories = lighthouse.categories;
               var   lhCategoryList  = lh.getCategoryList().split(",");
               var   lhCategoryListLength = $(lhCategoryList).length;
@@ -311,6 +314,7 @@ requirejs(['jquery'], function ($) {
                   OutputAdditionalAuditsHtml  += '<ol class="collapse list-lighthouse list-group" id="list-additional-'+curCategory+'">';
                   OutputAdditionalAuditsHtml  +=    lh.getAdditionalAudits(auditResults,auditCategories[curCategory]);
                   OutputAdditionalAuditsHtml  += '</ol>';
+                  console.log(OutputAdditionalAuditsHtml);
                   $(".list-Addtional-Audits").append(OutputAdditionalAuditsHtml);
                   $(".newLighthouseStatistics").css({display:"block"});
                   //console.log(auditCategories[curCategory]);
@@ -344,7 +348,7 @@ requirejs(['jquery'], function ($) {
 
         /* GET MAIN AUDITS */
       lh.getMainAudits = function(auditItem,auditResult,mainIteration,mainCounter){
-          var speed, score, displayValue, chartVal;
+          var speed, score, color;
           var htmlAuditsOut = "";
           $(mainAudits).each(function(key,value){
             if (value[0]==auditItem){
@@ -364,7 +368,7 @@ requirejs(['jquery'], function ($) {
       }
       /* GET PERFORMANCE AUDITS */
       lh.getPerformanceAudits = function(auditItemList,auditResults){
-          var speed, score, displayValue, chartVal;
+          var speed, score, color, displayValue, chartVal;
           var mainCounter = 1;
           var htmlPerformanceOut="";
           auditItemList.forEach(function(value){
@@ -393,13 +397,8 @@ requirejs(['jquery'], function ($) {
       }
        /* GET ADDITIONAL AUDITS */
       lh.getAdditionalAudits = function(auditResults,auditResultsInCategory){
-
-        getBootstrapVersion().done(function(version) {
-          console.log(version); // '3.3.4'
-        });
-
           var auditRefs = auditResultsInCategory['auditRefs'];
-          var speed, score, displayValue, screenshot, displayMode, description, currentAudit;
+          var speed, score, displayValue, screenshot, type, displayMode, description, currentAudit;
           var htmlAdditionalOut = "";
           auditRefs = sortKeys(auditRefs);
           Object.keys(auditRefs).forEach(function(key,audit){
@@ -496,6 +495,7 @@ requirejs(['jquery'], function ($) {
 
       /* CSS CLASS FOR SPEED STATUS COLOR */
       lh.getSpeedClass = function(scoreIn){
+        var speedOut;
         if (scoreIn < 0.5){speedOut = 'slow';} 
         else if (scoreIn < 0.9){speedOut = 'average';} 
         else if (scoreIn <= 1){speedOut = 'fast';}
