@@ -10,8 +10,8 @@
     "paths": {
       "assets": "./Assets",
       "public": {
-        "javascripts": "JavaScripts/",
-        "stylesheets": "StyleSheets/",
+        "javascripts": "Scripts/",
+        "stylesheets": "Scss/",
         "images": "Images/",
         "fonts": "Fonts/"
       }

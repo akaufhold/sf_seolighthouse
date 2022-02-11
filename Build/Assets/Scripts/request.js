@@ -1,4 +1,6 @@
-require.config({
+import '../Scss/backend.scss';
+
+/*require.config({
   paths: {
     moment: "//cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min",
     chart: "//cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min",
@@ -9,7 +11,8 @@ require.config({
       exports: "C"
     },
   },
-});
+});*/
+
 /* function for sorting json object through child keys */
 function sortKeys(o) {
   if (Array.isArray(o)) {
@@ -391,7 +394,6 @@ requirejs(['jquery'], function ($) {
        /* GET ADDITIONAL AUDITS */
       lh.getAdditionalAudits = function(auditResults,auditResultsInCategory){
 
-      
         getBootstrapVersion().done(function(version) {
           console.log(version); // '3.3.4'
         });

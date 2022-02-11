@@ -1,3 +1,5 @@
+import '../Scss/backend.scss';
+
 requirejs(['jquery'], function ($) {
     $(".outputControl").find(".custom-control").find("label").click(function(){
         $(".outputControl").find(".custom-radio").find("label").removeClass("active");

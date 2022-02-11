@@ -2,6 +2,16 @@
 const Encore                    = require('@symfony/webpack-encore');
 const path                      = require('path');
 
+// define project to build
+let _project = {
+    type: "typo3",
+    template: "sf_seolighthouse"
+};
+
+// require config file
+let _config = require("./webpack/config");
+let plugins = require("./webpack/plugins");
+
 //Plugins
 const TerserPlugin              = require('terser-webpack-plugin');
 const MiniCssExtractPlugin      = require("mini-css-extract-plugin");
@@ -12,16 +22,6 @@ const GoogleFontsPlugin         = require("@beyonk/google-fonts-webpack-plugin")
 const { merge }                 = require('webpack-merge');
 const CircularDependencyPlugin  = require('circular-dependency-plugin');
 
-// define project to build
-let _project = {
-    type: "typo3",
-    template: "sf_seolighthouse"
-};
-
-// require config file
-let _config = require("./webpack/config");
-let plugins = require("./webpack/plugins");
-  
 // replacing parts of config.json
 if (_project.type === "typo3") {
   _config.typo3.webpack.paths.public = "/typo3conf/ext/" + _project.template + "/Resources/Public";
@@ -36,9 +36,9 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 
 Encore
 
-  .addEntry('request', './Assets/JavaScript/request.js')
-  .addEntry('list', './Assets/JavaScript/list.js')
-  .addEntry('charts', './Assets/JavaScript/charts.js')
+  .addEntry('request', './Assets/Scripts/request.js')
+  .addEntry('list', './Assets/Scripts/list.js')
+  .addEntry('charts', './Assets/Scripts/charts.js')
 
   .splitEntryChunks()
 
@@ -143,12 +143,12 @@ Encore
       '@style': path.resolve('./packages/sitepackage/Resources/Public/')
   })
 
-  .addPlugin(new GoogleFontsPlugin({
+  /*.addPlugin(new GoogleFontsPlugin({
       formats: ['woff2'],
       fonts: [
           { family: 'Roboto', variants: ['regular', "700", "300"]  },
       ]
-  }))
+  }))*/
 
   .addPlugin(plugins.StyleLintPlugin)
 
@@ -265,7 +265,7 @@ Encore.addLoader({
   // Encore.enablePostCssLoader();
 }*/
 
-if (!Encore.isProduction()) {
+/*if (!Encore.isProduction()) {
   Encore.addPlugin(
     new CircularDependencyPlugin({
       // exclude detection of files based on a RegExp
@@ -276,7 +276,7 @@ if (!Encore.isProduction()) {
       cwd: process.cwd(),
     }),
   );
-}
+}*/
 
 // Uncomment only when generating static site for above the fold CSS (critical CSS).
 // if (!Encore.isProduction()) {

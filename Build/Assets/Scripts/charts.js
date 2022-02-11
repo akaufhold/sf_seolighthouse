@@ -1,4 +1,6 @@
-require.config({
+import '../Scss/backend.scss';
+
+/*require.config({
     paths: {
       chart: "//cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min",
       roughjs: "https://unpkg.com/roughjs@4.3.1/bundled/rough",
@@ -9,7 +11,7 @@ require.config({
         exports: "C"
       },
     },
-});
+});*/
 
 requirejs(['jquery'], function ($) {
     require(["chart","roughjs"], function(moment, chart) {
