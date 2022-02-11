@@ -43,7 +43,7 @@ function sortKeys(o) {
 };
 
 requirejs(['jquery'], function ($) {
-  require(["moment","chart","roughjs"], function(moment, chart) {
+  require(["moment","chart.js","roughjs"], function(moment, chart) {
     /* REQUIRED ICONS */
     var chevronDown;
     requirejs(['TYPO3/CMS/Backend/Icons'], function(Icons) {

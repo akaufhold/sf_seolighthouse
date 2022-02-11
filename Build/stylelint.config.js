@@ -16,27 +16,23 @@ module.exports = { // eslint-disable-line no-undef
     ],
     "ignoreFiles": ["**/*.html", "**/*.js"],
     "rules": {
-        //"at-rule-empty-line-before": null, // ehem. setting aus der .stylelintrc.json
         "at-rule-empty-line-before": [
             "always", {
                 "except": ["first-nested", "blockless-after-blockless"],
                 "ignore": "after-comment"
             }],
-        "at-rule-no-unknown": null,  // ehem. setting aus der .stylelintrc.json
+        "at-rule-no-unknown": null,
         "scss/at-rule-no-unknown": true,
-        "block-closing-brace-newline-after": "always-single-line", // ehem. setting aus der .stylelintrc.json
-        //"declaration-block-no-shorthand-property-overrides": null, // ehem. setting aus der .stylelintrc.json
+        "block-no-empty": true,
+        "block-closing-brace-newline-after": "always-single-line",
         "declaration-block-no-shorthand-property-overrides": true,
-        "declaration-colon-newline-after": null, // ehem. setting aus der .stylelintrc.json
-        "declaration-empty-line-before": null, // ehem. setting aus der .stylelintrc.json
-        //"font-family-no-missing-generic-family-keyword": null, // ehem. setting aus der .stylelintrc.json
+        "declaration-colon-newline-after": true,
+        "declaration-empty-line-before": null,
         "font-family-no-missing-generic-family-keyword": true,
-        "function-comma-newline-after": null, // ehem. setting aus der .stylelintrc.json
-        "function-parentheses-newline-inside": null, // ehem. setting aus der .stylelintrc.json
-        "no-descending-specificity": null, // ehem. setting aus der .stylelintrc.json
-        ////"no-descending-specificity": [true, {"severity": "warning"}], // bringt zumindest unter Win10 webpack zum crashen mit "Error: spawn ENAMETOOLONG"
-        "number-leading-zero": "never", // ehem. setting aus der .stylelintrc.json
-        //"selector-type-no-unknown": null // ehem. setting aus der .stylelintrc.json
+        "function-comma-newline-after": null,
+        "function-parentheses-newline-inside": null,
+        "no-descending-specificity": null,
+        "number-leading-zero": "never",
         "selector-type-no-unknown": [true, {"severity": "warning"}],
         "property-no-vendor-prefix": [
             true, {

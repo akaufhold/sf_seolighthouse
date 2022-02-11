@@ -4,27 +4,27 @@ const path                      = require('path');
 
 // define project to build
 let _project = {
-    type: "typo3",
-    template: "sf_seolighthouse"
+    type: 'typo3',
+    template: 'sf_seolighthouse'
 };
 
 // require config file
-let _config = require("./webpack/config");
-let plugins = require("./webpack/plugins");
+let _config = require('./webpack/config');
+let plugins = require('./webpack/plugins');
 
 //Plugins
 const TerserPlugin              = require('terser-webpack-plugin');
-const MiniCssExtractPlugin      = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin   = require("optimize-css-assets-webpack-plugin");
-const CssMinimizerPlugin        = require("css-minimizer-webpack-plugin");
+const MiniCssExtractPlugin      = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin   = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin        = require('css-minimizer-webpack-plugin');
 const PurgeCssPlugin            = require('purgecss-webpack-plugin');
-const GoogleFontsPlugin         = require("@beyonk/google-fonts-webpack-plugin");
+const GoogleFontsPlugin         = require('@beyonk/google-fonts-webpack-plugin');
 const { merge }                 = require('webpack-merge');
 const CircularDependencyPlugin  = require('circular-dependency-plugin');
 
 // replacing parts of config.json
-if (_project.type === "typo3") {
-  _config.typo3.webpack.paths.public = "/typo3conf/ext/" + _project.template + "/Resources/Public";
+if (_project.type === 'typo3') {
+  _config.typo3.webpack.paths.public = '/typo3conf/ext/' + _project.template + '/Resources/Public';
 }
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
@@ -64,21 +64,21 @@ Encore
   
   // add hash to generated files
   .configureFilenames({
-    js: _config[_project.type].paths.public.javascripts + "[name].js",
-    css: _config[_project.type].paths.public.stylesheets + "[name].css",
+    js: _config[_project.type].paths.public.javascripts + '[name].js',
+    css: _config[_project.type].paths.public.stylesheets + '[name].css',
   })
 
   .configureImageRule({
-    filename: _config[_project.type].paths.public.images + "[name][ext]"
+    filename: _config[_project.type].paths.public.images + '[name][ext]'
   })
 
   .configureFontRule({
-    filename: _config[_project.type].paths.public.fonts + "[name][ext]"
+    filename: _config[_project.type].paths.public.fonts + '[name][ext]'
   })
 
   .configureFriendlyErrorsPlugin()
   // uncomment if you use TypeScript
-  .enableTypeScriptLoader()
+  //.enableTypeScriptLoader()
   //.enableHandlebarsLoader()
   //.enableForkedTypeScriptTypesChecking()
 
@@ -113,7 +113,7 @@ Encore
   .enablePostCssLoader((options) => {
     options.postcssOptions = {
       options: {
-        sourceMap: "inline",
+        sourceMap: 'inline',
       },
       plugins: {
         // include whatever plugins you want
@@ -122,31 +122,31 @@ Encore
         autoprefixer: {},
 
         // inline-svg
-        "postcss-inline-svg": {},
+        'postcss-inline-svg': {},
 
         // svgo
-        "postcss-svgo": {},
+        'postcss-svgo': {},
 
         // preset-env
-        "postcss-preset-env": {},
+        'postcss-preset-env': {},
 
         // pxtorem
-        "postcss-pxtorem": {
+        'postcss-pxtorem': {
           rootValue: 16,
-          propList: ["*"],
+          propList: ['*'],
         },
       },
     };
   })
 
   .addAliases({
-      '@style': path.resolve('./packages/sitepackage/Resources/Public/')
+      '@style': path.resolve('./packages/' + _project.template + '/Resources/Public/')
   })
 
   /*.addPlugin(new GoogleFontsPlugin({
       formats: ['woff2'],
       fonts: [
-          { family: 'Roboto', variants: ['regular', "700", "300"]  },
+          { family: 'Roboto', variants: ['regular', '700', '300']  },
       ]
   }))*/
 
@@ -382,7 +382,7 @@ Encore.configureBabel(
     // no plugins are added by default, but you can add some
     // babelConfig.plugins.push('styled-jsx/babel');
     // if (Encore.isProduction()) {
-    //     babelConfig.plugins.push("transform-remove-console");
+    //     babelConfig.plugins.push('transform-remove-console');
     // }
   },
   {
@@ -395,7 +395,7 @@ Encore.configureBabel(
         proposals: true,
     },
     // or completely control the exclude rule (note that you
-    // can't use both "include_node_modules" and "exclude" at
+    // can't use both 'include_node_modules' and 'exclude' at
     // the same time)
     // exclude: /bower_components/
   },

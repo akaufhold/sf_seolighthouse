@@ -14,7 +14,7 @@ import '../Scss/backend.scss';
 });*/
 
 requirejs(['jquery'], function ($) {
-    require(["chart","roughjs"], function(moment, chart) {
+    require(["chart.js","roughjs"], function(moment, chart) {
         var LighthouseCharts = function () {
             var ch = this;
             /* DECLARATION CHARTS VARS */
