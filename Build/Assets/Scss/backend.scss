@@ -492,14 +492,13 @@ h5 {
 
     .list-screenshots {
       &.collapse {
-        display: none;
-
         &.in {
           display: flex;
         }
       }
       flex-wrap: wrap;
       justify-content: center;
+      flex-direction: row;
 
       li {
         flex-basis: 20%;

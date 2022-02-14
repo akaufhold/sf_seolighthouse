@@ -45,7 +45,7 @@ function sortKeys(o) {
 
 requirejs(['jquery'], function ($) {
   require(["moment", "chart.js","roughjs"], function(moment, chart) {
-    console.log($.fn.tooltip.Constructor.VERSION);
+    
     /* REQUIRED ICONS */
     var chevronDown,
         chartsBar;
@@ -61,6 +61,9 @@ requirejs(['jquery'], function ($) {
     var LighthouseData = function () {
       /* DECLARATION VARS */
       var lh = this;
+      /* BOOTSTRAP VERSION */
+      var bsversion = $.fn.tooltip.Constructor.VERSION.charAt(0);
+      
       /* LIGHTHOUSE */
       var OutputAuditName,
           OutputAuditsHtml,
@@ -318,7 +321,14 @@ requirejs(['jquery'], function ($) {
                   }
                   /* ADDTIONAL AUDIT PROPERTIES*/
                   OutputAdditionalAuditsHtml  =  '';
-                  OutputAdditionalAuditsHtml  += '<div class="label toggle list-lighthouse collapsed" data-toggle="collapse" data-target="#list-additional-'+curCategory+'" aria-expanded="false" aria-controls="list-additional-'+curCategory+'">'+auditCategories[curCategory].title+chevronDown+'</div>';
+                  OutputAdditionalAuditsHtml  += '<div class="label toggle list-lighthouse collapsed" aria-expanded="false" aria-controls="list-additional-'+curCategory+'" ';
+                  
+                  if (bsversion==4)
+                    OutputAdditionalAuditsHtml     += 'data-toggle="collapse" data-target="#list-additional-'+curCategory+'"';
+                  else if (bsversion==5)
+                    OutputAdditionalAuditsHtml     +='data-bs-toggle="collapse" href="#list-additional-'+curCategory+'" role="button"';
+                  
+                  OutputAdditionalAuditsHtml  +='>'+auditCategories[curCategory].title+chevronDown+'</div>';
                   OutputAdditionalAuditsHtml  += '<ol class="collapse list-lighthouse list-group" id="list-additional-'+curCategory+'">';
                   OutputAdditionalAuditsHtml  +=    lh.getAdditionalAudits(auditResults,auditCategories[curCategory]);
                   OutputAdditionalAuditsHtml  += '</ol>';
@@ -540,7 +550,12 @@ requirejs(['jquery'], function ($) {
         //console.log(screens);
         var screenData;
         var screenTime;
-        var screenOutput  ='<div class="label toggle list-lighthouse collapsed" data-toggle="collapse" data-target="#list-screenshots" aria-expanded="false" aria-controls="list-screenshots">Screenshots'+chevronDown+'</div>';
+        var screenOutput  ='<div class="label toggle list-lighthouse collapsed" aria-expanded="false" aria-controls="list-screenshots"';
+        if (bsversion==4)
+          screenOutput     +='data-toggle="collapse" data-target="#list-screenshots"';
+        else if (bsversion==5)
+          screenOutput     +='data-bs-toggle="collapse" href="#list-screenshots" role="button"';
+        screenOutput     +='>Screenshots'+chevronDown+'</div>';
         screenOutput     +='<ul id="list-screenshots" class="collapse list-screenshots list-group">';
         $(screens).each(function(key,screen){
             screenData = screen['data'];
