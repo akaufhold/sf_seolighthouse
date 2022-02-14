@@ -21,6 +21,7 @@ const PurgeCssPlugin            = require('purgecss-webpack-plugin');
 const GoogleFontsPlugin         = require('@beyonk/google-fonts-webpack-plugin');
 const { merge }                 = require('webpack-merge');
 const CircularDependencyPlugin  = require('circular-dependency-plugin');
+const CopyPlugin                = require("copy-webpack-plugin");
 
 // replacing parts of config.json
 if (_project.type === 'typo3') {
@@ -163,11 +164,7 @@ Encore
     
     // only copy files matching this pattern
     pattern: /\.(png|jpg|jpeg|svg|webp|gif)$/
-    },{
-      from: './Assets/Static',
-      to: '[path][name].[ext]',
-      //pattern: /\.(png|jpg|jpeg|svg|js)$/,
-    },
+    }
   );
 
 Encore.addLoader({

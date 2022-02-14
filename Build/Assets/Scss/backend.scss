@@ -576,7 +576,10 @@ h5 {
         display: table-row;
       }
 
-      td {
+      td,
+      th {
+        width: auto;
+
         &.date {
           width: 160px;
         }

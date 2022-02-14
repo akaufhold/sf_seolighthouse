@@ -78,6 +78,12 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.list.Header" resname="tx_sf_seolighthouse_showlighthouse.list.Header" xml:space="preserve">
 				<source>Listing Lighthouse Data</source>
 			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.list.performance.vals" resname="tx_sf_seolighthouse_showlighthouse.list.performance.vals" xml:space="preserve">
+				<source>Performance Values</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.list.performance.score" resname="tx_sf_seolighthouse_showlighthouse.list.performance.score" xml:space="preserve">
+				<source>Performance Score</source>
+			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.list.vals" resname="tx_sf_seolighthouse_showlighthouse.list.vals" xml:space="preserve">
 				<source>Values</source>
 			</trans-unit>

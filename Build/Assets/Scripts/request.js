@@ -166,6 +166,7 @@ requirejs(['jquery'], function ($) {
       lh.activeListClick = function(){
         $(".list-lighthouse").on("click","li",function(){
             var listItem = $(this);
+            console.log(listItem);
             $(".list-lighthouse").find("li").removeClass("active");
             if (!$(listItem).hasClass("active")){
                 $(listItem).addClass("active");
@@ -314,7 +315,6 @@ requirejs(['jquery'], function ($) {
                   OutputAdditionalAuditsHtml  += '<ol class="collapse list-lighthouse list-group" id="list-additional-'+curCategory+'">';
                   OutputAdditionalAuditsHtml  +=    lh.getAdditionalAudits(auditResults,auditCategories[curCategory]);
                   OutputAdditionalAuditsHtml  += '</ol>';
-                  console.log(OutputAdditionalAuditsHtml);
                   $(".list-Addtional-Audits").append(OutputAdditionalAuditsHtml);
                   $(".newLighthouseStatistics").css({display:"block"});
                   //console.log(auditCategories[curCategory]);
@@ -436,7 +436,7 @@ requirejs(['jquery'], function ($) {
               htmlAdditionalOut                 += '</span>';
             }
             htmlAdditionalOut                   += '</li>';
-
+            //console.log(htmlAdditionalOut);
           });
           return htmlAdditionalOut;
       }
