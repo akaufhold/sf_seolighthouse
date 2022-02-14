@@ -191,7 +191,7 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
      */
     public function listAction()
     {
-        $lighthouseStatistics = $this->lighthouseStatisticsRepository->findByTarget($this->getSelectedPage());
+        $lighthouseStatistics = $this->lighthouseStatisticsRepository->findLimitedEntries(20, $this->getSelectedPage());
         $pageId     = $this->getSelectedPage();
         $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
         $this->view->assign('pageId', $pageId);

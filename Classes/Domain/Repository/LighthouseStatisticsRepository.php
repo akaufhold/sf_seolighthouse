@@ -19,15 +19,15 @@ namespace Stackfactory\SfSeolighthouse\Domain\Repository;
  */
 class LighthouseStatisticsRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-    public function findLimitedEntries($limit){
+    public function findLimitedEntries($limit, $target){
         $query = $this->createQuery();
         $query->setOrderings(
             [
                 'crdate' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
             ]
         );
+        $query->matching($query->equals('target', $target));
         $query->setLimit($limit);
         return $query->execute();
     }
-
 }
