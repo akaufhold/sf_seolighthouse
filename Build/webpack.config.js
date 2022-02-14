@@ -152,7 +152,8 @@ Encore
   }))*/
 
   .addPlugin(plugins.StyleLintPlugin)
-
+  
+  .copyFiles(_config[_project.type].copyFiles)
   .copyFiles({
     from: './Assets/Images/',
     
