@@ -168,11 +168,8 @@ requirejs(['jquery'], function ($) {
       }
 
       lh.activeListClick = function(){
-        console.log($(".list-lighthouse"));
         $(".list-lighthouse").on("click","li",function(){
             var listItem = $(this);
-            console.log(listItem);
-            console.log(!$(listItem).hasClass("active"));
             $(".list-lighthouse").find("li").removeClass("active");
             if (!$(listItem).hasClass("active")){
                 $(listItem).addClass("active");
@@ -271,7 +268,7 @@ requirejs(['jquery'], function ($) {
         lh.pbReset();
         lh.setPbStatus("progress");
         /* NUR ZUM TESTEN!!!!!!!!!!!!!!!*/
-        targetUrl = "https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json";
+        //targetUrl = "https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json";
 
         /* FETCH LIGHTHOUSE DATA */
         fetch(targetUrl)
@@ -284,7 +281,7 @@ requirejs(['jquery'], function ($) {
                     auditCategories = lighthouse.categories;
               var   lhCategoryList  = lh.getCategoryList().split(",");
               var   lhCategoryListLength = $(lhCategoryList).length;
-              //dconsole.log(auditScreenshots);
+              //console.log(auditScreenshots);
               lh.pbReset();
               lh.setPbStatus("success");
               $(".list-audits,.list-Addtional-Audits,.list-performance-audits").html("");
@@ -297,7 +294,6 @@ requirejs(['jquery'], function ($) {
                   var curCategory   = category.toLowerCase().replace("_","-");
                   var curChart      = "oac"+curCategory.substring(0,3);
                   var overallScore  = lighthouse.categories[curCategory].score;
-                  var appendDiv     = $(".formAppend");
 
                   /* CREATE CHARTS OUTPUT */
                   var missingScore  = 1-overallScore;
@@ -333,11 +329,6 @@ requirejs(['jquery'], function ($) {
                   OutputAdditionalAuditsHtml  +=    lh.getAdditionalAudits(auditResults,auditCategories[curCategory]);
                   OutputAdditionalAuditsHtml  += '</ol>';
                   $(".list-Addtional-Audits").append(OutputAdditionalAuditsHtml);
-
-                  // $(appendDiv).append('<div class="label toggle list-lighthouse collapsed" data-toggle="collapse" data-target="#list-additional-'+curCategory+'" aria-expanded="false" aria-controls="list-additional-'+curCategory+'">'+auditCategories[curCategory].title+chevronDown+'</div>');
-                  // $(appendDiv).append('<ol class="collapse list-lighthouse list-group" id="list-additional-'+curCategory+'">'+lh.getAdditionalAudits(auditResults,auditCategories[curCategory])+'</ol>');
-                  // $(".list-Addtional-Audits").append($(appendDiv).html());
-
                   
                   $(".newLighthouseStatistics").css({display:"block"});
                   //console.log(auditCategories[curCategory]);
@@ -418,52 +409,7 @@ requirejs(['jquery'], function ($) {
           });
           return htmlPerformanceOut;
       }
-       /* GET ADDITIONAL AUDITS */
-      // lh.getAdditionalAudits = function(auditResults,auditResultsInCategory){
-      //     var auditRefs = auditResultsInCategory['auditRefs'];
-      //     var speed, score, displayValue, screenshot, type, displayMode, description, currentAudit;
-      //     var htmlAdditionalOut = "";
-      //     auditRefs = sortKeys(auditRefs);
-      //     Object.keys(auditRefs).forEach(function(key,audit){
-      //       type                                = auditResultsInCategory.auditRefs[key].id;
-      //       currentAudit                        = auditResults[type];
-      //       //console.log(currentAudit);
-      //       description                         = currentAudit.description;
-      //       displayMode                         = String(currentAudit.scoreDisplayMode);
-            
-      //       displayValue                        = currentAudit.displayValue;
-      //       if (currentAudit.score!=null){
-      //         score                             = currentAudit.score;
-      //       }
-      //       OutputAuditName                     = type.replace("-"," ");
-      //       htmlAdditionalOut                   += '<li class="list-group-item" id="'+type+'">';
-      //       htmlAdditionalOut                   += lh.addSpan("label",((description) ? chevronDown : '')+OutputAuditName);
-      //       if (displayValue!=undefined){
-      //           htmlAdditionalOut               += lh.addSpan("value",displayValue);
-      //       }
-      //       if (score){
-      //           speed                           =  lh.getSpeedClass(score);
-      //           htmlAdditionalOut               += lh.addSpan("score "+speed,score);
-      //       }
-      //       if (currentAudit.description){  
-      //         htmlAdditionalOut                 += '<span class="description">';
-      //         if (currentAudit.title){
-      //           htmlAdditionalOut               += "<b>";
-      //           htmlAdditionalOut               += JSON.stringify(currentAudit.title.toString());
-      //           htmlAdditionalOut               += "</b>";
-      //         }
-      //         htmlAdditionalOut                 += currentAudit.description;
-      //         if (typeof currentAudit.details != "undefined"){
-      //           htmlAdditionalOut               += lh.getAdditionalAuditsDetails(currentAudit.details);
-      //         }
-      //         htmlAdditionalOut                 += '</span>';
-      //       }
-      //       htmlAdditionalOut                   += '</li>';
-      //       //console.log(htmlAdditionalOut);
-      //     });
-      //     return htmlAdditionalOut;
-      // }
-
+ 
       /* GET ADDITIONAL AUDITS */
       lh.getAdditionalAudits = function(auditResults,auditResultsInCategory){
         var auditRefs = auditResultsInCategory['auditRefs'];
@@ -478,9 +424,9 @@ requirejs(['jquery'], function ($) {
           description                        = currentAudit.description;
           displayMode                        = String(currentAudit.scoreDisplayMode);
 
-          // if (auditResults[key].hasOwnProperty("details.screenshot")){
-          //     screenshot = auditResults[key].details.screenshot;
-          // }
+          if (auditResults[key].hasOwnProperty("details.screenshot")){
+               screenshot = auditResults[key].details.screenshot;
+          }
           displayValue                       = currentAudit.displayValue;
           if (currentAudit.score!=null){
             score                            = currentAudit.score;

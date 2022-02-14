@@ -1,4 +1,5 @@
 import '../Scss/backend.scss';
+import Chart from 'chart.js/auto';
 
 /*require.config({
     paths: {
@@ -14,7 +15,7 @@ import '../Scss/backend.scss';
 });*/
 
 requirejs(['jquery'], function ($) {
-    require(["chart.js","roughjs"], function(moment, chart) {
+    require(["moment","chart.js","roughjs"], function(moment, chart) {
         var LighthouseCharts = function () {
             var ch = this;
             /* DECLARATION CHARTS VARS */
@@ -62,13 +63,14 @@ requirejs(['jquery'], function ($) {
                 var entryValues         	    = {};
                 var entryiteration              = 1;
                 var entryCounter                = ch.countEntries($(entriesIn), deviceIn);
-                var lastDate;
+                //console.log($(entriesIn));
+                var lastDate,device,data;
                 $(entriesIn).each(function(key,value) {
                     data                        = $(this).data();
-                    device                      = data.device.toLowerCase();
+                    device                      = $(this).data("device").toLowerCase();
                     /* DATES */
-                    var crdate                  = data.crdate;
-                    var timestamp               = data.timestamp;
+                    var crdate                  = $(this).data("crdate");
+                    var timestamp               = $(this).data("timestamp");
                     var date                    = new Date(timestamp * 1000);
                     var dateLabel               = ("0" + date.getDate()).slice(-2)+"."+("0" + (date.getMonth() + 1)).slice(-2)+"."+date.getFullYear();
                     var dateLabelTime           = dateLabel +" "+ date.getHours()+":"+('0'+date.getMinutes()).slice(-2);
@@ -123,8 +125,11 @@ requirejs(['jquery'], function ($) {
             }
             ch.countEntries = function(entriesCountable, deviceCountable){
                 var entryCounter = 0;
+                var deviceSub;
                 $(entriesCountable).each(function() {
-                    deviceSub  = $(this).data().device.toLowerCase();
+                    //console.log($(this).data("device"));
+                    deviceSub  = $(this).data("device").toLowerCase();
+                    //console.log($(this).data().device.toLowerCase());
                     if (deviceSub==deviceCountable){
                         entryCounter++;
                     }
@@ -132,6 +137,7 @@ requirejs(['jquery'], function ($) {
                 return entryCounter;
             }
             ch.addDataLabel = function(chartIn,dateLabel){
+                console.log(chartIn);
                 chartIn.config.data.labels.push(dateLabel);
             }
             ch.addDataSet = function (chartIn, label, color, date, data, createDataset, datasetReady, index) {
@@ -155,6 +161,9 @@ requirejs(['jquery'], function ($) {
                 }
             }
             ch.createCharts = function (chartElement, typeChart) {
+                if(typeof window[typeChart] !== "undefined"){
+                    window[typeChart].destroy();
+                }
                 ChartObj = new Chart(chartElement, {
                     type: typeChart,
                     options: {
