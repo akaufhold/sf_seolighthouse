@@ -469,12 +469,12 @@ requirejs(['jquery'], function ($) {
 
       /* GET DETAILS OF ADDITIONAL AUDITS FROM TYPE TABLE*/
       lh.getAADTable = function(details){
-        var out = '<table>';
+        var out = '<table class="table table-striped table-hover">';
         if (details.items.length){
           out += '<tr>';
           out += lh.getAADTableHeadings(details.headings);
           out += '</tr>';
-          out += lh.getAADTableRecursive(details.items);
+          out += lh.getAADTableContent(details.items,details.headings);
         }
         out += '</table>';
         return out;
@@ -482,22 +482,38 @@ requirejs(['jquery'], function ($) {
 
       /* GET HEADINGS OF ADDITIONAL AUDITS TABLE*/
       lh.getAADTableHeadings = function(headings){
-        var out = '';
+        var out = '<thead>';
         headings.forEach(function(headeritem,headerindex){
           if (typeof headeritem.text!=undefined){
             out += '<th style="width:'+(100/headings.length)+'%">'+headeritem.text+'</th>';
           }
         });
+        out = '</thead>';
         return out;
       }
 
       /* GET RECURSIVE TABLE CONTENTS */
-      lh.getAADTableRecursive = function(detailItems){
+      lh.getAADTableContent = function(detailItems,headings){
         var index=0;
         var detailItemsOutput ='<tr>';
         //console.log(detailItems);
-        detailItems.forEach(function(item,index){
-          if ((lh.determineDepthOfObject(item)>0) && (Array.isArray(item))){
+        if (headings.length){
+          headings.forEach(function(itemHeader,index){
+            detailItemsOutput += lh.getAADTableRecursive(detailItems,itemHeader.key,headings.length);
+          });
+        }else {
+          detailItemsOutput += lh.getAADTableRecursive(detailItems,headings.length);
+        }
+
+        detailItemsOutput += '</tr>';
+        return detailItemsOutput;
+      }
+
+      lh.getAADTableRecursive = function(detailItems,headerKey,headerCount){
+        var detailItemsOutput = '';
+        detailItems.forEach(function(item,indexDetail){
+          //console.log(itemDetail);
+          /*if ((lh.determineDepthOfObject(item)>0) && (Array.isArray(item))){
             lh.getAADTableRecursive(item);
           }
           else if (item?.subItems?.items){
@@ -505,24 +521,31 @@ requirejs(['jquery'], function ($) {
           }
           else if (typeof item!=undefined){
             if (item?.node){
-              //detailItemsOutput += lh.getAADNodeTableWrap(item?.node);
+              //detailItemsOutput += lh.getAADNodeTableWrap(item?.node,"0");
             }
             else if (item?.relatedNode){
-              //detailItemsOutput += lh.getAADNodeTableWrap(item?.relatedNode);
+              //console.log(item.relatedNode);
+              //console.log(headerCount);
+              //detailItemsOutput += lh.getAADNodeTableWrap(item.relatedNode,"0");
             }
             else {
-              detailItemsOutput += lh.getAADNodeTableWrap(item);
+              if (item[headerKey].length){
+                // console.log("--------------- HEADER -------------------");
+                // console.log(headerKey);
+                // console.log("--------------- DETAIL ITEMS -------------------");
+                // console.log(item[headerKey]);
+              }
+              //detailItemsOutput += lh.getAADNodeTableWrap(item,headerCount);
               //detailItemsOutput += '<td>'+item+'</td>';
             }
-          }
+          }*/
         });
-        detailItemsOutput += '</tr>';
         return detailItemsOutput;
       }
 
       /* GET TABLE WRAPS */
-      lh.getAADNodeTableWrap = function(node){
-        return '<td colspan=""><table width="100%">'+lh.getAADNodeTableRows(node)+'</table></td>';
+      lh.getAADNodeTableWrap = function(node,headCount){
+        return '<td colspan="'+headCount+'"><table width="100%">'+lh.getAADNodeTableRows(node)+'</table></td>';
       }
 
       /* GET TABLE ROWS */
@@ -530,7 +553,6 @@ requirejs(['jquery'], function ($) {
         var out='';
         Object.entries(node).forEach(entry => {
           const [key, value] = entry;
-          console.log(key+" "+value);
           out += '<tr><td>'+key+'</td><td>'+value+'</td></tr>';
         });
         return out;
