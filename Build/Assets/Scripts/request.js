@@ -1,19 +1,6 @@
 import '../Scss/backend.scss';
 import Chart from 'chart.js/auto';
 
-/*require.config({
-  paths: {
-    moment: "//cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min",
-    chart: "//cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min",
-    roughjs: "https://unpkg.com/roughjs@4.3.1/bundled/rough"
-  },
-  shim: {
-    chartjs: {
-      exports: "C"
-    },
-  },
-});*/
-
 /* function for sorting json object through child keys */
 function sortKeys(o) {
   if (Array.isArray(o)) {
@@ -57,20 +44,17 @@ requirejs(['jquery'], function ($) {
         chartsBar = icon;
       });
     });
-    //var color = Chart.helpers.color;
+
     var LighthouseData = function () {
-      /* DECLARATION VARS */
       var lh = this;
       /* BOOTSTRAP VERSION */
       var bsversion = $.fn.tooltip.Constructor.VERSION.charAt(0);
-      
       /* LIGHTHOUSE */
       var OutputAuditName,
           OutputAuditsHtml,
           OutputPerformanceAuditsHtml,
           OutputAdditionalAuditsHtml,
           categoryUrl;
-
       /* DECLARATION AUDIT CONSTANTS */
       const mainAudits        = [
         ["accessibility", "acs"],
@@ -87,7 +71,6 @@ requirejs(['jquery'], function ($) {
         ["total-blocking-time", "tbt",0.25,"rgba(54, 162, 235, 1)"],
         ["cumulative-layout-shift", "cls",0.05,"rgba(153, 102, 255, 1)"]
       ];
-
       /* PROGRESS BAR */
       var pb = $(".progressBar");
       var cc = $(".progressBar").find(".counterContainer");
@@ -262,13 +245,14 @@ requirejs(['jquery'], function ($) {
       lh.firstLetterUp = function(stringIn){
         return stringIn.charAt(0).toUpperCase() + stringIn.slice(1).toLowerCase();
       }
-      /* FETCH API REQUEST FUNCTION */
+      /* FETCH API REQUEST */
       lh.fetchLighthouseData = function(targetUrl) {
         /* PROGRESS BAR */
         lh.pbReset();
         lh.setPbStatus("progress");
-        /* NUR ZUM TESTEN!!!!!!!!!!!!!!!*/
-        //targetUrl = "https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json";
+
+        /* ONLY FOR TESTING !!!!!!!!!!!!!!!*/
+        targetUrl = "https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json";
 
         /* FETCH LIGHTHOUSE DATA */
         fetch(targetUrl)
@@ -281,14 +265,14 @@ requirejs(['jquery'], function ($) {
                     auditCategories = lighthouse.categories;
               var   lhCategoryList  = lh.getCategoryList().split(",");
               var   lhCategoryListLength = $(lhCategoryList).length;
-              //console.log(auditScreenshots);
+
               lh.pbReset();
               lh.setPbStatus("success");
               $(".list-audits,.list-Addtional-Audits,.list-performance-audits").html("");
               /* SET DEVICE HIDDEN FIELD */
               $("#device").val(lh.firstLetterUp(lh.getDevice()));
               OutputAuditsHtml  = '<ul class="list-lighthouse list-score list-main list-group">';
-              //console.log(lighthouse);
+
               $(lhCategoryList).each(function(catIt,category){
                   catIt++;
                   var curCategory   = category.toLowerCase().replace("_","-");
@@ -331,7 +315,6 @@ requirejs(['jquery'], function ($) {
                   $(".list-Addtional-Audits").append(OutputAdditionalAuditsHtml);
                   
                   $(".newLighthouseStatistics").css({display:"block"});
-                  //console.log(auditCategories[curCategory]);
               })
               OutputAuditsHtml  += "</ul>";
               $(".list-audits").html("");
@@ -410,22 +393,34 @@ requirejs(['jquery'], function ($) {
           return htmlPerformanceOut;
       }
  
+      lh.determineDepthOfObject = function(object) {
+        let depth = 0;
+        if (object.children) {
+          object.children.forEach(x => {
+            let temp = this.determineDepthOfObject(x);
+            if (temp > depth) {
+              depth = temp;
+            }
+          })
+        }
+        return depth + 1;
+      }
+
       /* GET ADDITIONAL AUDITS */
       lh.getAdditionalAudits = function(auditResults,auditResultsInCategory){
-        var auditRefs = auditResultsInCategory['auditRefs'];
         var speed, score, displayValue, screenshot, type, displayMode, description, currentAudit;
         var htmlAdditionalOut = "";
+        var auditRefs = auditResultsInCategory['auditRefs'];
         auditRefs = sortKeys(auditRefs);
-        
+
         Object.keys(auditRefs).sort().forEach(function(key){
           type                               = auditResultsInCategory.auditRefs[key].id;
           currentAudit                       = auditResults[type];
-
           description                        = currentAudit.description;
           displayMode                        = String(currentAudit.scoreDisplayMode);
 
-          if (auditResults[key].hasOwnProperty("details.screenshot")){
-               screenshot = auditResults[key].details.screenshot;
+          if (currentAudit.hasOwnProperty("details.screenshot")){
+               screenshot = currentAudit.details.screenshot;
           }
           displayValue                       = currentAudit.displayValue;
           if (currentAudit.score!=null){
@@ -452,8 +447,9 @@ requirejs(['jquery'], function ($) {
                 htmlAdditionalOut               += "</b>";
               }
               htmlAdditionalOut                 += currentAudit.description;
+              
               if (typeof currentAudit.details != "undefined"){
-                htmlAdditionalOut               += lh.getAdditionalAuditsDetails(currentAudit.details);
+                htmlAdditionalOut               += lh.getAAD(currentAudit.details);
               }
               htmlAdditionalOut                 += '</span>';
             }
@@ -463,34 +459,84 @@ requirejs(['jquery'], function ($) {
         return htmlAdditionalOut;
       }
 
-      lh.getAdditionalAuditsDetails = function(details){
-        var detailOutput ='';
+      /* GET DETAILS OF ADDITIONAL AUDITS */
+      lh.getAAD = function(details){
         if (details.type=="table"){
-          detailOutput += '<table>';
-          detailOutput += '<tr>';
-          
-          details.headings.forEach(function(item,index){
-            var headingCount = details.headings.length;
-            var tdWidth = 100/headingCount;
-            if (typeof item.text!=undefined)
-              detailOutput += '<th style="width:'+tdWidth+'%">'+item.text+'</th>';
-          });
-          detailOutput += '</tr>';
-          
-          details.items.forEach(function(item,index){
-            detailOutput += '<tr>';
-            if (typeof item.text!=undefined){
-              detailOutput += '<td>'+item.text+'</td>';
-            }
-            detailOutput += '</tr>';
-          });
-          
-          detailOutput += '</table>';
+          //console.log(lh.getAADTable(details));
+          return lh.getAADTable(details);
         }
-        //console.log(detailOutput);
-        return detailOutput;
       }
 
+      /* GET DETAILS OF ADDITIONAL AUDITS FROM TYPE TABLE*/
+      lh.getAADTable = function(details){
+        var out = '<table>';
+        if (details.items.length){
+          out += '<tr>';
+          out += lh.getAADTableHeadings(details.headings);
+          out += '</tr>';
+          out += lh.getAADTableRecursive(details.items);
+        }
+        out += '</table>';
+        return out;
+      }
+
+      /* GET HEADINGS OF ADDITIONAL AUDITS TABLE*/
+      lh.getAADTableHeadings = function(headings){
+        var out = '';
+        headings.forEach(function(headeritem,headerindex){
+          if (typeof headeritem.text!=undefined){
+            out += '<th style="width:'+(100/headings.length)+'%">'+headeritem.text+'</th>';
+          }
+        });
+        return out;
+      }
+
+      /* GET RECURSIVE TABLE CONTENTS */
+      lh.getAADTableRecursive = function(detailItems){
+        var index=0;
+        var detailItemsOutput ='<tr>';
+        //console.log(detailItems);
+        detailItems.forEach(function(item,index){
+          if ((lh.determineDepthOfObject(item)>0) && (Array.isArray(item))){
+            lh.getAADTableRecursive(item);
+          }
+          else if (item?.subItems?.items){
+            lh.getAADTableRecursive(item.subItems.items);
+          }
+          else if (typeof item!=undefined){
+            if (item?.node){
+              //detailItemsOutput += lh.getAADNodeTableWrap(item?.node);
+            }
+            else if (item?.relatedNode){
+              //detailItemsOutput += lh.getAADNodeTableWrap(item?.relatedNode);
+            }
+            else {
+              detailItemsOutput += lh.getAADNodeTableWrap(item);
+              //detailItemsOutput += '<td>'+item+'</td>';
+            }
+          }
+        });
+        detailItemsOutput += '</tr>';
+        return detailItemsOutput;
+      }
+
+      /* GET TABLE WRAPS */
+      lh.getAADNodeTableWrap = function(node){
+        return '<td colspan=""><table width="100%">'+lh.getAADNodeTableRows(node)+'</table></td>';
+      }
+
+      /* GET TABLE ROWS */
+      lh.getAADNodeTableRows = function(node){
+        var out='';
+        Object.entries(node).forEach(entry => {
+          const [key, value] = entry;
+          console.log(key+" "+value);
+          out += '<tr><td>'+key+'</td><td>'+value+'</td></tr>';
+        });
+        return out;
+      }
+
+      /* GET SCREENSHOTS WITH LOADING TIME */
       lh.getScreenshots = function(auditScreenshot){
         var screens = auditScreenshot["details"]["items"];
         //console.log(screens);
