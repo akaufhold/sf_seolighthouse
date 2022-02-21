@@ -1,3 +1,5 @@
+"use strict";
+
 import '../Scss/backend.scss';
 import Chart from 'chart.js/auto';
 
@@ -119,12 +121,7 @@ requirejs(['jquery'], function ($) {
             else{
                 $("input[value='all']").parents(".custom-check").find(".form-check-label").removeClass("active");
             }
-            if ($(this).hasClass("active")){
-                $(this).removeClass("active");
-            }
-            else{
-                $(this).addClass("active");
-            }  
+            $(this).toggleClass("active"); 
             categoryUrl =  lh.getCategoryList();
             lh.addCategoriesToTargetUrl(categoryUrl);
         });
@@ -245,6 +242,45 @@ requirejs(['jquery'], function ($) {
       lh.firstLetterUp = function(stringIn){
         return stringIn.charAt(0).toUpperCase() + stringIn.slice(1).toLowerCase();
       }
+
+      /* ERROR HANDLING */
+      lh.errorHandling = function(errorMessage){
+        lh.pbReset();
+        lh.setPbStatus("error");
+        $(pb).find(".errorMessage").append(": "+errorMessage.substring(0, 130));
+        lh.fetchLighthouseData(lh.getTargetUrl());
+      }
+
+      /* SET TOTAL TIME 4 PROGRESS BAR */
+      lh.setTotalTime = function(timer){
+        let curTimer = (timer/1000).toFixed(2)+' s';
+        if (!$(cc).find(".totalTime").length){
+          let curCounter = document.createElement('span');
+          curCounter.className = "totalTime";
+          curCounter.appendChild(document.createTextNode(curTimer));
+          $(cc).find(".counterTitle").append(curCounter);
+        }   
+        else
+          $(cc).find(".totalTime").html(curTimer);
+      }
+
+      /* HTML SPAN OUTPUT */
+      lh.addSpan = function(cssClass,value){
+        var htmlOut  = '<span class="'+cssClass+'">';
+        htmlOut      +=    value;
+        htmlOut      += '</span>';
+        return htmlOut;
+      }
+
+      /* CSS CLASS FOR SPEED STATUS COLOR */
+      lh.getSpeedClass = function(scoreIn){
+        var speedOut;
+        if (scoreIn < 0.5){speedOut = 'slow';} 
+        else if (scoreIn < 0.9){speedOut = 'average';} 
+        else if (scoreIn <= 1){speedOut = 'fast';}
+        return speedOut;
+      }
+
       /* FETCH API REQUEST */
       lh.fetchLighthouseData = function(targetUrl) {
         /* PROGRESS BAR */
@@ -328,20 +364,6 @@ requirejs(['jquery'], function ($) {
             }
           });
       } 
-      /* ERROR HANDLING */
-      lh.errorHandling = function(errorMessage){
-          lh.pbReset();
-          lh.setPbStatus("error");
-          $(pb).find(".errorMessage").append(": "+errorMessage.substring(0, 130));
-          lh.fetchLighthouseData(lh.getTargetUrl());
-      }
-      /* SET TOTAL TIME 4 PROGRESS BAR */
-      lh.setTotalTime = function(timer){
-        if (!$(cc).find(".totalTime").length)
-          $(cc).find(".counterTitle").append('<span class="totalTime">'+(timer/1000).toFixed(2)+' s</span>');
-        else
-          $(cc).find(".totalTime").html((timer/1000).toFixed(2)+' s');
-      }
 
         /* GET MAIN AUDITS */
       lh.getMainAudits = function(auditItem,auditResult,mainIteration,mainCounter){
@@ -392,7 +414,15 @@ requirejs(['jquery'], function ($) {
           });
           return htmlPerformanceOut;
       }
- 
+
+      lh.htmlEnc = function(string){
+        return string.replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/'/g, '&#39;')
+        .replace(/"/g, '&#34;');
+        }
+
       lh.determineDepthOfObject = function(object) {
         let depth = 0;
         if (object.children) {
@@ -443,11 +473,11 @@ requirejs(['jquery'], function ($) {
               htmlAdditionalOut                 += '<span class="description">';
               if (currentAudit.title){
                 htmlAdditionalOut               += "<b>";
-                htmlAdditionalOut               += JSON.stringify(currentAudit.title.toString());
+                htmlAdditionalOut               += lh.htmlEnc(JSON.stringify(currentAudit.title.toString()));
+                //htmlAdditionalOut               += lh.htmlEnc(currentAudit.title.toString());
                 htmlAdditionalOut               += "</b>";
               }
-              htmlAdditionalOut                 += currentAudit.description;
-              
+              htmlAdditionalOut                 += lh.htmlEnc(JSON.stringify(currentAudit.description.toString()));
               if (typeof currentAudit.details != "undefined"){
                 htmlAdditionalOut               += lh.getAAD(currentAudit.details);
               }
@@ -461,21 +491,21 @@ requirejs(['jquery'], function ($) {
 
       /* GET DETAILS OF ADDITIONAL AUDITS */
       lh.getAAD = function(details){
-        if (details.type=="table"){
-          //console.log(lh.getAADTable(details));
+        if ((details.type=="table") && (details.items.length)){
+          //console.log(details);
           return lh.getAADTable(details);
+        } else {
+          return false;
         }
       }
 
       /* GET DETAILS OF ADDITIONAL AUDITS FROM TYPE TABLE*/
       lh.getAADTable = function(details){
         var out = '<table class="table table-striped table-hover">';
-        if (details.items.length){
-          out += '<tr>';
-          out += lh.getAADTableHeadings(details.headings);
-          out += '</tr>';
-          out += lh.getAADTableContent(details.items,details.headings);
-        }
+        out += '<tr>';
+        out += lh.getAADTableHeadings(details.headings);
+        out += '</tr>';
+        //out += lh.getAADTableContent(details.items,details.headings);
         out += '</table>';
         return out;
       }
@@ -488,7 +518,7 @@ requirejs(['jquery'], function ($) {
             out += '<th style="width:'+(100/headings.length)+'%">'+headeritem.text+'</th>';
           }
         });
-        out = '</thead>';
+        out += '</thead>';
         return out;
       }
 
@@ -496,7 +526,6 @@ requirejs(['jquery'], function ($) {
       lh.getAADTableContent = function(detailItems,headings){
         var index=0;
         var detailItemsOutput ='<tr>';
-        //console.log(detailItems);
         if (headings.length){
           headings.forEach(function(itemHeader,index){
             detailItemsOutput += lh.getAADTableRecursive(detailItems,itemHeader.key,headings.length);
@@ -504,16 +533,17 @@ requirejs(['jquery'], function ($) {
         }else {
           detailItemsOutput += lh.getAADTableRecursive(detailItems,headings.length);
         }
-
         detailItemsOutput += '</tr>';
+        //console.log(detailItemsOutput);
         return detailItemsOutput;
       }
 
       lh.getAADTableRecursive = function(detailItems,headerKey,headerCount){
         var detailItemsOutput = '';
+        console.log(detailItems);
         detailItems.forEach(function(item,indexDetail){
           //console.log(itemDetail);
-          /*if ((lh.determineDepthOfObject(item)>0) && (Array.isArray(item))){
+          if ((lh.determineDepthOfObject(item)>0) && (Array.isArray(item))){
             lh.getAADTableRecursive(item);
           }
           else if (item?.subItems?.items){
@@ -521,35 +551,40 @@ requirejs(['jquery'], function ($) {
           }
           else if (typeof item!=undefined){
             if (item?.node){
-              //detailItemsOutput += lh.getAADNodeTableWrap(item?.node,"0");
+              //console.log(item?.node);
+              //detailItemsOutput += lh.getAADNodeWrapper(item?.node,"0");
+              detailItemsOutput.append(lh.getAADNodeWrapper(item?.node,"0"));
             }
             else if (item?.relatedNode){
               //console.log(item.relatedNode);
               //console.log(headerCount);
-              //detailItemsOutput += lh.getAADNodeTableWrap(item.relatedNode,"0");
+              //detailItemsOutput += lh.getAADNodeWrapper(item.relatedNode,"0");
+              detailItemsOutput.append(lh.getAADNodeWrapper(item.relatedNode,"0"));
             }
             else {
-              if (item[headerKey].length){
-                // console.log("--------------- HEADER -------------------");
-                // console.log(headerKey);
-                // console.log("--------------- DETAIL ITEMS -------------------");
-                // console.log(item[headerKey]);
+              //console.log(item);
+              //console.log(headerKey);
+              if (item.hasOwnProperty(headerKey)){
+                console.log("--------------- HEADER -------------------");
+                console.log(headerKey);
+                console.log("--------------- DETAIL ITEMS -------------------");
+                console.log(item[headerKey]);
               }
-              //detailItemsOutput += lh.getAADNodeTableWrap(item,headerCount);
-              //detailItemsOutput += '<td>'+item+'</td>';
+              detailItemsOutput += lh.getAADTableRows(item);
+              detailItemsOutput += '<td>'+item+'</td>';
             }
-          }*/
+          }
         });
         return detailItemsOutput;
       }
 
-      /* GET TABLE WRAPS */
-      lh.getAADNodeTableWrap = function(node,headCount){
-        return '<td colspan="'+headCount+'"><table width="100%">'+lh.getAADNodeTableRows(node)+'</table></td>';
+      /* GET TABLE WRAP */
+      lh.getAADTableWrapper = function(node,headCount){
+        return '<td colspan="'+headCount+'"><table width="100%">'+lh.getAADTableRows(node)+'</table></td>';
       }
 
       /* GET TABLE ROWS */
-      lh.getAADNodeTableRows = function(node){
+      lh.getAADTableRows = function(node){
         var out='';
         Object.entries(node).forEach(entry => {
           const [key, value] = entry;
@@ -557,6 +592,48 @@ requirejs(['jquery'], function ($) {
         });
         return out;
       }
+
+      /* GET NODE WRAP */
+      lh.getAADNodeWrapper = function(node){
+        var nodeProperties = [];
+        nodeProperties.push(node.nodeLabel, node.path, node.selector, node.snippet);
+        //console.log(nodeProperties);
+
+        let table = document.createElement('table');
+        let row = table.insertRow(-1);
+
+        nodeProperties.forEach(function(nodeItem,indexNode){
+          let newCell = row.insertCell();
+          newCell.appendChild(document.createTextNode(nodeItem));
+        })
+        //console.log(table);
+        return table;
+        
+        /*nodeOut ='<tr><td><table>';
+        nodeOut +='<thead><tr><th>Label</th><th>Path</th><th>Selektor</th><th>Snippet</th></tr></thead>';
+        nodeOut +='<tbody><tr>';
+        nodeProperties.forEach(function(nodeItem,indexNode){
+          nodeOut +='';
+        });
+        nodeOut +='</tbody><tr>';
+        nodeOut +='</table></td><tr>';
+        console.log(node.nodeLabel);
+        console.log(node.path);
+        console.log(node.selector);
+        console.log(node.snippet);*/
+        //return '<td colspan="'+headCount+'"><table width="100%">'+lh.getAADTableRows(node)+'</table></td>';
+      }
+
+      /*lh.getAADTableHeadings = function(headings){
+        var out = '<thead>';
+        headings.forEach(function(headeritem,headerindex){
+          if (typeof headeritem.text!=undefined){
+            out += '<th style="width:'+(100/headings.length)+'%">'+headeritem.text+'</th>';
+          }
+        });
+        out += '</thead>';
+        return out;
+      }*/
 
       /* GET SCREENSHOTS WITH LOADING TIME */
       lh.getScreenshots = function(auditScreenshot){
@@ -578,23 +655,6 @@ requirejs(['jquery'], function ($) {
         })
         screenOutput+='</ul>';
         return screenOutput;
-      }
-
-      /* HTML SPAN OUTPUT */
-      lh.addSpan = function(cssClass,value){
-        var htmlOut  = '<span class="'+cssClass+'">';
-        htmlOut      +=    value;
-        htmlOut      += '</span>';
-        return htmlOut;
-      }
-
-      /* CSS CLASS FOR SPEED STATUS COLOR */
-      lh.getSpeedClass = function(scoreIn){
-        var speedOut;
-        if (scoreIn < 0.5){speedOut = 'slow';} 
-        else if (scoreIn < 0.9){speedOut = 'average';} 
-        else if (scoreIn <= 1){speedOut = 'fast';}
-        return speedOut;
       }
       
       /* CHARTS */
@@ -647,26 +707,6 @@ requirejs(['jquery'], function ($) {
           chart.update();
         }  
       }
-
-      lh.getBootstrapVersion = function () {
-        var deferred = $.Deferred();
-      
-        var script = $('script[src*="bootstrap"]');
-        if (script.length == 0) {
-          return deferred.reject();
-        }
-      
-        var src = script.attr('src');
-        $.get(src).done(function(response) {
-          var matches = response.match(/(?!v)([.\d]+[.\d])/);
-          if (matches && matches.length > 0) {
-            version = matches[0];
-            deferred.resolve(version);
-          }
-        });
-      
-        return deferred;
-      };
     }
 
     var lighthouseData = new LighthouseData();
