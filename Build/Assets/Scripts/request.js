@@ -637,26 +637,54 @@ requirejs(['jquery'], function ($) {
 
       /* GET SCREENSHOTS WITH LOADING TIME */
       lh.getScreenshots = function(auditScreenshot){
-        var screens = auditScreenshot["details"]["items"];
-        //console.log(screens);
-        var screenData;
-        var screenTime;
-        var screenOutput  ='<div class="label toggle list-lighthouse collapsed" aria-expanded="false" aria-controls="list-screenshots"';
-        if (bsversion==4)
-          screenOutput     +='data-toggle="collapse" data-target="#list-screenshots"';
-        else if (bsversion==5)
-          screenOutput     +='data-bs-toggle="collapse" href="#list-screenshots" role="button"';
-        screenOutput     +='>Screenshots'+chevronDown+'</div>';
-        screenOutput     +='<ul id="list-screenshots" class="collapse list-screenshots list-group">';
+        let screenLabel     = 'Screenshots';
+        let screens         = auditScreenshot["details"]["items"];
+
+        let screenFragment  = document.createDocumentFragment();
+        let screenDiv       = document.createElement('div');
+        let screenList      = document.createElement('ul');
+
+        screenDiv.classList.add('label', 'toggle', 'list-lighthouse', 'collapsed');
+        screenDiv.setAttribute('aria-expanded','false');
+        screenDiv.setAttribute('aria-controls','list-screenshots');
+        if (bsversion==4){
+          screenDiv.setAttribute('data-toggle','collapse');
+          screenDiv.setAttribute('data-target','#list-screenshots');
+        } else if (bsversion==5){
+          screenDiv.setAttribute('data-bs-toggle','collapse');
+          screenDiv.setAttribute('href','#list-screenshots');
+          screenDiv.setAttribute('role','button');
+        }
+        screenDiv.appendChild(document.createTextNode(screenLabel));
+        screenDiv.insertAdjacentHTML('beforeend',chevronDown);
+        
+        screenList.id = 'list-screenshots';
+        screenList.classList.add('list-group', 'list-screenshots', 'collapse');
+        
         $(screens).each(function(key,screen){
-            screenData = screen['data'];
-            screenTime = screen['timing'];
-            screenOutput+='<li class="list-group-item">'+screenTime+' ms<br /><img class="screenshot" src="'+screenData+'"/></li>';
-        })
-        screenOutput+='</ul>';
-        return screenOutput;
+          screenList.appendChild(lh.getScreenshotsListEntries(screen));
+        });
+        screenFragment.append(screenDiv);
+        screenFragment.append(screenList);
+        return screenFragment;
       }
       
+      lh.getScreenshotsListEntries = function(screen){
+        let screenListEntry     = document.createElement('li');
+        let screenListEntryImg  = document.createElement('img');
+        let screenData          = screen['data']; 
+        let screenTime          = screen['timing'];
+
+        screenListEntry.classList.add('list-group-item');
+        screenListEntry.appendChild(document.createTextNode(screenTime+' ms'));
+        screenListEntry.insertAdjacentHTML('beforeend','<br />');
+
+        screenListEntryImg.classList.add('screenshot');
+        screenListEntryImg.src=screenData;
+        screenListEntry.appendChild(screenListEntryImg);
+        return screenListEntry;
+      }
+
       /* CHARTS */
       lh.createCharts = function (chartIn,typeIn,target,titleText) {
           var targetChart = target+"Chart";

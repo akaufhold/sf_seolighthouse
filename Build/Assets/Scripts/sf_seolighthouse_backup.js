@@ -121,12 +121,7 @@ requirejs(['jquery'], function ($) {
             else{
                 $("input[value='all']").parents(".custom-check").find(".form-check-label").removeClass("active");
             }
-            if ($(this).hasClass("active")){
-                $(this).removeClass("active");
-            }
-            else{
-                $(this).addClass("active");
-            }  
+            $(this).toggleClass("active"); 
             categoryUrl =  lh.getCategoryList();
             lh.addCategoriesToTargetUrl(categoryUrl);
         });
@@ -258,10 +253,32 @@ requirejs(['jquery'], function ($) {
 
       /* SET TOTAL TIME 4 PROGRESS BAR */
       lh.setTotalTime = function(timer){
-        if (!$(cc).find(".totalTime").length)
-          $(cc).find(".counterTitle").append('<span class="totalTime">'+(timer/1000).toFixed(2)+' s</span>');
+        let curTimer = (timer/1000).toFixed(2)+' s';
+        if (!$(cc).find(".totalTime").length){
+          let curCounter = document.createElement('span');
+          curCounter.className = "totalTime";
+          curCounter.appendChild(document.createTextNode(curTimer));
+          $(cc).find(".counterTitle").append(curCounter);
+        }   
         else
-          $(cc).find(".totalTime").html((timer/1000).toFixed(2)+' s');
+          $(cc).find(".totalTime").html(curTimer);
+      }
+
+      /* HTML SPAN OUTPUT */
+      lh.addSpan = function(cssClass,value){
+        var htmlOut  = '<span class="'+cssClass+'">';
+        htmlOut      +=    value;
+        htmlOut      += '</span>';
+        return htmlOut;
+      }
+
+      /* CSS CLASS FOR SPEED STATUS COLOR */
+      lh.getSpeedClass = function(scoreIn){
+        var speedOut;
+        if (scoreIn < 0.5){speedOut = 'slow';} 
+        else if (scoreIn < 0.9){speedOut = 'average';} 
+        else if (scoreIn <= 1){speedOut = 'fast';}
+        return speedOut;
       }
 
       /* FETCH API REQUEST */
@@ -488,7 +505,7 @@ requirejs(['jquery'], function ($) {
         out += '<tr>';
         out += lh.getAADTableHeadings(details.headings);
         out += '</tr>';
-        out += lh.getAADTableContent(details.items,details.headings);
+        //out += lh.getAADTableContent(details.items,details.headings);
         out += '</table>';
         return out;
       }
@@ -638,23 +655,6 @@ requirejs(['jquery'], function ($) {
         })
         screenOutput+='</ul>';
         return screenOutput;
-      }
-
-      /* HTML SPAN OUTPUT */
-      lh.addSpan = function(cssClass,value){
-        var htmlOut  = '<span class="'+cssClass+'">';
-        htmlOut      +=    value;
-        htmlOut      += '</span>';
-        return htmlOut;
-      }
-
-      /* CSS CLASS FOR SPEED STATUS COLOR */
-      lh.getSpeedClass = function(scoreIn){
-        var speedOut;
-        if (scoreIn < 0.5){speedOut = 'slow';} 
-        else if (scoreIn < 0.9){speedOut = 'average';} 
-        else if (scoreIn <= 1){speedOut = 'fast';}
-        return speedOut;
       }
       
       /* CHARTS */
