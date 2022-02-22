@@ -52,10 +52,10 @@ requirejs(['jquery'], function ($) {
       /* BOOTSTRAP VERSION */
       var bsversion = $.fn.tooltip.Constructor.VERSION.charAt(0);
       /* LIGHTHOUSE */
-      var OutputAuditName,
-          OutputAuditsHtml,
-          OutputPerformanceAuditsHtml,
-          OutputAdditionalAuditsHtml,
+      var auditName,
+          auditsHtml,
+          performanceAuditsHtml,
+          additionalAuditsHtml,
           categoryUrl;
       /* DECLARATION AUDIT CONSTANTS */
       const mainAudits        = [
@@ -127,7 +127,10 @@ requirejs(['jquery'], function ($) {
         });
         
         lh.showAddionalAudits();
+        lh.performanceMenu();
+      };
 
+      lh.performanceMenu = function(){
         $(".performanceMenu").find("a").click(function(){
           var idTarget = $(this).attr("id").split("show")[1].charAt(0).toLowerCase()+$(this).attr("id").split("show")[1].substring(1);
           $(".performanceAudits").css({display:"none"});
@@ -138,7 +141,7 @@ requirejs(['jquery'], function ($) {
           }
           $("."+idTarget).css({display:"block"});
         }) 
-      };
+      }
 
       lh.showAddionalAudits = function(){
         $(".auditButtons").find("a").click(function(){
@@ -202,22 +205,27 @@ requirejs(['jquery'], function ($) {
         }
         return params;
       };
+
       /* GET TARGET URL */
       lh.getTargetUrl = function(){
           return $(".targetUrl")[0].innerText;
       }
+
       /* SET TARGET URL */
       lh.setTargetUrl = function(targetUrlInput){
           $(".targetUrl").html(targetUrlInput);
       }
+
       /* GET DEVICE */
       lh.getDevice = function(){  
           return $(".deviceRadio").find(".active").parents(".custom-radio").find(".device").val();
       }
+
       /* GET URL DEPENDING ON DEVICE */
       lh.getDeviceUrl = function(deviceTarget){
           return $(".getLighthouseData").data(deviceTarget);
       }
+
       /* COLOR FOR SPEED STATUS */
       lh.getSpeedColor = function(scoreIn){
           let speedOut;
@@ -226,18 +234,21 @@ requirejs(['jquery'], function ($) {
           else if (scoreIn <= 1){speedOut = '#28a745';}
           return speedOut;
       }
+
       /* PROGRESS BAR */
       lh.pbReset = function(){
           $(cc).find(".counterAmount").css({width:"0%"});
           $(cc).removeClass("progress").removeClass("error").removeClass("success");
           $(cc).find(".counterTitle").find(".errorMessage").html("error");
       }
+
       /* SET PROGRESS BAR STATUS */
       lh.setPbStatus = function(status){
           $(cc).addClass(status);
           if ((status=="success") || (status=="error"))
               $(cc).find(".counterAmount").css({width:"100%"});
       }
+      
       /* CHANGE FIRST LETTER FROM STRING */
       lh.firstLetterUp = function(stringIn){
         return stringIn.charAt(0).toUpperCase() + stringIn.slice(1).toLowerCase();
@@ -266,10 +277,12 @@ requirejs(['jquery'], function ($) {
 
       /* HTML SPAN OUTPUT */
       lh.addSpan = function(cssClass,value){
-        var htmlOut  = '<span class="'+cssClass+'">';
-        htmlOut      +=    value;
-        htmlOut      += '</span>';
-        return htmlOut;
+        var spanOut = new DocumentFragment();
+        var span = document.createElement('span');
+        span.classList.add(cssClass);
+        span.appendChild(document.createTextNode(value));
+        spanOut.append(span);
+        return spanOut;
       }
 
       /* CSS CLASS FOR SPEED STATUS COLOR */
@@ -307,7 +320,7 @@ requirejs(['jquery'], function ($) {
               $(".list-audits,.list-Addtional-Audits,.list-performance-audits").html("");
               /* SET DEVICE HIDDEN FIELD */
               $("#device").val(lh.firstLetterUp(lh.getDevice()));
-              OutputAuditsHtml  = '<ul class="list-lighthouse list-score list-main list-group">';
+              auditsHtml  = '<ul class="list-lighthouse list-score list-main list-group">';
 
               $(lhCategoryList).each(function(catIt,category){
                   catIt++;
@@ -324,37 +337,37 @@ requirejs(['jquery'], function ($) {
                   lh.addDataSet(window[curCategory+"Chart"],"","rgba(255, 255, 255, 1)",missingScore*100,0,1);
 
                   /* OVERALL AUDIT PROPERTIES */
-                  OutputAuditsHtml    += lh.getMainAudits(curCategory,auditCategories,catIt,lhCategoryListLength);
+                  auditsHtml    += lh.getMainAudits(curCategory,auditCategories,catIt,lhCategoryListLength);
 
                   /* PERFORMANCE AUDIT PROPERTIES */
                   if (category=="PERFORMANCE"){
                       lh.createCharts(window.pac,"bar","audits");
-                      OutputPerformanceAuditsHtml  = ''; 
-                      OutputPerformanceAuditsHtml  += '<ul class="list-lighthouse list-lighthouse-'+curCategory+' list-group">'+lh.getPerformanceAudits(mainAuditsPerformance,auditResults)+'</ul>';
-                      $(".list-performance-audits").append(OutputPerformanceAuditsHtml);
+                      performanceAuditsHtml  = ''; 
+                      performanceAuditsHtml  += '<ul class="list-lighthouse list-lighthouse-'+curCategory+' list-group">'+lh.getPerformanceAudits(mainAuditsPerformance,auditResults)+'</ul>';
+                      $(".list-performance-audits").append(performanceAuditsHtml);
                       $(".performance,.performanceAudits,.performanceHeadline,.performanceListHeader").css({display:"block"});
                       $(".performanceAuditCharts").css({display:"none"});
                   }
                   /* ADDTIONAL AUDIT PROPERTIES*/
-                  OutputAdditionalAuditsHtml  =  '';
-                  OutputAdditionalAuditsHtml  += '<div class="label toggle list-lighthouse collapsed" aria-expanded="false" aria-controls="list-additional-'+curCategory+'" ';
+                  additionalAuditsHtml   =  '';
+                  additionalAuditsHtml  += '<div class="label toggle list-lighthouse collapsed" aria-expanded="false" aria-controls="list-additional-'+curCategory+'" ';
                   
                   if (bsversion==4)
-                    OutputAdditionalAuditsHtml     += 'data-toggle="collapse" data-target="#list-additional-'+curCategory+'"';
+                  additionalAuditsHtml  += 'data-toggle="collapse" data-target="#list-additional-'+curCategory+'"';
                   else if (bsversion==5)
-                    OutputAdditionalAuditsHtml     +='data-bs-toggle="collapse" href="#list-additional-'+curCategory+'" role="button"';
+                  additionalAuditsHtml  +='data-bs-toggle="collapse" href="#list-additional-'+curCategory+'" role="button"';
                   
-                  OutputAdditionalAuditsHtml  +='>'+auditCategories[curCategory].title+chevronDown+'</div>';
-                  OutputAdditionalAuditsHtml  += '<ol class="collapse list-lighthouse list-group" id="list-additional-'+curCategory+'">';
-                  OutputAdditionalAuditsHtml  +=    lh.getAdditionalAudits(auditResults,auditCategories[curCategory]);
-                  OutputAdditionalAuditsHtml  += '</ol>';
-                  $(".list-Addtional-Audits").append(OutputAdditionalAuditsHtml);
+                  additionalAuditsHtml  +='>'+auditCategories[curCategory].title+chevronDown+'</div>';
+                  additionalAuditsHtml  += '<ol class="collapse list-lighthouse list-group" id="list-additional-'+curCategory+'">';
+                  additionalAuditsHtml  +=    lh.getAdditionalAudits(auditResults,auditCategories[curCategory]);
+                  additionalAuditsHtml  += '</ol>';
+                  $(".list-Addtional-Audits").append(additionalAuditsHtml);
                   
                   $(".newLighthouseStatistics").css({display:"block"});
               })
-              OutputAuditsHtml  += "</ul>";
+              auditsHtml  += "</ul>";
               $(".list-audits").html("");
-              $(".list-audits").append(OutputAuditsHtml);
+              $(".list-audits").append(auditsHtml);
               $(".list-Addtional-Audits").append(lh.getScreenshots(auditScreenshots));
               lh.setTotalTime(lighthouse.timing.total);
               lh.activeListClick();
@@ -371,13 +384,13 @@ requirejs(['jquery'], function ($) {
           var htmlAuditsOut = "";
           $(mainAudits).each(function(key,value){
             if (value[0]==auditItem){
+              auditsHtml        = "";
               score             = auditResult[auditItem].score;
               speed             = lh.getSpeedClass(score);
               color             = lh.getSpeedColor(score);
-              OutputAuditName   = auditResult[auditItem].title.replace("-"," ");
-              OutputAuditsHtml  = "";
+              auditName         = auditResult[auditItem].title.replace("-"," ")
               htmlAuditsOut     +='<li class="list-group-item" id="list-'+auditItem+'">';
-              htmlAuditsOut     +=    lh.addSpan("label",OutputAuditName);
+              htmlAuditsOut     +=    lh.addSpan("label",auditName);
               htmlAuditsOut     +=    lh.addSpan("score "+speed,score);
               htmlAuditsOut     +='</li>';
               $("#"+value[1]).val(score);
@@ -395,9 +408,9 @@ requirejs(['jquery'], function ($) {
             score                 = auditResults[value[0]].score;
             speed                 = lh.getSpeedClass(score);
             color                 = lh.getSpeedColor(score);
-            OutputAuditName       = value[0].replace("-"," ");
+            auditName             = value[0].replace("-"," ");
             htmlPerformanceOut    += '<li class="list-group-item" id="list-'+((value[1])?value[1]:"")+'">';
-            htmlPerformanceOut    +=     lh.addSpan("label",OutputAuditName);
+            htmlPerformanceOut    +=     lh.addSpan("label",auditName);
             htmlPerformanceOut    +=     lh.addSpan("value", displayValue);
             htmlPerformanceOut    +=     lh.addSpan("score "+speed,score);
             htmlPerformanceOut    += '</li>';
@@ -406,9 +419,9 @@ requirejs(['jquery'], function ($) {
             /* ADD CHARTS DATA TO ARRAY */
             chartVal = score*100;
             if (mainAuditsPerformance.length==mainCounter){
-              lh.addDataSet(window.auditsChart,OutputAuditName,color,chartVal,((mainCounter==1) ? '1' : '0'),1);
+              lh.addDataSet(window.auditsChart,auditName,color,chartVal,((mainCounter==1) ? '1' : '0'),1);
             }else{
-              lh.addDataSet(window.auditsChart,OutputAuditName,color,chartVal,((mainCounter==1) ? '1' : '0'),0);
+              lh.addDataSet(window.auditsChart,auditName,color,chartVal,((mainCounter==1) ? '1' : '0'),0);
             }
             mainCounter++; 
           });
@@ -438,9 +451,9 @@ requirejs(['jquery'], function ($) {
 
       /* GET ADDITIONAL AUDITS */
       lh.getAdditionalAudits = function(auditResults,auditResultsInCategory){
-        var speed, score, displayValue, screenshot, type, displayMode, description, currentAudit;
-        var htmlAdditionalOut = "";
+        var additionalHtml = new DocumentFragment();
         var auditRefs = auditResultsInCategory['auditRefs'];
+        var speed, score, displayValue, screenshot, type, displayMode, description, currentAudit;
         auditRefs = sortKeys(auditRefs);
 
         Object.keys(auditRefs).sort().forEach(function(key){
@@ -459,41 +472,41 @@ requirejs(['jquery'], function ($) {
 
           //js error when including not applicable audits => maybe string too long 
           if (displayMode!="notApplicable"){ 
-            OutputAuditName                  = type.replace("-"," ");
-            htmlAdditionalOut                += '<li class="list-group-item" id="'+type+'">';
-            htmlAdditionalOut                += lh.addSpan("label",((description) ? chevronDown : '')+OutputAuditName);
+            auditName                         = type.replace("-"," ");
+            additionalHtml                    += '<li class="list-group-item" id="'+type+'">';
+            additionalHtml                    += lh.addSpan("label",((description) ? chevronDown : '')+auditName);
             if (displayValue!=undefined){
-                htmlAdditionalOut            += lh.addSpan("value",displayValue);
+              additionalHtml                  += lh.addSpan("value",displayValue);
             }
             if (score){
-                speed                        =  lh.getSpeedClass(score);
-                htmlAdditionalOut            += lh.addSpan("score "+speed,score);
+                speed                         =  lh.getSpeedClass(score);
+                additionalHtml                += lh.addSpan("score "+speed,score);
             }
             if (currentAudit.description){  
-              htmlAdditionalOut                 += '<span class="description">';
+              additionalHtml                  += '<span class="description">';
               if (currentAudit.title){
-                htmlAdditionalOut               += "<b>";
-                htmlAdditionalOut               += lh.htmlEnc(JSON.stringify(currentAudit.title.toString()));
+                additionalHtml                += "<b>";
+                additionalHtml                += lh.htmlEnc(JSON.stringify(currentAudit.title.toString()));
                 //htmlAdditionalOut               += lh.htmlEnc(currentAudit.title.toString());
-                htmlAdditionalOut               += "</b>";
+                additionalHtml                += "</b>";
               }
-              htmlAdditionalOut                 += lh.htmlEnc(JSON.stringify(currentAudit.description.toString()));
+              additionalHtml                  += lh.htmlEnc(JSON.stringify(currentAudit.description.toString()));
               if (typeof currentAudit.details != "undefined"){
-                htmlAdditionalOut               += lh.getAAD(currentAudit.details);
+                //console.log(currentAudit.details);
+                additionalHtml                += lh.getAAD(currentAudit.details);
               }
-              htmlAdditionalOut                 += '</span>';
+              additionalHtml                  += '</span>';
             }
-            htmlAdditionalOut                +=  '</li>';
+            additionalHtml                    +=  '</li>';
           }
         });
-        return htmlAdditionalOut;
+        return additionalHtml;
       }
 
       /* GET DETAILS OF ADDITIONAL AUDITS */
       lh.getAAD = function(details){
         if ((details.type=="table") && (details.items.length)){
-          //console.log(details);
-          return lh.getAADTable(details);
+          return lh.getAADTable(details); 
         } else {
           return false;
         }
@@ -501,127 +514,137 @@ requirejs(['jquery'], function ($) {
 
       /* GET DETAILS OF ADDITIONAL AUDITS FROM TYPE TABLE*/
       lh.getAADTable = function(details){
-        var out = '<table class="table table-striped table-hover">';
-        out += '<tr>';
-        out += lh.getAADTableHeadings(details.headings);
-        out += '</tr>';
-        //out += lh.getAADTableContent(details.items,details.headings);
-        out += '</table>';
-        return out;
+        let tbl     = document.createElement("table");
+        tbl.classList.add('table', 'table-striped', 'table-hover');
+        tbl.appendChild(lh.getAADTableHeadings(details.headings));
+        tbl.appendChild(lh.getAADTableBodyContent(details.items,details.headings));
+        return tbl;
       }
 
       /* GET HEADINGS OF ADDITIONAL AUDITS TABLE*/
       lh.getAADTableHeadings = function(headings){
-        var out = '<thead>';
+        let tbl         = new DocumentFragment();
+        let tblHead     = document.createElement("thead");
+        let tblHeadRow  = tblHead.insertRow();
+
         headings.forEach(function(headeritem,headerindex){
           if (typeof headeritem.text!=undefined){
-            out += '<th style="width:'+(100/headings.length)+'%">'+headeritem.text+'</th>';
+            var tblHeadCell         = document.createElement('th');
+            tblHeadCell.style.width = (100/headings.length)+'%';
+            tblHeadCell.appendChild(document.createTextNode(headeritem.text));
+            tblHeadRow.appendChild(tblHeadCell);
           }
         });
-        out += '</thead>';
-        return out;
+        tbl.appendChild(tblHead);
+        return tbl;
       }
 
-      /* GET RECURSIVE TABLE CONTENTS */
-      lh.getAADTableContent = function(detailItems,headings){
-        var index=0;
-        var detailItemsOutput ='<tr>';
+      /* GET RECURSIVE TABLE BODY CONTENTS */
+      lh.getAADTableBodyContent = function(detailItems,headings){
+        let tableContent = new DocumentFragment();
+        let tblBody      = document.createElement("tbody");
+        let tblRow       = tblBody.insertRow();
+
         if (headings.length){
           headings.forEach(function(itemHeader,index){
-            detailItemsOutput += lh.getAADTableRecursive(detailItems,itemHeader.key,headings.length);
+            tblRow.append(lh.getAADTableRecursive(detailItems,itemHeader.key,headings.length));
           });
         }else {
-          detailItemsOutput += lh.getAADTableRecursive(detailItems,headings.length);
+          tblRow.append(lh.getAADTableRecursive(detailItems,headings.length));
         }
-        detailItemsOutput += '</tr>';
-        //console.log(detailItemsOutput);
-        return detailItemsOutput;
+        tableContent.appendChild(tblBody);
+        //console.log(tableContent);
+        return tableContent;
       }
 
       lh.getAADTableRecursive = function(detailItems,headerKey,headerCount){
-        var detailItemsOutput = '';
-        console.log(detailItems);
+        let detailTbl       = new DocumentFragment();
+        var detailTblCell   = document.createElement("td");
+        //console.log(detailItems);
         detailItems.forEach(function(item,indexDetail){
           //console.log(itemDetail);
-          if ((lh.determineDepthOfObject(item)>0) && (Array.isArray(item))){
-            lh.getAADTableRecursive(item);
-          }
-          else if (item?.subItems?.items){
-            lh.getAADTableRecursive(item.subItems.items);
-          }
-          else if (typeof item!=undefined){
+          if (typeof item!=undefined){
             if (item?.node){
               //console.log(item?.node);
-              //detailItemsOutput += lh.getAADNodeWrapper(item?.node,"0");
-              detailItemsOutput.append(lh.getAADNodeWrapper(item?.node,"0"));
+              detailTblCell.appendChild(lh.getAADNodeWrapper(item?.node,"row"));
+              detailTbl.append(detailTblCell);
             }
-            else if (item?.relatedNode){
-              //console.log(item.relatedNode);
+            if (item?.relatedNode){
               //console.log(headerCount);
-              //detailItemsOutput += lh.getAADNodeWrapper(item.relatedNode,"0");
-              detailItemsOutput.append(lh.getAADNodeWrapper(item.relatedNode,"0"));
+              //console.log(item.relatedNode);
+              detailTblCell.appendChild(lh.getAADNodeWrapper(item.relatedNode),"row-sub");
+              detailTbl.append(detailTblCell);
             }
-            else {
+            if ((!item?.node) && (!item?.relatedNode)){
               //console.log(item);
               //console.log(headerKey);
               if (item.hasOwnProperty(headerKey)){
-                console.log("--------------- HEADER -------------------");
+                /*console.log("--------------- HEADER -------------------");
                 console.log(headerKey);
                 console.log("--------------- DETAIL ITEMS -------------------");
-                console.log(item[headerKey]);
+                console.log(item[headerKey]);*/
               }
-              detailItemsOutput += lh.getAADTableRows(item);
-              detailItemsOutput += '<td>'+item+'</td>';
+              let detail
+              // detailTbl  ='';
+              // detailTbl += lh.getAADTableRows(item);
+              detailTblCell.appendChild(document.createTextNode(item));
+              detailTbl.append(detailTblCell);
+              //detailTbl += '<td>'+item+'</td>';
             }
           }
+          if ((lh.determineDepthOfObject(item)>0) && (Array.isArray(item))){
+            lh.getAADTableRecursive(item);
+          }
+          if (item?.subItems?.items){
+            lh.getAADTableRecursive(item.subItems.items);
+          }
         });
-        return detailItemsOutput;
+        return detailTbl;
       }
 
       /* GET TABLE WRAP */
       lh.getAADTableWrapper = function(node,headCount){
-        return '<td colspan="'+headCount+'"><table width="100%">'+lh.getAADTableRows(node)+'</table></td>';
+        let TblCell   = document.createElement("td");
+        TblCell.setAttribute('colspan',headCount);
+        let TblTable  = TblCell.createElement("table");
+        TblTable.appendChild(lh.getAADTableRows(node));
+        return TblCell;
       }
 
       /* GET TABLE ROWS */
       lh.getAADTableRows = function(node){
-        var out='';
         Object.entries(node).forEach(entry => {
           const [key, value] = entry;
-          out += '<tr><td>'+key+'</td><td>'+value+'</td></tr>';
+          let TblRow   = document.createElement("tr");
+          let cell1 = tblRow.insertCell();
+          let cell2 = tblRow.insertCell();
+          cell1.appendChild(document.createTextNode(key));
+          cell2.appendChild(document.createTextNode(value));
+          TblRow.appendChild(cell1);
+          TblRow.appendChild(cell2);
         });
-        return out;
+        return TblRow;
       }
 
       /* GET NODE WRAP */
-      lh.getAADNodeWrapper = function(node){
+      lh.getAADNodeWrapper = function(node,rowClass){
         var nodeProperties = [];
         nodeProperties.push(node.nodeLabel, node.path, node.selector, node.snippet);
         //console.log(nodeProperties);
-
-        let table = document.createElement('table');
-        let row = table.insertRow(-1);
-
-        nodeProperties.forEach(function(nodeItem,indexNode){
-          let newCell = row.insertCell();
-          newCell.appendChild(document.createTextNode(nodeItem));
-        })
-        //console.log(table);
-        return table;
+        let tbl       = document.createElement('table');
+        let tblBody   = document.createElement("tbody");
+        let tblRow    = tblBody.insertRow();
+        tblRow.classList.add(rowClass);
         
-        /*nodeOut ='<tr><td><table>';
-        nodeOut +='<thead><tr><th>Label</th><th>Path</th><th>Selektor</th><th>Snippet</th></tr></thead>';
-        nodeOut +='<tbody><tr>';
+        //console.log(node);
         nodeProperties.forEach(function(nodeItem,indexNode){
-          nodeOut +='';
-        });
-        nodeOut +='</tbody><tr>';
-        nodeOut +='</table></td><tr>';
-        console.log(node.nodeLabel);
-        console.log(node.path);
-        console.log(node.selector);
-        console.log(node.snippet);*/
-        //return '<td colspan="'+headCount+'"><table width="100%">'+lh.getAADTableRows(node)+'</table></td>';
+          var tblCell = tblRow.insertCell();
+          //console.log(nodeItem);
+          tblCell.appendChild(document.createTextNode(nodeItem));
+        })
+        //console.log(tbl);
+        tbl.appendChild(tblBody);
+        return tbl;
       }
 
       /*lh.getAADTableHeadings = function(headings){
