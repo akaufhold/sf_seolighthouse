@@ -48,8 +48,8 @@ requirejs(['jquery'], function ($) {
     var LighthouseData = function () {
       var lh = this;
       var auditsHtml            = new DocumentFragment();
-      var performanceAuditsHtml = new DocumentFragment();
-      var additionalAuditsHtml  = new DocumentFragment();
+      var performanceAudits     = new DocumentFragment();
+      var additionalAudits      = new DocumentFragment();
 
       /* BOOTSTRAP VERSION */
       var bsversion = $.fn.tooltip.Constructor.VERSION.charAt(0);
@@ -293,6 +293,27 @@ requirejs(['jquery'], function ($) {
         return speedOut;
       }
 
+      lh.htmlEnc = function(string){
+        return string.replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/'/g, '&#39;')
+        .replace(/"/g, '&#34;');
+        }
+
+      lh.determineDepthOfObject = function(object) {
+        let depth = 0;
+        if (object.children) {
+          object.children.forEach(x => {
+            let temp = this.determineDepthOfObject(x);
+            if (temp > depth) {
+              depth = temp;
+            }
+          })
+        }
+        return depth + 1;
+      }
+
       /* FETCH API REQUEST */
       lh.fetchLighthouseData = function(targetUrl) {
         /* PROGRESS BAR */
@@ -344,29 +365,40 @@ requirejs(['jquery'], function ($) {
                   /* PERFORMANCE AUDIT PROPERTIES */
                   if (category=="PERFORMANCE"){
                       lh.createCharts(window.pac,"bar","audits");
-                      var performanceAuditsListHtml  = document.createElement("ul"); 
-                      performanceAuditsListHtml.classList.add('list-lighthouse', 'list-lighthouse-'+curCategory, 'list-group');
-                      performanceAuditsListHtml.appendChild(lh.getPerformanceAudits(mainAuditsPerformance,auditResults));
-                      performanceAuditsHtml.appendChild(performanceAuditsListHtml);
-                      $(".list-performance-audits").append(performanceAuditsHtml);
+                      var performanceAuditsList  = document.createElement("ul"); 
+                      performanceAuditsList.classList.add('list-lighthouse', 'list-lighthouse-'+curCategory, 'list-group');
+                      performanceAuditsList.appendChild(lh.getPerformanceAudits(mainAuditsPerformance,auditResults));
+                      performanceAudits.appendChild(performanceAuditsList);
+                      $(".list-performance-audits").append(performanceAudits);
                       $(".performance,.performanceAudits,.performanceHeadline,.performanceListHeader").css({display:"block"});
                       $(".performanceAuditCharts").css({display:"none"});
 
                   }
                   /* ADDTIONAL AUDIT PROPERTIES*/
-                  /*additionalAuditsHtml   =  '';
-                  additionalAuditsHtml  += '<div class="label toggle list-lighthouse collapsed" aria-expanded="false" aria-controls="list-additional-'+curCategory+'" ';
+                  additionalAudits = document.createElement("div"); 
+                  additionalAudits.classList.add('label', 'toggle', 'list-lighthouse','collapsed');
+                  additionalAudits.setAttribute('aria-expanded','false');
+                  additionalAudits.setAttribute('aria-controls','list-additional-'+curCategory);
                   
-                  if (bsversion==4)
-                  additionalAuditsHtml  += 'data-toggle="collapse" data-target="#list-additional-'+curCategory+'"';
-                  else if (bsversion==5)
-                  additionalAuditsHtml  +='data-bs-toggle="collapse" href="#list-additional-'+curCategory+'" role="button"';
-                  
-                  additionalAuditsHtml  +='>'+auditCategories[curCategory].title+chevronDown+'</div>';
-                  additionalAuditsHtml  += '<ol class="collapse list-lighthouse list-group" id="list-additional-'+curCategory+'">';
-                  additionalAuditsHtml  +=    lh.getAdditionalAudits(auditResults,auditCategories[curCategory]);
-                  additionalAuditsHtml  += '</ol>';
-                  $(".list-Addtional-Audits").append(additionalAuditsHtml);*/
+                  if (bsversion==4){
+                    additionalAudits.setAttribute('data-toggle','collapse');
+                    additionalAudits.setAttribute('data-target','#list-additional-'+curCategory);
+                  }
+                  else if (bsversion==5){
+                    additionalAudits.setAttribute('data-bs-toggle','collapse');
+                    additionalAudits.setAttribute('href','#list-additional-'+curCategory);
+                    additionalAudits.setAttribute('role','button');
+                  }
+                  additionalAudits.appendChild(document.createTextNode(auditCategories[curCategory].title));
+                  additionalAudits.insertAdjacentHTML('beforeend',chevronDown);
+
+                  var additionalAuditsList = document.createElement("ol"); 
+                  additionalAuditsList.classList.add('list-group', 'list-lighthouse','collapse');
+                  additionalAuditsList.id = 'list-additional-'+curCategory;
+                  additionalAuditsList.append(lh.getAdditionalAudits(auditResults,auditCategories[curCategory]));
+
+                  additionalAudits.append(additionalAuditsList);
+                  $(".list-Addtional-Audits").append(additionalAudits);
                   
                   $(".newLighthouseStatistics").css({display:"block"});
               });
@@ -405,6 +437,7 @@ requirejs(['jquery'], function ($) {
           })
           return htmlAuditsOut;
       }
+
       /* GET PERFORMANCE AUDITS */
       lh.getPerformanceAudits = function(auditItemList,auditResults){
           var speed, score, color, displayValue, chartVal;
@@ -437,30 +470,9 @@ requirejs(['jquery'], function ($) {
           return htmlPerformanceOut;
       }
 
-      lh.htmlEnc = function(string){
-        return string.replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/'/g, '&#39;')
-        .replace(/"/g, '&#34;');
-        }
-
-      lh.determineDepthOfObject = function(object) {
-        let depth = 0;
-        if (object.children) {
-          object.children.forEach(x => {
-            let temp = this.determineDepthOfObject(x);
-            if (temp > depth) {
-              depth = temp;
-            }
-          })
-        }
-        return depth + 1;
-      }
-
       /* GET ADDITIONAL AUDITS */
       lh.getAdditionalAudits = function(auditResults,auditResultsInCategory){
-        var additionalHtml = new DocumentFragment();
+        var additional = new DocumentFragment();
         var auditRefs = auditResultsInCategory['auditRefs'];
         var speed, score, displayValue, screenshot, type, displayMode, description, currentAudit;
         auditRefs = sortKeys(auditRefs);
@@ -481,35 +493,39 @@ requirejs(['jquery'], function ($) {
 
           //js error when including not applicable audits => maybe string too long 
           if (displayMode!="notApplicable"){ 
-            auditName                         = type.replace("-"," ");
-            additionalHtml                    += '<li class="list-group-item" id="'+type+'">';
-            additionalHtml                    += lh.addSpan("label",((description) ? chevronDown : '')+auditName);
+            auditName                       = type.replace("-"," ");
+            var additionalList              = document.createElement("li"); 
+            additionalList.classList.add('list-group-item');
+            additionalList.id               = type;
+            additionalList.appendChild(lh.addSpan("label",((description) ? chevronDown : '')+auditName));
             if (displayValue!=undefined){
-              additionalHtml                  += lh.addSpan("value",displayValue);
+              console.log(displayValue);
+              additionalList.appendChild(lh.addSpan("value",displayValue));
             }
             if (score){
-                speed                         =  lh.getSpeedClass(score);
-                additionalHtml                += lh.addSpan("score "+speed,score);
+                speed                       =  lh.getSpeedClass(score);
+                additionalList.appendChild(lh.addSpan("score "+speed,score));
             }
             if (currentAudit.description){  
-              additionalHtml                  += '<span class="description">';
+              var additionalDescription     = document.createElement("span"); 
+              additionalDescription.classList.add('description');
+
               if (currentAudit.title){
-                additionalHtml                += "<b>";
-                additionalHtml                += lh.htmlEnc(JSON.stringify(currentAudit.title.toString()));
-                //htmlAdditionalOut               += lh.htmlEnc(currentAudit.title.toString());
-                additionalHtml                += "</b>";
+                var additionalBold          = document.createElement("b");
+                additionalBold.appendChild(document.createTextNode(lh.htmlEnc(JSON.stringify(currentAudit.title.toString()))));
+                additionalDescription.append(additionalBold);
               }
-              additionalHtml                  += lh.htmlEnc(JSON.stringify(currentAudit.description.toString()));
+              additionalDescription.append(document.createTextNode(lh.htmlEnc(JSON.stringify(currentAudit.description.toString()))));
+              additionalList.append(additionalDescription);
               if (typeof currentAudit.details != "undefined"){
                 //console.log(currentAudit.details);
-                additionalHtml                += lh.getAAD(currentAudit.details);
+                additionalList.append(lh.getAAD(currentAudit.details));
               }
-              additionalHtml                  += '</span>';
             }
-            additionalHtml                    +=  '</li>';
           }
+          additional.append(additionalList);
         });
-        return additionalHtml;
+        return additional;
       }
 
       /* GET DETAILS OF ADDITIONAL AUDITS */
