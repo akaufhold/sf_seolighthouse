@@ -1,5 +1,3 @@
-"use strict";
-
 import '../Scss/backend.scss';
 import Chart from 'chart.js/auto';
 
@@ -49,14 +47,14 @@ requirejs(['jquery'], function ($) {
 
     var LighthouseData = function () {
       var lh = this;
+      var auditsHtml            = new DocumentFragment();
+      var performanceAuditsHtml = new DocumentFragment();
+      var additionalAuditsHtml  = new DocumentFragment();
+
       /* BOOTSTRAP VERSION */
       var bsversion = $.fn.tooltip.Constructor.VERSION.charAt(0);
       /* LIGHTHOUSE */
-      var auditName,
-          auditsHtml,
-          performanceAuditsHtml,
-          additionalAuditsHtml,
-          categoryUrl;
+      var auditName,categoryUrl; 
       /* DECLARATION AUDIT CONSTANTS */
       const mainAudits        = [
         ["accessibility", "acs"],
@@ -277,12 +275,13 @@ requirejs(['jquery'], function ($) {
 
       /* HTML SPAN OUTPUT */
       lh.addSpan = function(cssClass,value){
-        var spanOut = new DocumentFragment();
         var span = document.createElement('span');
-        span.classList.add(cssClass);
-        span.appendChild(document.createTextNode(value));
-        spanOut.append(span);
-        return spanOut;
+        var classes = String(cssClass).split(' ');
+        classes.forEach(element => {
+          span.classList.add(element);
+        });
+        span.appendChild(document.createTextNode(String(value)));
+        return span;
       }
 
       /* CSS CLASS FOR SPEED STATUS COLOR */
@@ -320,7 +319,9 @@ requirejs(['jquery'], function ($) {
               $(".list-audits,.list-Addtional-Audits,.list-performance-audits").html("");
               /* SET DEVICE HIDDEN FIELD */
               $("#device").val(lh.firstLetterUp(lh.getDevice()));
-              auditsHtml  = '<ul class="list-lighthouse list-score list-main list-group">';
+              
+              var auditsListHtml = document.createElement("ul"); 
+              auditsListHtml.classList.add('list-lighthouse', 'list-score', 'list-main', 'list-group');
 
               $(lhCategoryList).each(function(catIt,category){
                   catIt++;
@@ -336,20 +337,24 @@ requirejs(['jquery'], function ($) {
                   lh.addDataSet(window[curCategory+"Chart"],"Score",speedColor,overallScore*100,1,0);
                   lh.addDataSet(window[curCategory+"Chart"],"","rgba(255, 255, 255, 1)",missingScore*100,0,1);
 
+                  //console.log(lh.getMainAudits(curCategory,auditCategories,catIt,lhCategoryListLength));
                   /* OVERALL AUDIT PROPERTIES */
-                  auditsHtml    += lh.getMainAudits(curCategory,auditCategories,catIt,lhCategoryListLength);
+                  auditsListHtml.appendChild(lh.getMainAudits(curCategory,auditCategories,catIt,lhCategoryListLength));
 
                   /* PERFORMANCE AUDIT PROPERTIES */
                   if (category=="PERFORMANCE"){
                       lh.createCharts(window.pac,"bar","audits");
-                      performanceAuditsHtml  = ''; 
-                      performanceAuditsHtml  += '<ul class="list-lighthouse list-lighthouse-'+curCategory+' list-group">'+lh.getPerformanceAudits(mainAuditsPerformance,auditResults)+'</ul>';
+                      var performanceAuditsListHtml  = document.createElement("ul"); 
+                      performanceAuditsListHtml.classList.add('list-lighthouse', 'list-lighthouse-'+curCategory, 'list-group');
+                      performanceAuditsListHtml.appendChild(lh.getPerformanceAudits(mainAuditsPerformance,auditResults));
+                      performanceAuditsHtml.appendChild(performanceAuditsListHtml);
                       $(".list-performance-audits").append(performanceAuditsHtml);
                       $(".performance,.performanceAudits,.performanceHeadline,.performanceListHeader").css({display:"block"});
                       $(".performanceAuditCharts").css({display:"none"});
+
                   }
                   /* ADDTIONAL AUDIT PROPERTIES*/
-                  additionalAuditsHtml   =  '';
+                  /*additionalAuditsHtml   =  '';
                   additionalAuditsHtml  += '<div class="label toggle list-lighthouse collapsed" aria-expanded="false" aria-controls="list-additional-'+curCategory+'" ';
                   
                   if (bsversion==4)
@@ -361,11 +366,12 @@ requirejs(['jquery'], function ($) {
                   additionalAuditsHtml  += '<ol class="collapse list-lighthouse list-group" id="list-additional-'+curCategory+'">';
                   additionalAuditsHtml  +=    lh.getAdditionalAudits(auditResults,auditCategories[curCategory]);
                   additionalAuditsHtml  += '</ol>';
-                  $(".list-Addtional-Audits").append(additionalAuditsHtml);
+                  $(".list-Addtional-Audits").append(additionalAuditsHtml);*/
                   
                   $(".newLighthouseStatistics").css({display:"block"});
-              })
-              auditsHtml  += "</ul>";
+              });
+
+              auditsHtml.appendChild(auditsListHtml);
               $(".list-audits").html("");
               $(".list-audits").append(auditsHtml);
               $(".list-Addtional-Audits").append(lh.getScreenshots(auditScreenshots));
@@ -381,18 +387,19 @@ requirejs(['jquery'], function ($) {
         /* GET MAIN AUDITS */
       lh.getMainAudits = function(auditItem,auditResult,mainIteration,mainCounter){
           var speed, score, color;
-          var htmlAuditsOut = "";
+          var htmlAuditsOut = new DocumentFragment();
           $(mainAudits).each(function(key,value){
             if (value[0]==auditItem){
-              auditsHtml        = "";
-              score             = auditResult[auditItem].score;
-              speed             = lh.getSpeedClass(score);
-              color             = lh.getSpeedColor(score);
-              auditName         = auditResult[auditItem].title.replace("-"," ")
-              htmlAuditsOut     +='<li class="list-group-item" id="list-'+auditItem+'">';
-              htmlAuditsOut     +=    lh.addSpan("label",auditName);
-              htmlAuditsOut     +=    lh.addSpan("score "+speed,score);
-              htmlAuditsOut     +='</li>';
+              //auditsHtml        = "";
+              var htmlAuditsListOut = document.createElement("li");
+              score                 = auditResult[auditItem].score;
+              speed                 = lh.getSpeedClass(score);
+              color                 = lh.getSpeedColor(score);
+              auditName             = auditResult[auditItem].title.replace("-"," ");
+              htmlAuditsListOut.classList.add('list-group-item', 'list-'+auditItem);
+              htmlAuditsListOut.appendChild(lh.addSpan("label",auditName));
+              htmlAuditsListOut.appendChild(lh.addSpan("score "+speed,score));
+              htmlAuditsOut.appendChild(htmlAuditsListOut);
               $("#"+value[1]).val(score);
             }
           })
@@ -402,18 +409,19 @@ requirejs(['jquery'], function ($) {
       lh.getPerformanceAudits = function(auditItemList,auditResults){
           var speed, score, color, displayValue, chartVal;
           var mainCounter = 1;
-          var htmlPerformanceOut="";
+          var htmlPerformanceOut = new DocumentFragment();
           auditItemList.forEach(function(value){
+            auditName             = value[0].replace("-"," ");
             displayValue          = auditResults[value[0]].displayValue;
             score                 = auditResults[value[0]].score;
             speed                 = lh.getSpeedClass(score);
             color                 = lh.getSpeedColor(score);
-            auditName             = value[0].replace("-"," ");
-            htmlPerformanceOut    += '<li class="list-group-item" id="list-'+((value[1])?value[1]:"")+'">';
-            htmlPerformanceOut    +=     lh.addSpan("label",auditName);
-            htmlPerformanceOut    +=     lh.addSpan("value", displayValue);
-            htmlPerformanceOut    +=     lh.addSpan("score "+speed,score);
-            htmlPerformanceOut    += '</li>';
+
+            var htmlPerformanceListOut = document.createElement("li");
+            htmlPerformanceListOut.classList.add('list-group-item', 'list-'+((value[1])?value[1]:''));
+            htmlPerformanceListOut.appendChild(lh.addSpan("label",auditName));
+            htmlPerformanceListOut.appendChild(lh.addSpan("value", displayValue));
+            htmlPerformanceListOut.appendChild(lh.addSpan("score "+speed,score));
             $("#"+value[1]).val(parseFloat(displayValue.replace(',', '.')));
             $("#"+value[1]+"s").val(parseFloat(score)); 
             /* ADD CHARTS DATA TO ARRAY */
@@ -423,7 +431,8 @@ requirejs(['jquery'], function ($) {
             }else{
               lh.addDataSet(window.auditsChart,auditName,color,chartVal,((mainCounter==1) ? '1' : '0'),0);
             }
-            mainCounter++; 
+            mainCounter++;
+            htmlPerformanceOut.appendChild(htmlPerformanceListOut);
           });
           return htmlPerformanceOut;
       }
