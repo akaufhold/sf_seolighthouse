@@ -280,7 +280,7 @@ requirejs(['jquery'], function ($) {
         classes.forEach(element => {
           span.classList.add(element);
         });
-        span.appendChild(document.createTextNode(String(value)));
+        span.appendChild(document.createTextNode(value));
         return span;
       }
 
@@ -293,14 +293,16 @@ requirejs(['jquery'], function ($) {
         return speedOut;
       }
 
+      /* ESCAPING SPECIALS CHARS */
       lh.htmlEnc = function(string){
         return string.replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/'/g, '&#39;')
         .replace(/"/g, '&#34;');
-        }
+      }
 
+      /* GETTING DEPTH OF OBJECT */
       lh.determineDepthOfObject = function(object) {
         let depth = 0;
         if (object.children) {
@@ -375,29 +377,7 @@ requirejs(['jquery'], function ($) {
 
                   }
                   /* ADDTIONAL AUDIT PROPERTIES*/
-                  additionalAudits = document.createElement("div"); 
-                  additionalAudits.classList.add('label', 'toggle', 'list-lighthouse','collapsed');
-                  additionalAudits.setAttribute('aria-expanded','false');
-                  additionalAudits.setAttribute('aria-controls','list-additional-'+curCategory);
-                  
-                  if (bsversion==4){
-                    additionalAudits.setAttribute('data-toggle','collapse');
-                    additionalAudits.setAttribute('data-target','#list-additional-'+curCategory);
-                  }
-                  else if (bsversion==5){
-                    additionalAudits.setAttribute('data-bs-toggle','collapse');
-                    additionalAudits.setAttribute('href','#list-additional-'+curCategory);
-                    additionalAudits.setAttribute('role','button');
-                  }
-                  additionalAudits.appendChild(document.createTextNode(auditCategories[curCategory].title));
-                  additionalAudits.insertAdjacentHTML('beforeend',chevronDown);
-
-                  var additionalAuditsList = document.createElement("ol"); 
-                  additionalAuditsList.classList.add('list-group', 'list-lighthouse','collapse');
-                  additionalAuditsList.id = 'list-additional-'+curCategory;
-                  additionalAuditsList.append(lh.getAdditionalAudits(auditResults,auditCategories[curCategory]));
-
-                  additionalAudits.append(additionalAuditsList);
+                  additionalAudits.append(lh.getAdditionalAudits(auditResults,auditCategories,curCategory));
                   $(".list-Addtional-Audits").append(additionalAudits);
                   
                   $(".newLighthouseStatistics").css({display:"block"});
@@ -416,7 +396,7 @@ requirejs(['jquery'], function ($) {
           });
       } 
 
-        /* GET MAIN AUDITS */
+      /* GET MAIN AUDITS */
       lh.getMainAudits = function(auditItem,auditResult,mainIteration,mainCounter){
           var speed, score, color;
           var htmlAuditsOut = new DocumentFragment();
@@ -470,8 +450,38 @@ requirejs(['jquery'], function ($) {
           return htmlPerformanceOut;
       }
 
+      lh.getAdditionalAudits = function(auditRes,auditCats,curCat){
+       /* ADDTIONAL AUDIT PROPERTIES*/
+       var AAOut = new DocumentFragment();
+       var AADiv = document.createElement("div"); 
+       AADiv.classList.add('label', 'toggle', 'list-lighthouse','collapsed');
+       AADiv.setAttribute('aria-expanded','false');
+       AADiv.setAttribute('aria-controls','list-additional-'+curCat);
+       
+       if (bsversion==4){
+        AADiv.setAttribute('data-toggle','collapse');
+        AADiv.setAttribute('data-target','#list-additional-'+curCat);
+       }
+       else if (bsversion==5){
+        AADiv.setAttribute('data-bs-toggle','collapse');
+        AADiv.setAttribute('href','#list-additional-'+curCat);
+        AADiv.setAttribute('role','button');
+       }
+       AADiv.appendChild(document.createTextNode(auditCats[curCat].title));
+       AADiv.insertAdjacentHTML('beforeend',chevronDown);
+
+       var AAList = document.createElement("ol"); 
+       AAList.classList.add('list-group', 'list-lighthouse','collapse');
+       AAList.id = 'list-additional-'+curCat;
+       AAList.append(lh.getAdditionalAuditsList(auditRes,auditCats[curCat]));
+       AAOut.append(AADiv);
+       AAOut.append(AAList);
+
+       return AAOut;
+      }
+
       /* GET ADDITIONAL AUDITS */
-      lh.getAdditionalAudits = function(auditResults,auditResultsInCategory){
+      lh.getAdditionalAuditsList = function(auditResults,auditResultsInCategory){
         var additional = new DocumentFragment();
         var auditRefs = auditResultsInCategory['auditRefs'];
         var speed, score, displayValue, screenshot, type, displayMode, description, currentAudit;
@@ -493,37 +503,30 @@ requirejs(['jquery'], function ($) {
 
           //js error when including not applicable audits => maybe string too long 
           if (displayMode!="notApplicable"){ 
-            auditName                       = type.replace("-"," ");
-            var additionalList              = document.createElement("li"); 
+            auditName                         = type.replace("-"," ");
+            var additionalList                = document.createElement("li");
+            additionalList.id                 = type;
             additionalList.classList.add('list-group-item');
-            additionalList.id               = type;
-            additionalList.appendChild(lh.addSpan("label",((description) ? chevronDown : '')+auditName));
+            additionalList.appendChild(lh.addSpan("label",auditName));
+            console.log(auditName);
+            ((description) ? additionalList.children[0].insertAdjacentHTML('afterbegin',chevronDown): '') 
+
             if (displayValue!=undefined){
-              console.log(displayValue);
               additionalList.appendChild(lh.addSpan("value",displayValue));
             }
             if (score){
-                speed                       =  lh.getSpeedClass(score);
+                speed                         =  lh.getSpeedClass(score);
                 additionalList.appendChild(lh.addSpan("score "+speed,score));
             }
             if (currentAudit.description){  
-              var additionalDescription     = document.createElement("span"); 
-              additionalDescription.classList.add('description');
-
-              if (currentAudit.title){
-                var additionalBold          = document.createElement("b");
-                additionalBold.appendChild(document.createTextNode(lh.htmlEnc(JSON.stringify(currentAudit.title.toString()))));
-                additionalDescription.append(additionalBold);
+              var additionalDescription       = lh.getAADDesc(currentAudit);
+              if ((typeof currentAudit.details != "undefined") && (lh.getAAD(currentAudit.details))){
+                additionalDescription.append(lh.getAAD(currentAudit.details));
               }
-              additionalDescription.append(document.createTextNode(lh.htmlEnc(JSON.stringify(currentAudit.description.toString()))));
               additionalList.append(additionalDescription);
-              if (typeof currentAudit.details != "undefined"){
-                //console.log(currentAudit.details);
-                additionalList.append(lh.getAAD(currentAudit.details));
-              }
             }
+            additional.append(additionalList);
           }
-          additional.append(additionalList);
         });
         return additional;
       }
@@ -531,10 +534,24 @@ requirejs(['jquery'], function ($) {
       /* GET DETAILS OF ADDITIONAL AUDITS */
       lh.getAAD = function(details){
         if ((details.type=="table") && (details.items.length)){
+          //console.log(details);
           return lh.getAADTable(details); 
         } else {
           return false;
         }
+      }
+
+      lh.getAADDesc = function(currentAudit){
+        var additionalDescription     = document.createElement("span"); 
+        additionalDescription.classList.add('description');
+
+        if (currentAudit.title){
+          var additionalBold          = document.createElement("b");
+          additionalBold.innerHTML    = lh.htmlEnc(JSON.stringify(currentAudit.title.toString()));
+          additionalDescription.append(additionalBold);
+        }
+        additionalDescription.innerHTML += lh.htmlEnc(JSON.stringify(currentAudit.description.toString()));
+        return additionalDescription;
       }
 
       /* GET DETAILS OF ADDITIONAL AUDITS FROM TYPE TABLE*/
@@ -546,7 +563,7 @@ requirejs(['jquery'], function ($) {
         return tbl;
       }
 
-      /* GET HEADINGS OF ADDITIONAL AUDITS TABLE*/
+      /* GET HEADINGS OF ADDITIONAL AUDITS TABLE */
       lh.getAADTableHeadings = function(headings){
         let tbl         = new DocumentFragment();
         let tblHead     = document.createElement("thead");
@@ -564,65 +581,63 @@ requirejs(['jquery'], function ($) {
         return tbl;
       }
 
-      /* GET RECURSIVE TABLE BODY CONTENTS */
+      /* GET TABLE BODY CONTENTS */
       lh.getAADTableBodyContent = function(detailItems,headings){
         let tableContent = new DocumentFragment();
         let tblBody      = document.createElement("tbody");
-        let tblRow       = tblBody.insertRow();
-
+        var tblRow;
+        //let tblRow       = tblBody.insertRow();
         if (headings.length){
-          headings.forEach(function(itemHeader,index){
-            tblRow.append(lh.getAADTableRecursive(detailItems,itemHeader.key,headings.length));
-          });
+          tblBody.append(lh.getAADTableRecursive(detailItems,headings));
         }else {
-          tblRow.append(lh.getAADTableRecursive(detailItems,headings.length));
+          tblBody.append(lh.getAADTableRecursive(detailItems,headings.length));
         }
         tableContent.appendChild(tblBody);
         //console.log(tableContent);
         return tableContent;
       }
 
-      lh.getAADTableRecursive = function(detailItems,headerKey,headerCount){
+      /* GET RECURSIVE TABLE BODY CONTENTS */
+      lh.getAADTableRecursive = function(detailItems,headings){
         let detailTbl       = new DocumentFragment();
-        var detailTblCell   = document.createElement("td");
-        //console.log(detailItems);
+
+        console.log(detailItems);
         detailItems.forEach(function(item,indexDetail){
           //console.log(itemDetail);
           if (typeof item!=undefined){
-            if (item?.node){
-              //console.log(item?.node);
-              detailTblCell.appendChild(lh.getAADNodeWrapper(item?.node,"row"));
-              detailTbl.append(detailTblCell);
+            if ((item?.node) || (item?.relatedNode)) {
+              var detailTblRow    = document.createElement("tr");
+              var cell            = detailTblRow.insertCell();
+            }
+            /*if (item?.node){
+              cell.appendChild(lh.getAADNodeWrapper(item?.node,"row"));
+              detailTbl.append(cell);
             }
             if (item?.relatedNode){
-              //console.log(headerCount);
-              //console.log(item.relatedNode);
-              detailTblCell.appendChild(lh.getAADNodeWrapper(item.relatedNode),"row-sub");
-              detailTbl.append(detailTblCell);
-            }
+              cell.appendChild(lh.getAADNodeWrapper(item.relatedNode),"row-sub");
+              detailTbl.append(cell);
+            }*/
             if ((!item?.node) && (!item?.relatedNode)){
-              //console.log(item);
-              //console.log(headerKey);
-              if (item.hasOwnProperty(headerKey)){
-                /*console.log("--------------- HEADER -------------------");
-                console.log(headerKey);
-                console.log("--------------- DETAIL ITEMS -------------------");
-                console.log(item[headerKey]);*/
-              }
-              let detail
+              headings.forEach(function(headeritem,headerindex){
+                console.log("--------------- HEADER -------------------");
+                console.log(headeritem);
+                if (item.hasOwnProperty("key")){
+                  detailTbl.appendChild(lh.getAADTableCell(headeritem));
+                }
+              });
+ 
+              let detail;
               // detailTbl  ='';
               // detailTbl += lh.getAADTableRows(item);
-              detailTblCell.appendChild(document.createTextNode(item));
-              detailTbl.append(detailTblCell);
-              //detailTbl += '<td>'+item+'</td>';
+              // detailTbl += '<td>'+item+'</td>';
             }
           }
-          if ((lh.determineDepthOfObject(item)>0) && (Array.isArray(item))){
-            lh.getAADTableRecursive(item);
+          /*if ((lh.determineDepthOfObject(item)>0) && (Array.isArray(item))){
+            lh.getAADTableRecursive(item,headerKey);
           }
           if (item?.subItems?.items){
             lh.getAADTableRecursive(item.subItems.items);
-          }
+          }*/
         });
         return detailTbl;
       }
@@ -638,17 +653,25 @@ requirejs(['jquery'], function ($) {
 
       /* GET TABLE ROWS */
       lh.getAADTableRows = function(node){
+        var tblRow, cell1, cell2;
         Object.entries(node).forEach(entry => {
           const [key, value] = entry;
-          let TblRow   = document.createElement("tr");
-          let cell1 = tblRow.insertCell();
-          let cell2 = tblRow.insertCell();
+          tblRow   = document.createElement("tr");
+          cell1 = tblRow.insertCell();
+          cell2 = tblRow.insertCell();
           cell1.appendChild(document.createTextNode(key));
           cell2.appendChild(document.createTextNode(value));
-          TblRow.appendChild(cell1);
-          TblRow.appendChild(cell2);
+          tblRow.appendChild(cell1);
+          tblRow.appendChild(cell2);
         });
-        return TblRow;
+        return tblRow;
+      }
+
+      /* GET TABLE CELLS */
+      lh.getAADTableCell = function(node){
+        var cell1 = document.createElement("td");
+        cell1.appendChild(document.createTextNode(node));
+        return cell1;
       }
 
       /* GET NODE WRAP */
@@ -667,7 +690,6 @@ requirejs(['jquery'], function ($) {
           //console.log(nodeItem);
           tblCell.appendChild(document.createTextNode(nodeItem));
         })
-        //console.log(tbl);
         tbl.appendChild(tblBody);
         return tbl;
       }
