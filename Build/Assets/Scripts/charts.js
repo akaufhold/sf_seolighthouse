@@ -1,19 +1,6 @@
 import '../Scss/backend.scss';
 import Chart from 'chart.js/auto';
 
-/*require.config({
-    paths: {
-      chart: "//cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min",
-      roughjs: "https://unpkg.com/roughjs@4.3.1/bundled/rough",
-      roughjsplugin: "//unpkg.com/chartjs-plugin-rough@latest/dist/chartjs-plugin-rough.min"
-    },
-    shim: {
-      chartjs: {
-        exports: "C"
-      },
-    },
-});*/
-
 requirejs(['jquery'], function ($) {
     require(["moment","chart.js","roughjs"], function(moment, chart) {
         var LighthouseCharts = function () {
