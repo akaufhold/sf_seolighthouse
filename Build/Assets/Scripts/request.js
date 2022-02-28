@@ -521,6 +521,7 @@ requirejs(['jquery'], function ($) {
             if (currentAudit.description){  
               var additionalDescription       = lh.getAADDesc(currentAudit);
               if ((typeof currentAudit.details != "undefined") && (lh.getAAD(currentAudit.details))){
+                console.log(currentAudit.details);
                 additionalDescription.append(lh.getAAD(currentAudit.details));
               }
               additionalList.append(additionalDescription);
@@ -585,8 +586,6 @@ requirejs(['jquery'], function ($) {
       lh.getAADTableBodyContent = function(detailItems,headings){
         let tableContent = new DocumentFragment();
         let tblBody      = document.createElement("tbody");
-        var tblRow;
-        //let tblRow       = tblBody.insertRow();
         if (headings.length){
           tblBody.append(lh.getAADTableRecursive(detailItems,headings));
         }else {
@@ -598,12 +597,10 @@ requirejs(['jquery'], function ($) {
       }
 
       /* GET RECURSIVE TABLE BODY CONTENTS */
-      lh.getAADTableRecursive = function(detailItems,headings){
+      lh.getAADTableRecursive = function(detailItems,headings,cssClass){
         let detailTbl       = new DocumentFragment();
-
         console.log(detailItems);
         detailItems.forEach(function(item,indexDetail){
-          //console.log(itemDetail);
           if (typeof item!=undefined){
             if ((item?.node) || (item?.relatedNode)) {
               var detailTblRow    = document.createElement("tr");
@@ -618,18 +615,28 @@ requirejs(['jquery'], function ($) {
               detailTbl.append(cell);
             }*/
             if ((!item?.node) && (!item?.relatedNode)){
+              var detailTblRow = document.createElement("tr");
+              ((typeof cssClass!=undefined)?detailTblRow.classList.add(cssClass):"");
+              console.log(headings);
               headings.forEach(function(headeritem,headerindex){
-                console.log("--------------- HEADER -------------------");
+                var orderedVal = item[headeritem.key];
+                //console.log("--------- ORDERED VAL ---------");
+                //console.log(item[headeritem.key]);
+                console.log(item);
                 console.log(headeritem);
-                if (item.hasOwnProperty("key")){
-                  detailTbl.appendChild(lh.getAADTableCell(headeritem));
+                if ('entity' in item){
+                  //console.log("entity");
+                  //console.log(orderedVal);
+                  var columnsLength = headings.length;
+                  detailTblRow.appendChild(lh.getAADTableCell(orderedVal.text));
+                  detailTbl.append(detailTblRow);
+                  //detailTbl.appendChild(lh.getAADTableRecursive(item.subItems.items,headeritem.subItemsHeading,"row-sub"));
+                } else {
+                  detailTblRow.appendChild(lh.getAADTableCell(orderedVal,headeritem.itemType));
+                  detailTbl.append(detailTblRow);
                 }
               });
- 
-              let detail;
-              // detailTbl  ='';
-              // detailTbl += lh.getAADTableRows(item);
-              // detailTbl += '<td>'+item+'</td>';
+              
             }
           }
           /*if ((lh.determineDepthOfObject(item)>0) && (Array.isArray(item))){
@@ -643,17 +650,21 @@ requirejs(['jquery'], function ($) {
       }
 
       /* GET TABLE WRAP */
-      lh.getAADTableWrapper = function(node,headCount){
-        let TblCell   = document.createElement("td");
-        TblCell.setAttribute('colspan',headCount);
-        let TblTable  = TblCell.createElement("table");
-        TblTable.appendChild(lh.getAADTableRows(node));
-        return TblCell;
+      lh.getAADTableWrapper = function(detailItems,headings){
+        let tblCell   = document.createElement("td");
+        let tbl       = document.createElement("table");
+        let headCount = headings.length;
+        console.log(headCount);
+        tblCell.setAttribute('colspan',headCount);
+        tbl.appendChild(lh.getAADTableRecursive(detailItems,headings));
+        tblCell.append(tbl);
+        return tblCell;
       }
 
       /* GET TABLE ROWS */
       lh.getAADTableRows = function(node){
         var tblRow, cell1, cell2;
+        console.log(node);
         Object.entries(node).forEach(entry => {
           const [key, value] = entry;
           tblRow   = document.createElement("tr");
@@ -668,10 +679,33 @@ requirejs(['jquery'], function ($) {
       }
 
       /* GET TABLE CELLS */
-      lh.getAADTableCell = function(node){
-        var cell1 = document.createElement("td");
-        cell1.appendChild(document.createTextNode(node));
+      lh.getAADTableCell = function(node,type){
+        console.log(type);
+        var cell1 = document.createElement('td');
+        cell1.appendChild(lh.getAADTableCellFormattedOut(node,type));
         return cell1;
+      }
+
+      lh.getAADTableCellFormattedOut = function(node,type){
+        var formatOut = new DocumentFragment();
+        var calcOut;
+        console.log(node);
+        switch (type) {
+          case 'text':
+            formatOut=document.createTextNode(node);
+          case 'bytes':
+            calcOut = (parseInt(node)/1024)+" kB";
+            formatOut=document.createTextNode(calcOut);
+          case 'ms':
+            calcOut = (parseInt(node)/1000).toFixed(2)+" ms";
+            formatOut=document.createTextNode(calcOut);
+          case 'url':
+            calcOut = '<a href="'+node+'" target="_blank">'+node+'</a>';
+            formatOut.innerHTML=node;
+          default:
+        }
+        console.log(formatOut);
+        return formatOut;
       }
 
       /* GET NODE WRAP */

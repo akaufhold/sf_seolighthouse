@@ -384,6 +384,12 @@ h5 {
           font-size: .9em;
           text-transform: uppercase;
 
+          table {
+            td {
+              text-transform: none;
+            }
+          }
+
           .icon-size-small {
             height: 12px;
             line-height: 12px;
