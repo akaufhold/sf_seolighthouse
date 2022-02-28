@@ -175,7 +175,7 @@
 				<source>Additional Audits</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.formSubmit" resname="tx_sf_seolighthouse_showlighthouse.formSubmit" xml:space="preserve">
-				<source>Analyse Lighthouse Score</source>
+				<source>Start Lighthouse Test</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.noPageInfo" resname="tx_sf_seolighthouse_showlighthouse.noPageInfo" xml:space="preserve">
 				<source>No Page Selected</source>
