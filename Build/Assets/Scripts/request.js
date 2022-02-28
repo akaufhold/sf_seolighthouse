@@ -52,7 +52,7 @@ requirejs(['jquery'], function ($) {
       var additionalAudits      = new DocumentFragment();
 
       /* FILTER AUDITS FOR DEBUGGING*/
-      var auditDebug = "third party-summary";
+      var auditDebug = "network requests";
 
       /* BOOTSTRAP VERSION */
       var bsversion = $.fn.tooltip.Constructor.VERSION.charAt(0);
@@ -649,7 +649,7 @@ requirejs(['jquery'], function ($) {
                     //console.log(orderedVal);
                   }
                   var columnsLength = headings.length;
-                  //detailTbl.appendChild(lh.getAADTableRecursive(item.subItems.items,headeritem.subItemsHeading,'row-sub'));
+                  detailTbl.appendChild(lh.getAADTableRecursive(item.subItems.items,headings,'row-sub'));
                 }
               });
               
@@ -705,37 +705,57 @@ requirejs(['jquery'], function ($) {
       }
 
       lh.getAADTableCellFormattedOut = function(node,type){
+        var label, calcOut;
         var formatOut = new DocumentFragment();
-        var calcOut;
+
         if (lh.checkAudit(auditDebug)){
           //console.log('Node: '+node+'    Type: '+type+'   Text:'+node.text);
+          console.log(node);
+          console.log(type);
+          console.log(node.text);
         }
-        if (typeof node!=undefined){
-          switch (type) {
-            case 'text':
-              formatOut=document.createTextNode(node);
-              break;
-            case 'bytes':
-              calcOut = (parseInt(node)/1024).toFixed(2)+' kB';
-              formatOut=document.createTextNode(calcOut);
-              break;
-            case 'ms':
-              calcOut = (parseInt(node)).toFixed(2)+' ms';
-              formatOut=document.createTextNode(calcOut);
-              break;
-            case 'url':
-              calcOut = '<a href="'+node+'" target="_blank">'+node+'</a>';
-              formatOut.innerHTML=calcOut;
-              break;
-            default:
-              formatOut=document.createTextNode(node);
-              break;
-          }
-        }else if (typeof node.text!=undefined){
-          formatOut=document.createTextNode('');
+
+        if (node!==null){
+          label = node;
+        } else if (node.text!==null){
+          label = node.text;
+          console.log(node.url);
         }
+        console.log(type);
+        console.log(node);
+        switch (type) {
+          case 'text':
+            formatOut=document.createTextNode(label);
+            break;
+          case 'bytes':
+            calcOut = (parseInt(label)/1024).toFixed(2)+' kB';
+            formatOut=document.createTextNode(calcOut);
+            break;
+          case 'ms':
+            calcOut = (parseInt(label)).toFixed(2)+' ms';
+            formatOut=document.createTextNode(calcOut);
+            break;
+          case 'link':
+            formatOut = lh.createLink(label,node.url);
+            break;
+          case 'url':
+            formatOut = lh.createLink(label);
+            break;
+          default:
+            formatOut=document.createTextNode(label);
+            break;
+        }
+        
         //console.log(formatOut);
         return formatOut;
+      }
+
+      lh.createLink = function(href,text){
+        var link = document.createElement('a');
+        link.setAttribute('href', href);
+        link.setAttribute('target', "_blank");
+        link.appendChild(document.createTextNode(text));
+        return link;
       }
 
       /* GET NODE WRAP */
