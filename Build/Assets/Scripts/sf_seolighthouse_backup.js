@@ -1,5 +1,3 @@
-"use strict";
-
 import '../Scss/backend.scss';
 import Chart from 'chart.js/auto';
 
@@ -49,14 +47,14 @@ requirejs(['jquery'], function ($) {
 
     var LighthouseData = function () {
       var lh = this;
+      var auditsHtml            = new DocumentFragment();
+      var performanceAudits     = new DocumentFragment();
+      var additionalAudits      = new DocumentFragment();
+
       /* BOOTSTRAP VERSION */
       var bsversion = $.fn.tooltip.Constructor.VERSION.charAt(0);
       /* LIGHTHOUSE */
-      var auditName,
-          auditsHtml,
-          performanceAuditsHtml,
-          additionalAuditsHtml,
-          categoryUrl;
+      var auditName,categoryUrl; 
       /* DECLARATION AUDIT CONSTANTS */
       const mainAudits        = [
         ["accessibility", "acs"],
@@ -277,10 +275,13 @@ requirejs(['jquery'], function ($) {
 
       /* HTML SPAN OUTPUT */
       lh.addSpan = function(cssClass,value){
-        var htmlOut  = '<span class="'+cssClass+'">';
-        htmlOut      +=    value;
-        htmlOut      += '</span>';
-        return htmlOut;
+        var span = document.createElement('span');
+        var classes = String(cssClass).split(' ');
+        classes.forEach(element => {
+          span.classList.add(element);
+        });
+        span.appendChild(document.createTextNode(value));
+        return span;
       }
 
       /* CSS CLASS FOR SPEED STATUS COLOR */
@@ -290,6 +291,29 @@ requirejs(['jquery'], function ($) {
         else if (scoreIn < 0.9){speedOut = 'average';} 
         else if (scoreIn <= 1){speedOut = 'fast';}
         return speedOut;
+      }
+
+      /* ESCAPING SPECIALS CHARS */
+      lh.htmlEnc = function(string){
+        return string.replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/'/g, '&#39;')
+        .replace(/"/g, '&#34;');
+      }
+
+      /* GETTING DEPTH OF OBJECT */
+      lh.determineDepthOfObject = function(object) {
+        let depth = 0;
+        if (object.children) {
+          object.children.forEach(x => {
+            let temp = this.determineDepthOfObject(x);
+            if (temp > depth) {
+              depth = temp;
+            }
+          })
+        }
+        return depth + 1;
       }
 
       /* FETCH API REQUEST */
@@ -318,7 +342,9 @@ requirejs(['jquery'], function ($) {
               $(".list-audits,.list-Addtional-Audits,.list-performance-audits").html("");
               /* SET DEVICE HIDDEN FIELD */
               $("#device").val(lh.firstLetterUp(lh.getDevice()));
-              auditsHtml  = '<ul class="list-lighthouse list-score list-main list-group">';
+              
+              var auditsListHtml = document.createElement("ul"); 
+              auditsListHtml.classList.add('list-lighthouse', 'list-score', 'list-main', 'list-group');
 
               $(lhCategoryList).each(function(catIt,category){
                   catIt++;
@@ -334,36 +360,30 @@ requirejs(['jquery'], function ($) {
                   lh.addDataSet(window[curCategory+"Chart"],"Score",speedColor,overallScore*100,1,0);
                   lh.addDataSet(window[curCategory+"Chart"],"","rgba(255, 255, 255, 1)",missingScore*100,0,1);
 
+                  //console.log(lh.getMainAudits(curCategory,auditCategories,catIt,lhCategoryListLength));
                   /* OVERALL AUDIT PROPERTIES */
-                  auditsHtml    += lh.getMainAudits(curCategory,auditCategories,catIt,lhCategoryListLength);
+                  auditsListHtml.appendChild(lh.getMainAudits(curCategory,auditCategories,catIt,lhCategoryListLength));
 
                   /* PERFORMANCE AUDIT PROPERTIES */
                   if (category=="PERFORMANCE"){
                       lh.createCharts(window.pac,"bar","audits");
-                      performanceAuditsHtml  = ''; 
-                      performanceAuditsHtml  += '<ul class="list-lighthouse list-lighthouse-'+curCategory+' list-group">'+lh.getPerformanceAudits(mainAuditsPerformance,auditResults)+'</ul>';
-                      $(".list-performance-audits").append(performanceAuditsHtml);
+                      var performanceAuditsList  = document.createElement("ul"); 
+                      performanceAuditsList.classList.add('list-lighthouse', 'list-lighthouse-'+curCategory, 'list-group');
+                      performanceAuditsList.appendChild(lh.getPerformanceAudits(mainAuditsPerformance,auditResults));
+                      performanceAudits.appendChild(performanceAuditsList);
+                      $(".list-performance-audits").append(performanceAudits);
                       $(".performance,.performanceAudits,.performanceHeadline,.performanceListHeader").css({display:"block"});
                       $(".performanceAuditCharts").css({display:"none"});
+
                   }
                   /* ADDTIONAL AUDIT PROPERTIES*/
-                  additionalAuditsHtml   =  '';
-                  additionalAuditsHtml  += '<div class="label toggle list-lighthouse collapsed" aria-expanded="false" aria-controls="list-additional-'+curCategory+'" ';
-                  
-                  if (bsversion==4)
-                  additionalAuditsHtml  += 'data-toggle="collapse" data-target="#list-additional-'+curCategory+'"';
-                  else if (bsversion==5)
-                  additionalAuditsHtml  +='data-bs-toggle="collapse" href="#list-additional-'+curCategory+'" role="button"';
-                  
-                  additionalAuditsHtml  +='>'+auditCategories[curCategory].title+chevronDown+'</div>';
-                  additionalAuditsHtml  += '<ol class="collapse list-lighthouse list-group" id="list-additional-'+curCategory+'">';
-                  additionalAuditsHtml  +=    lh.getAdditionalAudits(auditResults,auditCategories[curCategory]);
-                  additionalAuditsHtml  += '</ol>';
-                  $(".list-Addtional-Audits").append(additionalAuditsHtml);
+                  additionalAudits.append(lh.getAdditionalAudits(auditResults,auditCategories,curCategory));
+                  $(".list-Addtional-Audits").append(additionalAudits);
                   
                   $(".newLighthouseStatistics").css({display:"block"});
-              })
-              auditsHtml  += "</ul>";
+              });
+
+              auditsHtml.appendChild(auditsListHtml);
               $(".list-audits").html("");
               $(".list-audits").append(auditsHtml);
               $(".list-Addtional-Audits").append(lh.getScreenshots(auditScreenshots));
@@ -376,42 +396,45 @@ requirejs(['jquery'], function ($) {
           });
       } 
 
-        /* GET MAIN AUDITS */
+      /* GET MAIN AUDITS */
       lh.getMainAudits = function(auditItem,auditResult,mainIteration,mainCounter){
           var speed, score, color;
-          var htmlAuditsOut = "";
+          var htmlAuditsOut = new DocumentFragment();
           $(mainAudits).each(function(key,value){
             if (value[0]==auditItem){
-              auditsHtml        = "";
-              score             = auditResult[auditItem].score;
-              speed             = lh.getSpeedClass(score);
-              color             = lh.getSpeedColor(score);
-              auditName         = auditResult[auditItem].title.replace("-"," ")
-              htmlAuditsOut     +='<li class="list-group-item" id="list-'+auditItem+'">';
-              htmlAuditsOut     +=    lh.addSpan("label",auditName);
-              htmlAuditsOut     +=    lh.addSpan("score "+speed,score);
-              htmlAuditsOut     +='</li>';
+              //auditsHtml        = "";
+              var htmlAuditsListOut = document.createElement("li");
+              score                 = auditResult[auditItem].score;
+              speed                 = lh.getSpeedClass(score);
+              color                 = lh.getSpeedColor(score);
+              auditName             = auditResult[auditItem].title.replace("-"," ");
+              htmlAuditsListOut.classList.add('list-group-item', 'list-'+auditItem);
+              htmlAuditsListOut.appendChild(lh.addSpan("label",auditName));
+              htmlAuditsListOut.appendChild(lh.addSpan("score "+speed,score));
+              htmlAuditsOut.appendChild(htmlAuditsListOut);
               $("#"+value[1]).val(score);
             }
           })
           return htmlAuditsOut;
       }
+
       /* GET PERFORMANCE AUDITS */
       lh.getPerformanceAudits = function(auditItemList,auditResults){
           var speed, score, color, displayValue, chartVal;
           var mainCounter = 1;
-          var htmlPerformanceOut="";
+          var htmlPerformanceOut = new DocumentFragment();
           auditItemList.forEach(function(value){
+            auditName             = value[0].replace("-"," ");
             displayValue          = auditResults[value[0]].displayValue;
             score                 = auditResults[value[0]].score;
             speed                 = lh.getSpeedClass(score);
             color                 = lh.getSpeedColor(score);
-            auditName             = value[0].replace("-"," ");
-            htmlPerformanceOut    += '<li class="list-group-item" id="list-'+((value[1])?value[1]:"")+'">';
-            htmlPerformanceOut    +=     lh.addSpan("label",auditName);
-            htmlPerformanceOut    +=     lh.addSpan("value", displayValue);
-            htmlPerformanceOut    +=     lh.addSpan("score "+speed,score);
-            htmlPerformanceOut    += '</li>';
+
+            var htmlPerformanceListOut = document.createElement("li");
+            htmlPerformanceListOut.classList.add('list-group-item', 'list-'+((value[1])?value[1]:''));
+            htmlPerformanceListOut.appendChild(lh.addSpan("label",auditName));
+            htmlPerformanceListOut.appendChild(lh.addSpan("value", displayValue));
+            htmlPerformanceListOut.appendChild(lh.addSpan("score "+speed,score));
             $("#"+value[1]).val(parseFloat(displayValue.replace(',', '.')));
             $("#"+value[1]+"s").val(parseFloat(score)); 
             /* ADD CHARTS DATA TO ARRAY */
@@ -421,35 +444,45 @@ requirejs(['jquery'], function ($) {
             }else{
               lh.addDataSet(window.auditsChart,auditName,color,chartVal,((mainCounter==1) ? '1' : '0'),0);
             }
-            mainCounter++; 
+            mainCounter++;
+            htmlPerformanceOut.appendChild(htmlPerformanceListOut);
           });
           return htmlPerformanceOut;
       }
 
-      lh.htmlEnc = function(string){
-        return string.replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/'/g, '&#39;')
-        .replace(/"/g, '&#34;');
-        }
+      lh.getAdditionalAudits = function(auditRes,auditCats,curCat){
+       /* ADDTIONAL AUDIT PROPERTIES*/
+       var AAOut = new DocumentFragment();
+       var AADiv = document.createElement("div"); 
+       AADiv.classList.add('label', 'toggle', 'list-lighthouse','collapsed');
+       AADiv.setAttribute('aria-expanded','false');
+       AADiv.setAttribute('aria-controls','list-additional-'+curCat);
+       
+       if (bsversion==4){
+        AADiv.setAttribute('data-toggle','collapse');
+        AADiv.setAttribute('data-target','#list-additional-'+curCat);
+       }
+       else if (bsversion==5){
+        AADiv.setAttribute('data-bs-toggle','collapse');
+        AADiv.setAttribute('href','#list-additional-'+curCat);
+        AADiv.setAttribute('role','button');
+       }
+       AADiv.appendChild(document.createTextNode(auditCats[curCat].title));
+       AADiv.insertAdjacentHTML('beforeend',chevronDown);
 
-      lh.determineDepthOfObject = function(object) {
-        let depth = 0;
-        if (object.children) {
-          object.children.forEach(x => {
-            let temp = this.determineDepthOfObject(x);
-            if (temp > depth) {
-              depth = temp;
-            }
-          })
-        }
-        return depth + 1;
+       var AAList = document.createElement("ol"); 
+       AAList.classList.add('list-group', 'list-lighthouse','collapse');
+       AAList.id = 'list-additional-'+curCat;
+       AAList.append(lh.getAdditionalAuditsList(auditRes,auditCats[curCat]));
+       AAOut.append(AADiv);
+       AAOut.append(AAList);
+
+       return AAOut;
       }
 
       /* GET ADDITIONAL AUDITS */
-      lh.getAdditionalAudits = function(auditResults,auditResultsInCategory){
-        var additionalHtml = new DocumentFragment();
+      lh.getAdditionalAuditsList = function(auditResults,auditResultsInCategory){
+        var additional = new DocumentFragment();
         var auditRefs = auditResultsInCategory['auditRefs'];
         var speed, score, displayValue, screenshot, type, displayMode, description, currentAudit;
         auditRefs = sortKeys(auditRefs);
@@ -471,43 +504,54 @@ requirejs(['jquery'], function ($) {
           //js error when including not applicable audits => maybe string too long 
           if (displayMode!="notApplicable"){ 
             auditName                         = type.replace("-"," ");
-            additionalHtml                    += '<li class="list-group-item" id="'+type+'">';
-            additionalHtml                    += lh.addSpan("label",((description) ? chevronDown : '')+auditName);
+            var additionalList                = document.createElement("li");
+            additionalList.id                 = type;
+            additionalList.classList.add('list-group-item');
+            additionalList.appendChild(lh.addSpan("label",auditName));
+            console.log(auditName);
+            ((description) ? additionalList.children[0].insertAdjacentHTML('afterbegin',chevronDown): '') 
+
             if (displayValue!=undefined){
-              additionalHtml                  += lh.addSpan("value",displayValue);
+              additionalList.appendChild(lh.addSpan("value",displayValue));
             }
             if (score){
                 speed                         =  lh.getSpeedClass(score);
-                additionalHtml                += lh.addSpan("score "+speed,score);
+                additionalList.appendChild(lh.addSpan("score "+speed,score));
             }
             if (currentAudit.description){  
-              additionalHtml                  += '<span class="description">';
-              if (currentAudit.title){
-                additionalHtml                += "<b>";
-                additionalHtml                += lh.htmlEnc(JSON.stringify(currentAudit.title.toString()));
-                //htmlAdditionalOut               += lh.htmlEnc(currentAudit.title.toString());
-                additionalHtml                += "</b>";
+              var additionalDescription       = lh.getAADDesc(currentAudit);
+              if ((typeof currentAudit.details != "undefined") && (lh.getAAD(currentAudit.details))){
+                additionalDescription.append(lh.getAAD(currentAudit.details));
               }
-              additionalHtml                  += lh.htmlEnc(JSON.stringify(currentAudit.description.toString()));
-              if (typeof currentAudit.details != "undefined"){
-                //console.log(currentAudit.details);
-                additionalHtml                += lh.getAAD(currentAudit.details);
-              }
-              additionalHtml                  += '</span>';
+              additionalList.append(additionalDescription);
             }
-            additionalHtml                    +=  '</li>';
+            additional.append(additionalList);
           }
         });
-        return additionalHtml;
+        return additional;
       }
 
       /* GET DETAILS OF ADDITIONAL AUDITS */
       lh.getAAD = function(details){
         if ((details.type=="table") && (details.items.length)){
+          console.log(details);
           return lh.getAADTable(details); 
         } else {
           return false;
         }
+      }
+
+      lh.getAADDesc = function(currentAudit){
+        var additionalDescription     = document.createElement("span"); 
+        additionalDescription.classList.add('description');
+
+        if (currentAudit.title){
+          var additionalBold          = document.createElement("b");
+          additionalBold.innerHTML    = lh.htmlEnc(JSON.stringify(currentAudit.title.toString()));
+          additionalDescription.append(additionalBold);
+        }
+        additionalDescription.innerHTML += lh.htmlEnc(JSON.stringify(currentAudit.description.toString()));
+        return additionalDescription;
       }
 
       /* GET DETAILS OF ADDITIONAL AUDITS FROM TYPE TABLE*/
@@ -519,7 +563,7 @@ requirejs(['jquery'], function ($) {
         return tbl;
       }
 
-      /* GET HEADINGS OF ADDITIONAL AUDITS TABLE*/
+      /* GET HEADINGS OF ADDITIONAL AUDITS TABLE */
       lh.getAADTableHeadings = function(headings){
         let tbl         = new DocumentFragment();
         let tblHead     = document.createElement("thead");
@@ -537,65 +581,72 @@ requirejs(['jquery'], function ($) {
         return tbl;
       }
 
-      /* GET RECURSIVE TABLE BODY CONTENTS */
+      /* GET TABLE BODY CONTENTS */
       lh.getAADTableBodyContent = function(detailItems,headings){
         let tableContent = new DocumentFragment();
         let tblBody      = document.createElement("tbody");
-        let tblRow       = tblBody.insertRow();
-
+        var tblRow;
+        //let tblRow       = tblBody.insertRow();
         if (headings.length){
           headings.forEach(function(itemHeader,index){
+            console.log(itemHeader.key);
+            tblRow       = document.createElement("tr");
             tblRow.append(lh.getAADTableRecursive(detailItems,itemHeader.key,headings.length));
+            tblBody.append(tblRow);
           });
         }else {
-          tblRow.append(lh.getAADTableRecursive(detailItems,headings.length));
+          tblBody.append(lh.getAADTableRecursive(detailItems,headings.length));
         }
         tableContent.appendChild(tblBody);
         //console.log(tableContent);
         return tableContent;
       }
 
+      /* GET RECURSIVE TABLE BODY CONTENTS */
       lh.getAADTableRecursive = function(detailItems,headerKey,headerCount){
         let detailTbl       = new DocumentFragment();
-        var detailTblCell   = document.createElement("td");
+
         //console.log(detailItems);
         detailItems.forEach(function(item,indexDetail){
           //console.log(itemDetail);
           if (typeof item!=undefined){
-            if (item?.node){
-              //console.log(item?.node);
-              detailTblCell.appendChild(lh.getAADNodeWrapper(item?.node,"row"));
-              detailTbl.append(detailTblCell);
+            if ((item?.node) || (item?.relatedNode)) {
+              var detailTblRow    = document.createElement("tr");
+              var cell            = detailTblRow.insertCell();
+            }
+            /*if (item?.node){
+              cell.appendChild(lh.getAADNodeWrapper(item?.node,"row"));
+              detailTbl.append(cell);
             }
             if (item?.relatedNode){
-              //console.log(headerCount);
-              //console.log(item.relatedNode);
-              detailTblCell.appendChild(lh.getAADNodeWrapper(item.relatedNode),"row-sub");
-              detailTbl.append(detailTblCell);
-            }
+              cell.appendChild(lh.getAADNodeWrapper(item.relatedNode),"row-sub");
+              detailTbl.append(cell);
+            }*/
             if ((!item?.node) && (!item?.relatedNode)){
               //console.log(item);
               //console.log(headerKey);
+              //console.log(headerKey);
               if (item.hasOwnProperty(headerKey)){
+                console.log(item+" "+headerKey);
+                detailTbl.appendChild(lh.getAADTableCell(item[headerKey]));
                 /*console.log("--------------- HEADER -------------------");
                 console.log(headerKey);
                 console.log("--------------- DETAIL ITEMS -------------------");
                 console.log(item[headerKey]);*/
+                //console.log(item);
               }
-              let detail
+              let detail;
               // detailTbl  ='';
               // detailTbl += lh.getAADTableRows(item);
-              detailTblCell.appendChild(document.createTextNode(item));
-              detailTbl.append(detailTblCell);
-              //detailTbl += '<td>'+item+'</td>';
+              // detailTbl += '<td>'+item+'</td>';
             }
           }
-          if ((lh.determineDepthOfObject(item)>0) && (Array.isArray(item))){
-            lh.getAADTableRecursive(item);
+          /*if ((lh.determineDepthOfObject(item)>0) && (Array.isArray(item))){
+            lh.getAADTableRecursive(item,headerKey);
           }
           if (item?.subItems?.items){
             lh.getAADTableRecursive(item.subItems.items);
-          }
+          }*/
         });
         return detailTbl;
       }
@@ -611,17 +662,25 @@ requirejs(['jquery'], function ($) {
 
       /* GET TABLE ROWS */
       lh.getAADTableRows = function(node){
+        var tblRow, cell1, cell2;
         Object.entries(node).forEach(entry => {
           const [key, value] = entry;
-          let TblRow   = document.createElement("tr");
-          let cell1 = tblRow.insertCell();
-          let cell2 = tblRow.insertCell();
+          tblRow   = document.createElement("tr");
+          cell1 = tblRow.insertCell();
+          cell2 = tblRow.insertCell();
           cell1.appendChild(document.createTextNode(key));
           cell2.appendChild(document.createTextNode(value));
-          TblRow.appendChild(cell1);
-          TblRow.appendChild(cell2);
+          tblRow.appendChild(cell1);
+          tblRow.appendChild(cell2);
         });
-        return TblRow;
+        return tblRow;
+      }
+
+      /* GET TABLE CELLS */
+      lh.getAADTableCell = function(node){
+        var cell1 = document.createElement("td");
+        cell1.appendChild(document.createTextNode(node));
+        return cell1;
       }
 
       /* GET NODE WRAP */
@@ -640,7 +699,6 @@ requirejs(['jquery'], function ($) {
           //console.log(nodeItem);
           tblCell.appendChild(document.createTextNode(nodeItem));
         })
-        //console.log(tbl);
         tbl.appendChild(tblBody);
         return tbl;
       }
