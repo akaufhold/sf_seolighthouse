@@ -385,8 +385,19 @@ h5 {
           text-transform: uppercase;
 
           table {
-            td {
-              text-transform: none;
+            overflow-x: auto;
+
+            tr {
+              td {
+                text-transform: none;
+                white-space: nowrap;
+              }
+
+              &.row-sub {
+                td {
+                  padding-left: 1rem;
+                }
+              }
             }
           }
 
