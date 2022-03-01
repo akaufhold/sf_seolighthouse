@@ -52,7 +52,7 @@ requirejs(['jquery'], function ($) {
       var additionalAudits      = new DocumentFragment();
 
       /* FILTER AUDITS FOR DEBUGGING*/
-      var auditDebug = "network requests";
+      var auditDebug = "third party-summary";
 
       /* BOOTSTRAP VERSION */
       var bsversion = $.fn.tooltip.Constructor.VERSION.charAt(0);
@@ -350,7 +350,7 @@ requirejs(['jquery'], function ($) {
               $('.list-audits,.list-Addtional-Audits,.list-performance-audits').html('');
               /* SET DEVICE HIDDEN FIELD */
               $('#device').val(lh.firstLetterUp(lh.getDevice()));
-              
+              console.log(auditResults); 
               var auditsListHtml = document.createElement('ul'); 
               auditsListHtml.classList.add('list-lighthouse', 'list-score', 'list-main', 'list-group');
 
@@ -600,9 +600,12 @@ requirejs(['jquery'], function ($) {
         let tableContent = new DocumentFragment();
         let tblBody      = document.createElement('tbody');
         if (headings.length){
-          tblBody.append(lh.getAADTableRecursive(detailItems,headings));
+          if (lh.checkAudit(auditDebug)){
+            console.log("check");
+          }
+          tblBody.append(lh.getAADTableRecursive(detailItems,headings,false));
         }else {
-          tblBody.append(lh.getAADTableRecursive(detailItems,headings.length));
+          tblBody.append(lh.getAADTableRecursive(detailItems,headings.length,false));
         }
         tableContent.appendChild(tblBody);
         //console.log(tableContent);
@@ -610,7 +613,7 @@ requirejs(['jquery'], function ($) {
       }
 
       /* GET RECURSIVE TABLE BODY CONTENTS */
-      lh.getAADTableRecursive = function(detailItems,headings,cssClass){
+      lh.getAADTableRecursive = function(detailItems,headings,isSub,cssClass){
         let detailTbl       = new DocumentFragment();
         if (lh.checkAudit(auditDebug))
           console.log(detailItems);
@@ -630,29 +633,43 @@ requirejs(['jquery'], function ($) {
             }*/
             if ((!item?.node) && (!item?.relatedNode)){
               var detailTblRow = document.createElement('tr');
-              ((typeof cssClass!=undefined)?detailTblRow.classList.add(cssClass):'');
-              //console.log(headings);
-              headings.forEach(function(headeritem,headerindex){
-                var orderedVal = item[headeritem.key];
-                if (lh.checkAudit(auditDebug)){
-                  console.log(headeritem.key);
-                  console.log(orderedVal);
-                  console.log(headeritem.itemType);
-                }
+              ((isSub)?detailTblRow.classList.add(cssClass):'');
+              if (headings){
+                /* OUTPUT TABLE CELLS IN ORDER FROM TABLE HEADINGS */
+                headings.forEach(function(headeritem,headerindex){
+                  var orderedVal = item[headeritem.key];
+                  var detailType = headeritem.itemType;
 
-                detailTblRow.appendChild(lh.getAADTableCell(orderedVal,headeritem.itemType));
-                detailTbl.append(detailTblRow);
-                //console.log(headeritem);
-                if ('entity' in item){
-                  if (lh.checkAudit(auditDebug)){
-                    //console.log('entity');
-                    //console.log(orderedVal);
+                  if ((headeritem.key=='entity') && (!isSub)){
+                    orderedVal = item.entity[headeritem.subItemsHeading.key];
+                    if (lh.checkAudit(auditDebug)){
+                      console.log(orderedVal);
+                    }
                   }
-                  var columnsLength = headings.length;
-                  detailTbl.appendChild(lh.getAADTableRecursive(item.subItems.items,headings,'row-sub'));
+
+                  if (isSub){
+                    orderedVal = item[headeritem.subItemsHeading.key];
+                    if (headeritem.subItemsHeading.hasOwnProperty('itemType')){
+                      detailType = headeritem.subItemsHeading.itemType;
+                    }
+                  }
+
+                  if (lh.checkAudit(auditDebug)){
+                    //console.log(item); 
+                    // console.log(item.key); 
+                    //console.log(headeritem.key); 
+                    // console.log(headeritem.subItemsHeading.key);
+                    //console.log(orderedVal);
+                    // console.log(detailType);
+                  }
+                  //console.log(orderedVal);
+                  detailTblRow.appendChild(lh.getAADTableCell(orderedVal,detailType));
+                  detailTbl.append(detailTblRow);
+                });
+                if (item.hasOwnProperty('subItems')){
+                  detailTbl.appendChild(lh.getAADTableRecursive(item.subItems.items,headings,true,'row-sub'));
                 }
-              });
-              
+              }
             }
           }
           /*if ((lh.determineDepthOfObject(item)>0) && (Array.isArray(item))){
@@ -711,18 +728,14 @@ requirejs(['jquery'], function ($) {
         if (lh.checkAudit(auditDebug)){
           //console.log('Node: '+node+'    Type: '+type+'   Text:'+node.text);
           console.log(node);
-          console.log(type);
-          console.log(node.text);
+          //console.log(type);
+          //console.log(node.text);
         }
 
-        if (node!==null){
-          label = node;
-        } else if (node.text!==null){
-          label = node.text;
-          console.log(node.url);
-        }
-        console.log(type);
-        console.log(node);
+        ((node!=='null' && node!=='undefined')?label = node:'');
+        ((node?.text)?label = node.text:'');
+        ((!label) && (node?.url)?label = node.url:'');
+
         switch (type) {
           case 'text':
             formatOut=document.createTextNode(label);
@@ -750,11 +763,11 @@ requirejs(['jquery'], function ($) {
         return formatOut;
       }
 
-      lh.createLink = function(href,text){
+      lh.createLink = function(label,href){
         var link = document.createElement('a');
         link.setAttribute('href', href);
         link.setAttribute('target', "_blank");
-        link.appendChild(document.createTextNode(text));
+        link.appendChild(document.createTextNode(label));
         return link;
       }
 
