@@ -464,7 +464,7 @@ h5 {
           background-color: $highlightColor;
           border-color: $highlightBorderColor;
           height: auto;
-          transform: scale(1.01);
+          transform: scaleX(1.01);
 
           .label {
             .icon-actions-chevron-down {
