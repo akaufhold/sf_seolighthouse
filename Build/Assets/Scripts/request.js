@@ -722,7 +722,7 @@ requirejs(['jquery'], function ($) {
       }
 
       lh.getAADTableCellFormattedOut = function(node,type){
-        var label, calcOut;
+        var label, calcOut, linkHref;
         var formatOut = new DocumentFragment();
 
         if (lh.checkAudit(auditDebug)){
@@ -734,7 +734,7 @@ requirejs(['jquery'], function ($) {
 
         ((node!=='null' && node!=='undefined')?label = node:'');
         ((node?.text)?label = node.text:'');
-        ((!label) && (node?.url)?label = node.url:'');
+        ((!label) && (node?.url)?(label = node.url,linkHref=node.url):linkHref = label);
 
         switch (type) {
           case 'text':
@@ -749,16 +749,15 @@ requirejs(['jquery'], function ($) {
             formatOut=document.createTextNode(calcOut);
             break;
           case 'link':
-            formatOut = lh.createLink(label,node.url);
+              formatOut = lh.createLink(label,linkHref);
             break;
           case 'url':
-            formatOut = lh.createLink(label);
+            formatOut = lh.createLink(label,linkHref);
             break;
           default:
             formatOut=document.createTextNode(label);
             break;
         }
-        
         //console.log(formatOut);
         return formatOut;
       }
@@ -767,8 +766,15 @@ requirejs(['jquery'], function ($) {
         var link = document.createElement('a');
         link.setAttribute('href', href);
         link.setAttribute('target', "_blank");
-        link.appendChild(document.createTextNode(label));
+        link.appendChild(document.createTextNode(lh.shortenString(label)));
         return link;
+      }
+
+      lh.shortenString = function(string){
+        if (string.length>40)
+          return '…'+string.slice(string.length - 40);
+        else
+          return string;
       }
 
       /* GET NODE WRAP */
