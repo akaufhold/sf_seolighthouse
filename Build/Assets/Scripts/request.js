@@ -1,35 +1,6 @@
 import '../Scss/backend.scss';
 import Chart from 'chart.js/auto';
 
-/* function for sorting json object through child keys */
-function sortKeys(o) {
-  if (Array.isArray(o)) {
-      return o.map(sortKeys)
-  } else if (o instanceof Object) {
-      var _ret = function() {
-          var numeric = [];
-          var nonNumeric = [];
-          Object.keys(o).forEach(function(key) {
-              if (/^(0|[1-9][0-9]*)$/.test(key)) {
-                  numeric.push(+key)
-              } else {
-                  nonNumeric.push(key)
-              }
-          });
-          return {
-              v: numeric.sort(function(a, b) {
-                  return a - b
-              }).concat(nonNumeric.sort()).reduce(function(result, key) {
-                  result[key] = sortKeys(o[key]);
-                  return result
-              }, {})
-          }
-      }();
-      if (typeof _ret === 'object') return _ret.v
-  }
-  return o
-};
-
 requirejs(['jquery'], function ($) {
   require(['moment', 'chart.js','roughjs'], function(moment, chart) {
     
@@ -52,7 +23,7 @@ requirejs(['jquery'], function ($) {
       var additionalAudits      = new DocumentFragment();
 
       /* TEST-AUDITS FOR DEBUGGING */
-      var auditDebug = 'legacy javascript';
+      var auditDebug = 'layout shift-elements';
 
       /* BOOTSTRAP VERSION */
       var bsversion = $.fn.tooltip.Constructor.VERSION.charAt(0);
@@ -129,6 +100,35 @@ requirejs(['jquery'], function ($) {
         
         lh.showAddionalAudits();
         lh.performanceMenu();
+      };
+
+      /* function for sorting json object through child keys */
+      lh.sortKeys = function(o) {
+        if (Array.isArray(o)) {
+            return o.map(lh.sortKeys)
+        } else if (o instanceof Object) {
+            var _ret = function() {
+                var numeric = [];
+                var nonNumeric = [];
+                Object.keys(o).forEach(function(key) {
+                    if (/^(0|[1-9][0-9]*)$/.test(key)) {
+                        numeric.push(+key)
+                    } else {
+                        nonNumeric.push(key)
+                    }
+                });
+                return {
+                    v: numeric.sort(function(a, b) {
+                        return a - b
+                    }).concat(nonNumeric.sort()).reduce(function(result, key) {
+                        result[key] = lh.sortKeys(o[key]);
+                        return result
+                    }, {})
+                }
+            }();
+            if (typeof _ret === 'object') return _ret.v
+        }
+        return o
       };
 
       lh.checkAudit = function(condition){
@@ -493,7 +493,7 @@ requirejs(['jquery'], function ($) {
         var additional = new DocumentFragment();
         var auditRefs = auditResultsInCategory['auditRefs'];
         var speed, score, displayValue, screenshot, type, displayMode, description, currentAudit;
-        auditRefs = sortKeys(auditRefs);
+        auditRefs = lh.sortKeys(auditRefs);
         
         Object.keys(auditRefs).sort().forEach(function(key){
           type                               = auditResultsInCategory.auditRefs[key].id;
@@ -518,10 +518,10 @@ requirejs(['jquery'], function ($) {
             additionalList.classList.add('list-group-item');
             additionalList.appendChild(lh.addSpan('label',auditName));
             
-            if (lh.checkAudit(auditDebug)){
+            /*if (lh.checkAudit(auditDebug)){
               console.log(auditName);
               console.log(currentAudit.details);
-            }
+            }*/
 
             ((description) ? additionalList.children[0].insertAdjacentHTML('afterbegin',chevronDown): '') 
 
@@ -555,14 +555,13 @@ requirejs(['jquery'], function ($) {
               return lh.getCriticalChains(details);
             case 'opportunity':   
               return lh.getAADTable(details,'opportunity');
-              //return lh.getCriticalChains(details);
             case 'debugdata':   
               //return lh.getCriticalChains(details);
             default:
-              //console.log(auditName);
-              //console.log('Other Types: '+details.type);
-              return false;
-              break;
+              console.log(auditName);
+              console.log('Other Types: '+details.type);
+            return false;
+            break;
           }
         }
       }
@@ -674,11 +673,11 @@ requirejs(['jquery'], function ($) {
                   switch (headerKey){
                     case 'node':
                       cssClass = 'row-main';
-                      detailTblRow.appendChild(lh.getAADTableCellNode(item?.node,'75%'));
+                      detailTblRow.appendChild(lh.getAADTableCellNode(item?.node,'70%'));
                     break;
                     case 'related':
                       cssClass = 'row-sub';
-                      detailTblRow.appendChild(lh.getAADTableCellNode(item?.relatedNode,'75%'));
+                      detailTblRow.appendChild(lh.getAADTableCellNode(item?.relatedNode,'70%'));
                     break;
                     default:
                       detailTblRow.appendChild(lh.getAADTableCell(orderedVal,detailType));
@@ -737,10 +736,6 @@ requirejs(['jquery'], function ($) {
       lh.getAADTableCellFormattedOut = function(node,type){
         var label, calcOut, linkHref;
         var formatOut = new DocumentFragment();
-        if (lh.checkAudit(auditDebug)){
-          console.log(node);
-          console.log(type);
-        }
         ((node!=='null' && node!=='undefined')?label = node:'');
         ((node?.text)?label = node.text:'');
         ((label!='') && (node?.url)?(label = node.url,linkHref=node.url):linkHref = label);
@@ -757,6 +752,10 @@ requirejs(['jquery'], function ($) {
             calcOut = (parseInt(label)).toFixed(2)+' ms';
             formatOut=document.createTextNode(calcOut);
             break;
+          case 'numeric':
+            calcOut = label.toFixed(7);
+            formatOut=document.createTextNode(calcOut);
+            break;
           case 'link':
             formatOut = lh.createLink(label,linkHref);
             break;
@@ -767,7 +766,6 @@ requirejs(['jquery'], function ($) {
             formatOut=document.createTextNode(label);
             break;
         }
-        //console.log(formatOut);
         return formatOut;
       }
 
