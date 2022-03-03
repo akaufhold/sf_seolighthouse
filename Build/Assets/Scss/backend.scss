@@ -393,9 +393,14 @@ h5 {
             margin-top: .75rem;
 
             tr {
+              th,
               td {
                 text-transform: none;
                 font-size: 11px;
+
+                &:last-child:not(:first-child) {
+                  text-align: right;
+                }
 
                 .lh-node__snippet {
                   font-family: $fontSnippet;
