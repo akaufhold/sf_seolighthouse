@@ -507,6 +507,8 @@ requirejs(['jquery'], function ($) {
           displayValue                       = currentAudit.displayValue;
           if (currentAudit.score!=null){
             score                            = currentAudit.score;
+          } else {
+            score = '';
           }
 
           //js error when including not applicable audits => maybe string too long 
@@ -753,7 +755,7 @@ requirejs(['jquery'], function ($) {
             formatOut=document.createTextNode(calcOut);
             break;
           case 'numeric':
-            calcOut = label.toFixed(7);
+            calcOut = parseFloat(label.toFixed(7));
             formatOut=document.createTextNode(calcOut);
             break;
           case 'link':
