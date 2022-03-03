@@ -1,5 +1,7 @@
 $progressColor:#003ea1;
+$snippetColor: #003ea1;
 $progressBackColor:#ccc;
+$borderColor:#ddd;
 
 $successColor:#28a745;
 $averageColor:#ffa400;
@@ -16,6 +18,8 @@ $highlightBorderColor:#bdc5cd;
 
 $borderColor:#aaa;
 $background-color-bs: #0078e6;
+
+$fontSnippet: 'Roboto Mono', 'Menlo', 'dejavu sans mono', 'Consolas', 'Lucida Console', monospace;
 
 @keyframes runProgressBar {
   0% { width: 0%; }
@@ -346,7 +350,7 @@ h5 {
 
         li {
           border: 0;
-          border-bottom: 0 solid #ddd;
+          border-bottom: 0 solid $borderColor;
 
           > span {
             color: #000;
@@ -386,11 +390,17 @@ h5 {
 
           table {
             overflow-x: auto;
+            margin-top: .75rem;
 
             tr {
               td {
                 text-transform: none;
-                white-space: nowrap;
+                font-size: 11px;
+
+                .lh-node__snippet {
+                  font-family: $fontSnippet;
+                  color: $snippetColor;
+                }
               }
 
               &.row-sub {
