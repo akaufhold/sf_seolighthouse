@@ -51,8 +51,8 @@ requirejs(['jquery'], function ($) {
       var performanceAudits     = new DocumentFragment();
       var additionalAudits      = new DocumentFragment();
 
-      /* FILTER AUDITS FOR DEBUGGING*/
-      var auditDebug = "third party-summary";
+      /* TEST-AUDITS FOR DEBUGGING */
+      var auditDebug = 'uses responsive-images';
 
       /* BOOTSTRAP VERSION */
       var bsversion = $.fn.tooltip.Constructor.VERSION.charAt(0);
@@ -350,7 +350,7 @@ requirejs(['jquery'], function ($) {
               $('.list-audits,.list-Addtional-Audits,.list-performance-audits').html('');
               /* SET DEVICE HIDDEN FIELD */
               $('#device').val(lh.firstLetterUp(lh.getDevice()));
-              console.log(auditResults); 
+              console.log(auditResults);
               var auditsListHtml = document.createElement('ul'); 
               auditsListHtml.classList.add('list-lighthouse', 'list-score', 'list-main', 'list-group');
 
@@ -458,8 +458,8 @@ requirejs(['jquery'], function ($) {
           return htmlPerformanceOut;
       }
 
+      /* ADDTIONAL AUDIT PROPERTIES*/
       lh.getAdditionalAudits = function(auditRes,auditCats,curCat){
-       /* ADDTIONAL AUDIT PROPERTIES*/
        var AAOut = new DocumentFragment();
        var AADiv = document.createElement('div'); 
        AADiv.classList.add('label', 'toggle', 'list-lighthouse','collapsed');
@@ -494,7 +494,7 @@ requirejs(['jquery'], function ($) {
         var auditRefs = auditResultsInCategory['auditRefs'];
         var speed, score, displayValue, screenshot, type, displayMode, description, currentAudit;
         auditRefs = sortKeys(auditRefs);
-
+        
         Object.keys(auditRefs).sort().forEach(function(key){
           type                               = auditResultsInCategory.auditRefs[key].id;
           currentAudit                       = auditResults[type];
@@ -502,7 +502,7 @@ requirejs(['jquery'], function ($) {
           displayMode                        = String(currentAudit.scoreDisplayMode);
 
           if (currentAudit.hasOwnProperty('details.screenshot')){
-               screenshot = currentAudit.details.screenshot;
+            screenshot = currentAudit.details.screenshot;
           }
           displayValue                       = currentAudit.displayValue;
           if (currentAudit.score!=null){
@@ -512,7 +512,7 @@ requirejs(['jquery'], function ($) {
           //js error when including not applicable audits => maybe string too long 
           if (displayMode!='notApplicable'){ 
             auditName                         = type.replace('-',' ');
-            //console.log(auditName);
+              //console.log(auditName);
             var additionalList                = document.createElement('li');
             additionalList.id                 = type;
             additionalList.classList.add('list-group-item');
@@ -547,18 +547,29 @@ requirejs(['jquery'], function ($) {
 
       /* GET DETAILS OF ADDITIONAL AUDITS */
       lh.getAAD = function(details){
-        if ((details.type=='table') && (details.items.length)){
-          //console.log(details);
-          return lh.getAADTable(details); 
-        } else {
-          return false;
+        if (details?.items?.length){
+          switch (details.type) {
+            case 'table': 
+              return lh.getAADTable(details,'table');
+            case 'criticalrequestchain':
+              return lh.getCriticalChains(details);
+            case 'opportunity':   
+              return lh.getAADTable(details,'opportunity');
+              //return lh.getCriticalChains(details);
+            case 'debugdata':   
+              //return lh.getCriticalChains(details);
+            default:
+              //console.log(auditName);
+              //console.log('Other Types: '+details.type);
+              return false;
+              break;
+          }
         }
       }
 
       lh.getAADDesc = function(currentAudit){
         var additionalDescription     = document.createElement('span'); 
         additionalDescription.classList.add('description');
-
         if (currentAudit.title){
           var additionalBold          = document.createElement('b');
           additionalBold.innerHTML    = lh.htmlEnc(JSON.stringify(currentAudit.title.toString()));
@@ -569,115 +580,116 @@ requirejs(['jquery'], function ($) {
       }
 
       /* GET DETAILS OF ADDITIONAL AUDITS FROM TYPE TABLE*/
-      lh.getAADTable = function(details){
+      lh.getAADTable = function(details,type){
         let tbl     = document.createElement('table');
-        tbl.classList.add('table', 'table-striped', 'table-hover');
-        tbl.appendChild(lh.getAADTableHeadings(details.headings));
-        tbl.appendChild(lh.getAADTableBodyContent(details.items,details.headings));
+        tbl.classList.add('table','table-striped', 'table-hover');
+        if (type=='opportunity'){tbl.classList.add('table-opportunity');}
+        tbl.appendChild(lh.getAADTableHeadings(details.headings,type));
+        tbl.appendChild(lh.getAADTableBodyContent(details.items,details.headings,type));
         return tbl;
       }
 
       /* GET HEADINGS OF ADDITIONAL AUDITS TABLE */
-      lh.getAADTableHeadings = function(headings){
+      lh.getAADTableHeadings = function(headings,type){
         let tbl         = new DocumentFragment();
         let tblHead     = document.createElement('thead');
         let tblHeadRow  = tblHead.insertRow();
 
         headings.forEach(function(headeritem,headerindex){
-          if (typeof headeritem.text!=undefined){
-            var tblHeadCell         = document.createElement('th');
-            tblHeadCell.style.width = (100/headings.length)+'%';
-            tblHeadCell.appendChild(document.createTextNode(headeritem.text));
-            tblHeadRow.appendChild(tblHeadCell);
+          var tblHeadLabel = '';
+          if (typeof headeritem.text!=='undefined'){
+            tblHeadLabel =  headeritem.text;
+          } else if (typeof headeritem.label!=='undefined'){
+            tblHeadLabel =  headeritem.label;
           }
+          var tblHeadCell         = document.createElement('th');
+          tblHeadCell.style.width = (100/headings.length)+'%';
+          tblHeadCell.appendChild(document.createTextNode(tblHeadLabel));
+          tblHeadRow.appendChild(tblHeadCell);
         });
         tbl.appendChild(tblHead);
         return tbl;
       }
 
       /* GET TABLE BODY CONTENTS */
-      lh.getAADTableBodyContent = function(detailItems,headings){
+      lh.getAADTableBodyContent = function(detailItems,headings,type){
         let tableContent = new DocumentFragment();
         let tblBody      = document.createElement('tbody');
         if (headings.length){
-          if (lh.checkAudit(auditDebug)){
-            console.log("check");
-          }
-          tblBody.append(lh.getAADTableRecursive(detailItems,headings,false));
+          tblBody.append(lh.getAADTableRecursive(detailItems,headings,false,'',type));
         }else {
-          tblBody.append(lh.getAADTableRecursive(detailItems,headings.length,false));
+          tblBody.append(lh.getAADTableRecursive(detailItems,headings.length,false,'',type));
         }
         tableContent.appendChild(tblBody);
         //console.log(tableContent);
         return tableContent;
       }
 
+      /* GET TABLE ROW TYPE */
+      lh.getAADTableRowType = function(item){
+        var itemType;
+        if (item.node){
+          itemType = 'node';
+        }
+        else if (item.relatedNode){
+          //console.log(item);
+          itemType =  'related';
+        }
+        else {itemType = ''}
+        return itemType;
+      }
+
+
       /* GET RECURSIVE TABLE BODY CONTENTS */
-      lh.getAADTableRecursive = function(detailItems,headings,isSub,cssClass){
+      lh.getAADTableRecursive = function(detailItems,headings,isSub,cssClass,type){
         let detailTbl       = new DocumentFragment();
         if (lh.checkAudit(auditDebug))
           console.log(detailItems);
         detailItems.forEach(function(item,indexDetail){
           if (typeof item!=undefined){
-            if ((item?.node) || (item?.relatedNode)) {
-              var detailTblRow    = document.createElement('tr');
-              var cell            = detailTblRow.insertCell();
-            }
-            /*if (item?.node){
-              cell.appendChild(lh.getAADNodeWrapper(item?.node,'row'));
-              detailTbl.append(cell);
-            }
-            if (item?.relatedNode){
-              cell.appendChild(lh.getAADNodeWrapper(item.relatedNode),'row-sub');
-              detailTbl.append(cell);
-            }*/
-            if ((!item?.node) && (!item?.relatedNode)){
-              var detailTblRow = document.createElement('tr');
-              ((isSub)?detailTblRow.classList.add(cssClass):'');
-              if (headings){
-                /* OUTPUT TABLE CELLS IN ORDER FROM TABLE HEADINGS */
-                headings.forEach(function(headeritem,headerindex){
-                  var orderedVal = item[headeritem.key];
-                  var detailType = headeritem.itemType;
-
-                  if ((headeritem.key=='entity') && (!isSub)){
-                    orderedVal = item.entity[headeritem.subItemsHeading.key];
-                    if (lh.checkAudit(auditDebug)){
-                      console.log(orderedVal);
-                    }
+            var detailTblRow = document.createElement('tr');
+            if (headings){
+              /* OUTPUT TABLE CELLS IN ORDER FROM TABLE HEADINGS */
+              headings.forEach(function(headeritem,headerindex){
+                var orderedVal;
+                var headerKey  = headeritem.key;
+                var detailType = headeritem.itemType;
+                if ((isSub) && (headeritem.hasOwnProperty('subItemsHeading'))){
+                  headerKey = headeritem.subItemsHeading.key;
+                  if (headeritem.subItemsHeading.hasOwnProperty('itemType')){
+                    detailType = headeritem.subItemsHeading.itemType;
                   }
-
-                  if (isSub){
-                    orderedVal = item[headeritem.subItemsHeading.key];
-                    if (headeritem.subItemsHeading.hasOwnProperty('itemType')){
-                      detailType = headeritem.subItemsHeading.itemType;
-                    }
-                  }
-
-                  if (lh.checkAudit(auditDebug)){
-                    //console.log(item); 
-                    // console.log(item.key); 
-                    //console.log(headeritem.key); 
-                    // console.log(headeritem.subItemsHeading.key);
-                    //console.log(orderedVal);
-                    // console.log(detailType);
-                  }
-                  //console.log(orderedVal);
-                  detailTblRow.appendChild(lh.getAADTableCell(orderedVal,detailType));
-                  detailTbl.append(detailTblRow);
-                });
-                if (item.hasOwnProperty('subItems')){
-                  detailTbl.appendChild(lh.getAADTableRecursive(item.subItems.items,headings,true,'row-sub'));
                 }
+                orderedVal = item[headerKey];
+                if ((headeritem.key=='entity') && (!isSub)){
+                  headerKey = headeritem.subItemsHeading.key;
+                  orderedVal = item.entity[headerKey];
+                }
+                if (orderedVal) {
+                  switch (headerKey){
+                    case 'node':
+                      cssClass = 'row-main';
+                      detailTblRow.appendChild(lh.getAADTableCellNode(item?.node,'75%'));
+                    break;
+                    case 'related':
+                      cssClass = 'row-sub';
+                      detailTblRow.appendChild(lh.getAADTableCellNode(item?.relatedNode,'75%'));
+                    break;
+                    default:
+                      detailTblRow.appendChild(lh.getAADTableCell(orderedVal,detailType));
+                    break;
+                  }
+                  ((isSub)?detailTblRow.classList.add(cssClass):'');
+                } else {
+                  detailTblRow.insertCell();
+                }
+                detailTbl.append(detailTblRow);
+              });
+              if (item.hasOwnProperty('subItems')){
+                detailTbl.appendChild(lh.getAADTableRecursive(item.subItems.items,headings,true,'row-sub',type));
               }
             }
           }
-          /*if ((lh.determineDepthOfObject(item)>0) && (Array.isArray(item))){
-            lh.getAADTableRecursive(item,headerKey);
-          }
-          if (item?.subItems?.items){
-            lh.getAADTableRecursive(item.subItems.items);
-          }*/
         });
         return detailTbl;
       }
@@ -687,11 +699,8 @@ requirejs(['jquery'], function ($) {
         let tblCell   = document.createElement('td');
         let tbl       = document.createElement('table');
         let headCount = headings.length;
-        if (lh.checkAudit(auditDebug)){
-          console.log(headCount);
-        }
         tblCell.setAttribute('colspan',headCount);
-        tbl.appendChild(lh.getAADTableRecursive(detailItems,headings));
+        tbl.appendChild(lh.getAADTableRows(detailItems,headings));
         tblCell.append(tbl);
         return tblCell;
       }
@@ -699,10 +708,9 @@ requirejs(['jquery'], function ($) {
       /* GET TABLE ROWS */
       lh.getAADTableRows = function(node){
         var tblRow, cell1, cell2;
-        //console.log(node);
         Object.entries(node).forEach(entry => {
           const [key, value] = entry;
-          tblRow   = document.createElement('tr');
+          tblRow   = document.createElement("tr");
           cell1 = tblRow.insertCell();
           cell2 = tblRow.insertCell();
           cell1.appendChild(document.createTextNode(key));
@@ -715,22 +723,15 @@ requirejs(['jquery'], function ($) {
 
       /* GET TABLE CELLS */
       lh.getAADTableCell = function(node,type){
-        //console.log(type);
         var cell1 = document.createElement('td');
         cell1.appendChild(lh.getAADTableCellFormattedOut(node,type));
         return cell1;
       }
 
+      /* FORMATS TABLE CELL CONTENT DEPENDING ON OBJECT CONTENT TYPE */
       lh.getAADTableCellFormattedOut = function(node,type){
         var label, calcOut, linkHref;
         var formatOut = new DocumentFragment();
-
-        if (lh.checkAudit(auditDebug)){
-          //console.log('Node: '+node+'    Type: '+type+'   Text:'+node.text);
-          console.log(node);
-          //console.log(type);
-          //console.log(node.text);
-        }
 
         ((node!=='null' && node!=='undefined')?label = node:'');
         ((node?.text)?label = node.text:'');
@@ -762,6 +763,46 @@ requirejs(['jquery'], function ($) {
         return formatOut;
       }
 
+      /* GET NODE WRAP */
+      lh.getAADTableCellNode = function(node,colWidth){
+        //console.log(node);
+        var tblCell = document.createElement('td');
+        tblCell.style.width= colWidth; 
+        tblCell.setAttribute('title', node.path);
+        tblCell.setAttribute('data-path', node.path);
+        tblCell.setAttribute('data-selector', node.selector);
+        tblCell.setAttribute('data-snippet', node.snippet);
+
+        var nodeLabel = document.createElement('div');
+        nodeLabel.appendChild(document.createTextNode(node.nodeLabel));
+        var nodeCode = document.createElement('div');
+        nodeCode.appendChild(document.createTextNode(node.snippet));
+        nodeCode.classList.add('lh-node__snippet');
+
+        tblCell.append(nodeLabel);
+        tblCell.append(nodeCode);
+
+        return tblCell;
+      }
+
+      lh.getCriticalChains = function(details){
+        let detailChains   = new DocumentFragment();
+        details.forEach(function(childItem,childIndex){
+          var divChain = document.createElement('div');
+          divChain.appendChild(document.createTextNode(childItem.request.url));
+          var timeSpan = document.createElement('span');
+          timeSpan.appendChild(document.createTextNode(childItem.request.endTime - childItem.request.startTime));
+          var sizeSpan = document.createElement('span');
+          sizeSpan.appendChild(document.createTextNode(childItem.request.transferSize));
+          divChain.appendChild(timeSpan);
+          divChain.appendChild(sizeSpan);
+          detailChains.append(divChain);
+          getCriticalChains(childItem.children);
+        });
+        return detailChains;
+      }
+
+      /* CREATE LINK IN DOM */
       lh.createLink = function(label,href){
         var link = document.createElement('a');
         link.setAttribute('href', href);
@@ -770,6 +811,7 @@ requirejs(['jquery'], function ($) {
         return link;
       }
 
+      /* RETURN SHORTENED STRING */
       lh.shortenString = function(string){
         if (string.length>40)
           return '…'+string.slice(string.length - 40);
@@ -777,36 +819,14 @@ requirejs(['jquery'], function ($) {
           return string;
       }
 
-      /* GET NODE WRAP */
-      lh.getAADNodeWrapper = function(node,rowClass){
-        var nodeProperties = [];
-        nodeProperties.push(node.nodeLabel, node.path, node.selector, node.snippet);
-        //console.log(nodeProperties);
-        let tbl       = document.createElement('table');
-        let tblBody   = document.createElement('tbody');
-        let tblRow    = tblBody.insertRow();
-        tblRow.classList.add(rowClass);
-        
-        //console.log(node);
-        nodeProperties.forEach(function(nodeItem,indexNode){
-          var tblCell = tblRow.insertCell();
-          //console.log(nodeItem);
-          tblCell.appendChild(document.createTextNode(nodeItem));
-        })
-        tbl.appendChild(tblBody);
-        return tbl;
+      /* FILTER HOST FROM URL */
+      lh.filterHost = function(url){
+        let regexDomain = window.url;
+        var relativeUrl = url.replace(regexDomain,'');
+        console.log(url);
+        console.log(relativeUrl);
+        return relativeUrl;
       }
-
-      /*lh.getAADTableHeadings = function(headings){
-        var out = '<thead>';
-        headings.forEach(function(headeritem,headerindex){
-          if (typeof headeritem.text!=undefined){
-            out += '<th style="width:'+(100/headings.length)+'%">'+headeritem.text+'</th>';
-          }
-        });
-        out += '</thead>';
-        return out;
-      }*/
 
       /* GET SCREENSHOTS WITH LOADING TIME */
       lh.getScreenshots = function(auditScreenshot){
@@ -842,6 +862,7 @@ requirejs(['jquery'], function ($) {
         return screenFragment;
       }
       
+      /* GET SINGLE SCREENSHOTS AS LIST ENTRIES */
       lh.getScreenshotsListEntries = function(screen){
         let screenListEntry     = document.createElement('li');
         let screenListEntryImg  = document.createElement('img');
@@ -858,7 +879,7 @@ requirejs(['jquery'], function ($) {
         return screenListEntry;
       }
 
-      /* CHARTS */
+      /* CREATE CHARTS */
       lh.createCharts = function (chartIn,typeIn,target,titleText) {
           var targetChart = target+'Chart';
           if(typeof window[targetChart] !== 'undefined'){
@@ -890,6 +911,7 @@ requirejs(['jquery'], function ($) {
         });
       }
 
+      /* ADD DATASETS TO CHARTS */
       var newDataset = [];
       lh.addDataSet = function (chart, label, color, data, createDataset, datasetReady) {
         chart.data.labels.push(label);
