@@ -512,7 +512,7 @@ requirejs(['jquery'], function ($) {
           }
 
           //js error when including not applicable audits => maybe string too long 
-          if (displayMode!='notApplicable'){ 
+          //if (displayMode!='notApplicable'){ 
             auditName                         = type.replace('-',' ');
               //console.log(auditName);
             var additionalList                = document.createElement('li');
@@ -542,7 +542,7 @@ requirejs(['jquery'], function ($) {
               additionalList.append(additionalDescription);
             }
             additional.append(additionalList);
-          }
+          //}
         });
         return additional;
       }
