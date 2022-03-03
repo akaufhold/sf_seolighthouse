@@ -52,7 +52,7 @@ requirejs(['jquery'], function ($) {
       var additionalAudits      = new DocumentFragment();
 
       /* TEST-AUDITS FOR DEBUGGING */
-      var auditDebug = 'uses responsive-images';
+      var auditDebug = 'legacy javascript';
 
       /* BOOTSTRAP VERSION */
       var bsversion = $.fn.tooltip.Constructor.VERSION.charAt(0);
@@ -603,7 +603,7 @@ requirejs(['jquery'], function ($) {
             tblHeadLabel =  headeritem.label;
           }
           var tblHeadCell         = document.createElement('th');
-          tblHeadCell.style.width = (100/headings.length)+'%';
+          //tblHeadCell.style.width = (100/headings.length)+'%';
           tblHeadCell.appendChild(document.createTextNode(tblHeadLabel));
           tblHeadRow.appendChild(tblHeadCell);
         });
@@ -643,8 +643,10 @@ requirejs(['jquery'], function ($) {
       /* GET RECURSIVE TABLE BODY CONTENTS */
       lh.getAADTableRecursive = function(detailItems,headings,isSub,cssClass,type){
         let detailTbl       = new DocumentFragment();
-        if (lh.checkAudit(auditDebug))
+        /*if (lh.checkAudit(auditDebug)){
           console.log(detailItems);
+          console.log(type);
+        }*/
         detailItems.forEach(function(item,indexDetail){
           if (typeof item!=undefined){
             var detailTblRow = document.createElement('tr');
@@ -654,6 +656,9 @@ requirejs(['jquery'], function ($) {
                 var orderedVal;
                 var headerKey  = headeritem.key;
                 var detailType = headeritem.itemType;
+                if (type=='opportunity'){
+                  detailType = headeritem.valueType;
+                }
                 if ((isSub) && (headeritem.hasOwnProperty('subItemsHeading'))){
                   headerKey = headeritem.subItemsHeading.key;
                   if (headeritem.subItemsHeading.hasOwnProperty('itemType')){
@@ -732,10 +737,13 @@ requirejs(['jquery'], function ($) {
       lh.getAADTableCellFormattedOut = function(node,type){
         var label, calcOut, linkHref;
         var formatOut = new DocumentFragment();
-
+        if (lh.checkAudit(auditDebug)){
+          console.log(node);
+          console.log(type);
+        }
         ((node!=='null' && node!=='undefined')?label = node:'');
         ((node?.text)?label = node.text:'');
-        ((!label) && (node?.url)?(label = node.url,linkHref=node.url):linkHref = label);
+        ((label!='') && (node?.url)?(label = node.url,linkHref=node.url):linkHref = label);
 
         switch (type) {
           case 'text':
@@ -750,7 +758,7 @@ requirejs(['jquery'], function ($) {
             formatOut=document.createTextNode(calcOut);
             break;
           case 'link':
-              formatOut = lh.createLink(label,linkHref);
+            formatOut = lh.createLink(label,linkHref);
             break;
           case 'url':
             formatOut = lh.createLink(label,linkHref);
@@ -785,6 +793,7 @@ requirejs(['jquery'], function ($) {
         return tblCell;
       }
 
+      /* CRITICAL CHAIN */
       lh.getCriticalChains = function(details){
         let detailChains   = new DocumentFragment();
         details.forEach(function(childItem,childIndex){
@@ -813,8 +822,8 @@ requirejs(['jquery'], function ($) {
 
       /* RETURN SHORTENED STRING */
       lh.shortenString = function(string){
-        if (string.length>40)
-          return '…'+string.slice(string.length - 40);
+        if (string.length>50)
+          return '…'+string.slice(string.length - 50);
         else
           return string;
       }
