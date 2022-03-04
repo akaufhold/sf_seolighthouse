@@ -16,6 +16,7 @@ $headerBackground:#d7dfe7;
 $highlightColor:#ebf3fb;
 $highlightBorderColor:#bdc5cd;
 
+$iconSize:16px;
 $borderColor:#aaa;
 $background-color-bs: #0078e6;
 
@@ -468,6 +469,37 @@ h5 {
 
           &.fast {
             background-color: $successColor;
+          }
+
+          &.icon {
+            background-color: #eee;
+
+            > span {
+              &::before {
+                content: '';
+                border-left: calc($iconSize/ 2) solid transparent;
+                border-right: calc($iconSize / 2) solid transparent;
+                border-bottom: $iconSize solid $errorColor;
+                display: block;
+                font-size: 16px;
+                height: $iconSize;
+                margin: 0 1.15rem 0;
+                padding: 0;
+                width: $iconSize;
+              }
+
+              &::after {
+                content: "i";
+                display: inline-block;
+                position: absolute;
+                top: 11px;
+                width: 100%;
+                z-index: 1000;
+                left: 0;
+                font-size: 11px;
+                text-transform: lowercase;
+              }
+            }
           }
         }
 

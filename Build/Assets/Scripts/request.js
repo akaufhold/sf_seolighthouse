@@ -511,38 +511,42 @@ requirejs(['jquery'], function ($) {
             score = '';
           }
 
-          //js error when including not applicable audits => maybe string too long 
-          //if (displayMode!='notApplicable'){ 
-            auditName                         = type.replace('-',' ');
-              //console.log(auditName);
-            var additionalList                = document.createElement('li');
-            additionalList.id                 = type;
-            additionalList.classList.add('list-group-item');
-            additionalList.appendChild(lh.addSpan('label',auditName));
-            
-            /*if (lh.checkAudit(auditDebug)){
-              console.log(auditName);
-              console.log(currentAudit.details);
-            }*/
+          auditName                         = type.replace('-',' ');
+            //console.log(auditName);
+          var additionalList                = document.createElement('li');
+          additionalList.id                 = type;
+          additionalList.classList.add('list-group-item');
+          additionalList.appendChild(lh.addSpan('label',auditName));
+          
+          /*if (lh.checkAudit(auditDebug)){
+            console.log(auditName);
+            console.log(currentAudit.details);
+          }*/
 
-            ((description) ? additionalList.children[0].insertAdjacentHTML('afterbegin',chevronDown): '') 
+          ((description) ? additionalList.children[0].insertAdjacentHTML('afterbegin',chevronDown): '') 
 
-            if (displayValue!=undefined){
-              additionalList.appendChild(lh.addSpan('value',displayValue));
+          if (displayValue!=undefined){
+            additionalList.appendChild(lh.addSpan('value',displayValue));
+          }
+          if (score!=''){
+            speed                         =  lh.getSpeedClass(score);
+            additionalList.appendChild(lh.addSpan('score '+speed,score));
+          } else if (score=='0'){
+            let scoreIcon, scoreIconSpan;
+            scoreIcon = document.createElement('span');
+            scoreIcon.classList.add('score','icon');
+            scoreIconSpan = document.createElement('span');
+            scoreIcon.appendChild(scoreIconSpan);
+            additionalList.appendChild(scoreIcon);
+          }
+          if (currentAudit.description){  
+            var additionalDescription       = lh.getAADDesc(currentAudit);
+            if ((typeof currentAudit.details != 'undefined') && (lh.getAAD(currentAudit.details))){
+              additionalDescription.append(lh.getAAD(currentAudit.details));
             }
-            if (score){
-                speed                         =  lh.getSpeedClass(score);
-                additionalList.appendChild(lh.addSpan('score '+speed,score));
-            }
-            if (currentAudit.description){  
-              var additionalDescription       = lh.getAADDesc(currentAudit);
-              if ((typeof currentAudit.details != 'undefined') && (lh.getAAD(currentAudit.details))){
-                additionalDescription.append(lh.getAAD(currentAudit.details));
-              }
-              additionalList.append(additionalDescription);
-            }
-            additional.append(additionalList);
-          //}
+            additionalList.append(additionalDescription);
+          }
+          additional.append(additionalList);
         });
         return additional;
       }
