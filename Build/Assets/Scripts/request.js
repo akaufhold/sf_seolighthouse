@@ -331,7 +331,7 @@ requirejs(['jquery'], function ($) {
         lh.setPbStatus('progress');
 
         /* ONLY FOR TESTING !!!!!!!!!!!!!!!*/
-        targetUrl = 'https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json';
+        //targetUrl = 'https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json';
 
         /* FETCH LIGHTHOUSE DATA */
         fetch(targetUrl)
