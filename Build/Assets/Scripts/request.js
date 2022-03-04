@@ -23,7 +23,7 @@ requirejs(['jquery'], function ($) {
       var additionalAudits      = new DocumentFragment();
 
       /* TEST-AUDITS FOR DEBUGGING */
-      var auditDebug = 'layout shift-elements';
+      var auditDebug = 'color contrast';
 
       /* BOOTSTRAP VERSION */
       var bsversion = $.fn.tooltip.Constructor.VERSION.charAt(0);
@@ -350,7 +350,7 @@ requirejs(['jquery'], function ($) {
               $('.list-audits,.list-Addtional-Audits,.list-performance-audits').html('');
               /* SET DEVICE HIDDEN FIELD */
               $('#device').val(lh.firstLetterUp(lh.getDevice()));
-              console.log(auditResults);
+                console.log(auditResults);
               var auditsListHtml = document.createElement('ul'); 
               auditsListHtml.classList.add('list-lighthouse', 'list-score', 'list-main', 'list-group');
 
@@ -368,7 +368,6 @@ requirejs(['jquery'], function ($) {
                   lh.addDataSet(window[curCategory+'Chart'],'Score',speedColor,overallScore*100,1,0);
                   lh.addDataSet(window[curCategory+'Chart'],'','rgba(255, 255, 255, 1)',missingScore*100,0,1);
 
-                  //console.log(lh.getMainAudits(curCategory,auditCategories,catIt,lhCategoryListLength));
                   /* OVERALL AUDIT PROPERTIES */
                   auditsListHtml.appendChild(lh.getMainAudits(curCategory,auditCategories,catIt,lhCategoryListLength));
 
@@ -512,16 +511,11 @@ requirejs(['jquery'], function ($) {
           }
 
           auditName                         = type.replace('-',' ');
-            //console.log(auditName);
+            console.log(auditName);
           var additionalList                = document.createElement('li');
           additionalList.id                 = type;
           additionalList.classList.add('list-group-item');
           additionalList.appendChild(lh.addSpan('label',auditName));
-          
-          /*if (lh.checkAudit(auditDebug)){
-            console.log(auditName);
-            console.log(currentAudit.details);
-          }*/
 
           ((description) ? additionalList.children[0].insertAdjacentHTML('afterbegin',chevronDown): '') 
 
@@ -562,7 +556,7 @@ requirejs(['jquery'], function ($) {
             case 'opportunity':   
               return lh.getAADTable(details,'opportunity');
             case 'debugdata':   
-              //return lh.getCriticalChains(details);
+              //return lh.getAADTable(details,'table');
             default:
               console.log(auditName);
               console.log('Other Types: '+details.type);
@@ -572,6 +566,7 @@ requirejs(['jquery'], function ($) {
         }
       }
 
+      /* GET DESCRIPTION OF ADDITIONAL AUDITS */
       lh.getAADDesc = function(currentAudit){
         var additionalDescription     = document.createElement('span'); 
         additionalDescription.classList.add('description');
@@ -589,9 +584,13 @@ requirejs(['jquery'], function ($) {
         let tbl     = document.createElement('table');
         tbl.classList.add('table','table-striped', 'table-hover');
         if (type=='opportunity'){tbl.classList.add('table-opportunity');}
-        tbl.appendChild(lh.getAADTableHeadings(details.headings,type));
+        if (details.hasOwnProperty('headings'))
+          tbl.appendChild(lh.getAADTableHeadings(details.headings,type));
         tbl.appendChild(lh.getAADTableBodyContent(details.items,details.headings,type));
-        return tbl;
+        let tblWrapper = document.createElement('div');
+        tblWrapper.classList.add('table-responsive');
+        tblWrapper.appendChild(tbl);
+        return tblWrapper;
       }
 
       /* GET HEADINGS OF ADDITIONAL AUDITS TABLE */
@@ -620,13 +619,13 @@ requirejs(['jquery'], function ($) {
       lh.getAADTableBodyContent = function(detailItems,headings,type){
         let tableContent = new DocumentFragment();
         let tblBody      = document.createElement('tbody');
-        if (headings.length){
+        console.log(headings);
+        if (headings!=='undefined'){
           tblBody.append(lh.getAADTableRecursive(detailItems,headings,false,'',type));
         }else {
           tblBody.append(lh.getAADTableRecursive(detailItems,headings.length,false,'',type));
         }
         tableContent.appendChild(tblBody);
-        //console.log(tableContent);
         return tableContent;
       }
 
@@ -637,7 +636,6 @@ requirejs(['jquery'], function ($) {
           itemType = 'node';
         }
         else if (item.relatedNode){
-          //console.log(item);
           itemType =  'related';
         }
         else {itemType = ''}
@@ -656,6 +654,7 @@ requirejs(['jquery'], function ($) {
           if (typeof item!=undefined){
             var detailTblRow = document.createElement('tr');
             if (headings){
+              console.log(headings);
               /* OUTPUT TABLE CELLS IN ORDER FROM TABLE HEADINGS */
               headings.forEach(function(headeritem,headerindex){
                 var orderedVal;
@@ -681,7 +680,7 @@ requirejs(['jquery'], function ($) {
                       cssClass = 'row-main';
                       detailTblRow.appendChild(lh.getAADTableCellNode(item?.node,'70%'));
                     break;
-                    case 'related':
+                    case 'relatedNode':
                       cssClass = 'row-sub';
                       detailTblRow.appendChild(lh.getAADTableCellNode(item?.relatedNode,'70%'));
                     break;
@@ -777,7 +776,9 @@ requirejs(['jquery'], function ($) {
 
       /* GET NODE WRAP */
       lh.getAADTableCellNode = function(node,colWidth){
-        //console.log(node);
+        //if (auditDebug)
+        //  console.log(node);
+
         var tblCell = document.createElement('td');
         tblCell.style.width= colWidth; 
         tblCell.setAttribute('title', node.path);
@@ -836,8 +837,6 @@ requirejs(['jquery'], function ($) {
       lh.filterHost = function(url){
         let regexDomain = window.url;
         var relativeUrl = url.replace(regexDomain,'');
-        console.log(url);
-        console.log(relativeUrl);
         return relativeUrl;
       }
 
