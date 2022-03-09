@@ -23,7 +23,7 @@ requirejs(['jquery'], function ($) {
       var additionalAudits      = new DocumentFragment();
 
       /* TEST-AUDITS FOR DEBUGGING */
-      var auditDebug = 'color contrast';
+      var auditDebug = 'inspector issues';
 
       /* BOOTSTRAP VERSION */
       var bsversion = $.fn.tooltip.Constructor.VERSION.charAt(0);
@@ -333,8 +333,8 @@ requirejs(['jquery'], function ($) {
         lh.pbReset();
         lh.setPbStatus('progress');
 
-        /* ONLY FOR TESTING !!!!!!!!!!!!!!!*/
-        //targetUrl = 'https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json';
+        /* !!! ONLY FOR TESTING !!!*/
+        targetUrl = 'https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json';
 
         /* FETCH LIGHTHOUSE DATA */
         fetch(targetUrl)
@@ -514,7 +514,7 @@ requirejs(['jquery'], function ($) {
           }
 
           auditName                         = type.replace('-',' ');
-            console.log(auditName);
+            //console.log(auditName);
           var additionalList                = document.createElement('li');
           additionalList.id                 = type;
           additionalList.classList.add('list-group-item');
@@ -561,25 +561,41 @@ requirejs(['jquery'], function ($) {
             case 'debugdata':   
               //return lh.getAADTable(details,'table');
             default:
-              console.log(auditName);
-              console.log('Other Types: '+details.type);
-            return false;
-            break;
+              return false;
+              break;
           }
         }
       }
 
       /* GET DESCRIPTION OF ADDITIONAL AUDITS */
       lh.getAADDesc = function(currentAudit){
+        var descriptionText; 
         var additionalDescription     = document.createElement('span'); 
         additionalDescription.classList.add('description');
         if (currentAudit.title){
           var additionalBold          = document.createElement('b');
-          additionalBold.innerHTML    = lh.htmlEnc(JSON.stringify(currentAudit.title.toString()));
+          additionalBold.innerHTML    = lh.htmlEnc(currentAudit.title.toString());
           additionalDescription.append(additionalBold);
         }
-        additionalDescription.innerHTML += lh.htmlEnc(JSON.stringify(currentAudit.description.toString()));
+        descriptionText     = lh.htmlEnc(currentAudit.description.toString());
+        additionalDescription.innerHTML += lh.cleanDescription(descriptionText);
+        additionalDescription.append(lh.getAADDescLink(descriptionText));
         return additionalDescription;
+      }
+
+      /* BUILD DESCRIPTION LINK OF ADDITIONAL AUDITS */
+      lh.getAADDescLink = function(descriptionText){
+        var descriptionLink     = lh.filterLink(descriptionText);
+        var descriptionLinkText = lh.filterLinkText(descriptionText);
+        if ((descriptionLink) && (descriptionLinkText)){
+          var linkMore = document.createElement('a');
+          linkMore.setAttribute('href',descriptionLink);
+          linkMore.setAttribute('target','_blank');
+          linkMore.classList.add('more-link');
+          linkMore.appendChild(document.createTextNode(descriptionLinkText));
+          return linkMore;
+        }
+        else return '';
       }
 
       /* GET DETAILS OF ADDITIONAL AUDITS FROM TYPE TABLE*/
@@ -622,7 +638,7 @@ requirejs(['jquery'], function ($) {
       lh.getAADTableBodyContent = function(detailItems,headings,type){
         let tableContent = new DocumentFragment();
         let tblBody      = document.createElement('tbody');
-        console.log(headings);
+        //console.log(headings);
         if (headings!=='undefined'){
           tblBody.append(lh.getAADTableRecursive(detailItems,headings,false,'',type));
         }else {
@@ -657,7 +673,7 @@ requirejs(['jquery'], function ($) {
           if (typeof item!=undefined){
             var detailTblRow = document.createElement('tr');
             if (headings){
-              console.log(headings);
+              //console.log(headings);
               /* OUTPUT TABLE CELLS IN ORDER FROM TABLE HEADINGS */
               headings.forEach(function(headeritem,headerindex){
                 var orderedVal;
@@ -841,6 +857,30 @@ requirejs(['jquery'], function ($) {
         let regexDomain = window.url;
         var relativeUrl = url.replace(regexDomain,'');
         return relativeUrl;
+      }
+
+      /* FILTER LINK FROM AUDIT DETAIL TEXT */
+      lh.filterLink = function(text){
+        if ((text.indexOf('(') > -1) && (text.indexOf(')') > -1)){
+          var linkHref = text.split('(')[1].split(')')[0];
+          return linkHref;
+        } else return false;
+      }
+
+      /* FILTER LINK TEXT FROM AUDIT DETAIL TEXT */
+      lh.filterLinkText = function(text){
+        if ((text.indexOf('[') > -1) && (text.indexOf(']') > -1)){
+          var linkText = text.split('[')[1].split(']')[0];
+          return linkText;
+        } else return false;
+      }
+
+      /* KILL LINK TEXT AND LINK FROM DESCRIPTION */
+      lh.cleanDescription = function(text){
+        if ((text.indexOf('[') > -1) && (text.indexOf(']') > -1)){
+          var linkText = text.split('[')[0];
+          return linkText;
+        } else return text;
       }
 
       /* GET SCREENSHOTS WITH LOADING TIME */
