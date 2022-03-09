@@ -384,7 +384,6 @@ requirejs(['jquery'], function ($) {
                       $('.list-performance-audits').append(performanceAudits);
                       $('.performance,.performanceAudits,.performanceHeadline,.performanceListHeader').css({display:'block'});
                       $('.performanceAuditCharts').css({display:'none'});
-
                   }
                   /* ADDTIONAL AUDIT PROPERTIES*/
                   additionalAudits.append(lh.getAdditionalAudits(auditResults,auditCategories,curCategory));
@@ -462,32 +461,42 @@ requirejs(['jquery'], function ($) {
 
       /* ADDTIONAL AUDIT PROPERTIES*/
       lh.getAdditionalAudits = function(auditRes,auditCats,curCat){
-       var AAOut = new DocumentFragment();
-       var AADiv = document.createElement('div'); 
-       AADiv.classList.add('label', 'toggle', 'list-lighthouse','collapsed');
-       AADiv.setAttribute('aria-expanded','false');
-       AADiv.setAttribute('aria-controls','list-additional-'+curCat);
-       
-       if (bsversion==4){
-        AADiv.setAttribute('data-toggle','collapse');
-        AADiv.setAttribute('data-target','#list-additional-'+curCat);
-       }
-       else if (bsversion==5){
-        AADiv.setAttribute('data-bs-toggle','collapse');
-        AADiv.setAttribute('href','#list-additional-'+curCat);
-        AADiv.setAttribute('role','button');
-       }
-       AADiv.appendChild(document.createTextNode(auditCats[curCat].title));
-       AADiv.insertAdjacentHTML('beforeend',chevronDown);
+       var AAOut  = new DocumentFragment();
+       var AADiv  = lh.getAdditionalAuditsDiv(auditCats,curCat);
+       var AAList = lh.getAdditionalAuditsOl(auditRes,auditCats,curCat);
 
-       var AAList = document.createElement('ol'); 
-       AAList.classList.add('list-group', 'list-lighthouse','collapse');
-       AAList.id = 'list-additional-'+curCat;
-       AAList.append(lh.getAdditionalAuditsList(auditRes,auditCats[curCat]));
        AAOut.append(AADiv);
        AAOut.append(AAList);
 
        return AAOut;
+      }
+
+      lh.getAdditionalAuditsDiv = function(auditCats,curCat){
+        var AADiv = document.createElement('div'); 
+        AADiv.classList.add('label', 'toggle', 'list-lighthouse','collapsed');
+        AADiv.setAttribute('aria-expanded','false');
+        AADiv.setAttribute('aria-controls','list-additional-'+curCat);
+        
+        if (bsversion==4){
+         AADiv.setAttribute('data-toggle','collapse');
+         AADiv.setAttribute('data-target','#list-additional-'+curCat);
+        }
+        else if (bsversion==5){
+         AADiv.setAttribute('data-bs-toggle','collapse');
+         AADiv.setAttribute('href','#list-additional-'+curCat);
+         AADiv.setAttribute('role','button');
+        }
+        AADiv.appendChild(document.createTextNode(auditCats[curCat].title));
+        AADiv.insertAdjacentHTML('beforeend',chevronDown);
+        return AADiv;
+      }
+
+      lh.getAdditionalAuditsOl = function(auditRes,auditCats,curCat){
+        var AAList = document.createElement('ol');
+        AAList.classList.add('list-group', 'list-lighthouse','collapse');
+        AAList.id = 'list-additional-'+curCat;
+        AAList.append(lh.getAdditionalAuditsList(auditRes,auditCats[curCat]));
+        return AAList;
       }
 
       /* GET ADDITIONAL AUDITS */
