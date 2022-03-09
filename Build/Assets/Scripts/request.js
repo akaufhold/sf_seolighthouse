@@ -131,11 +131,12 @@ requirejs(['jquery'], function ($) {
         return o
       };
 
+      /* FILTER FOR AUDIT DEBUGGING */
       lh.checkAudit = function(condition){
-        //console.log('Input: '+condition+' / Aktuelles Audit:'+auditName);
         return ((auditName==condition)?true:false);
       }
 
+      /* MENU FOR SWITCHING CHARTS VALUE OUTPUT OF PERFORMANCE AUDIT */
       lh.performanceMenu = function(){
         $('.performanceMenu').find('a').click(function(){
           var idTarget = $(this).attr('id').split('show')[1].charAt(0).toLowerCase()+$(this).attr('id').split('show')[1].substring(1);
@@ -149,6 +150,7 @@ requirejs(['jquery'], function ($) {
         }) 
       }
 
+      /* CLICK EVENT => SHOWING ROW FOR ADDITIONAL AUDITS */
       lh.showAddionalAudits = function(){
         $('.auditButtons').find('a').click(function(){
           var idTarget = $(this).attr('id').split('show')[1].charAt(0).toLowerCase()+$(this).attr('id').split('show')[1].substring(1);
@@ -156,6 +158,7 @@ requirejs(['jquery'], function ($) {
         })
       }
 
+      /* CLICK EVENT => SETS ACTIVE CLASS FOR AUDITIONAL AUDIT LIST ENTRIES */ 
       lh.activeListClick = function(){
         $('.list-lighthouse').on('click','li',function(){
             var listItem = $(this);
@@ -166,7 +169,7 @@ requirejs(['jquery'], function ($) {
         });
       }
 
-      /* GET CATEGORY URL PARAMS */
+      /* GET CATEGORY URL PARAMS FROM ALL ACTIVE CATEGORIES*/
       lh.getCategoryList = function(){
         var targetCategory = '';
         var category = $('.categoriesCheck').find('.form-check-label.active');
