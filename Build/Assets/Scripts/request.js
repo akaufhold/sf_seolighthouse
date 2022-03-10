@@ -364,7 +364,6 @@ requirejs(['jquery'], function ($) {
                   var missingScore  = 1-overallScore;
                   var speedColor    = lh.getSpeedColor(overallScore);
                   lh.createCharts(window[curChart],'pie',curCategory,curCategory+' Score');
-
                   lh.addDataSet(window[curCategory+'Chart'],'Score',speedColor,overallScore*100,1,0);
                   lh.addDataSet(window[curCategory+'Chart'],'','rgba(255, 255, 255, 1)',missingScore*100,0,1);
 
@@ -385,7 +384,6 @@ requirejs(['jquery'], function ($) {
                   /* ADDTIONAL AUDIT PROPERTIES*/
                   additionalAudits.append(lh.getAdditionalAudits(auditResults,auditCategories,curCategory));
                   $('.list-Addtional-Audits').append(additionalAudits);
-                  
                   $('.newLighthouseStatistics').css({display:'block'});
               });
 
@@ -807,7 +805,6 @@ requirejs(['jquery'], function ($) {
       lh.getAADTableCellNode = function(node,colWidth){
         //if (auditDebug)
         //  console.log(node);
-
         var tblCell = document.createElement('td');
         tblCell.style.width= colWidth; 
         tblCell.setAttribute('title', node.path);
