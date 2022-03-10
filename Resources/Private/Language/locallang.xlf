@@ -163,7 +163,7 @@
 				<source>Performance Audits</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.createNew" resname="tx_sf_seolighthouse_showlighthouse.createNew" xml:space="preserve">
-				<source>Save Statistics for Charts</source>
+				<source>Save Statistics</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showPerformanceAudits" resname="tx_sf_seolighthouse_showlighthouse.showPerformanceAudits" xml:space="preserve">
 				<source>Show Charts</source>

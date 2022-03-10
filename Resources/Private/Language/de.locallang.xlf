@@ -154,7 +154,7 @@
 				<target>Geschwindigkeits-Prüfung</target>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.createNew" resname="tx_sf_seolighthouse_showlighthouse.createNew" xml:space="preserve">
-				<target>Statistik speichern für Charts</target>
+				<target>Statistik speichern</target>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.showPerformanceAudits" resname="tx_sf_seolighthouse_showlighthouse.showPerformanceAudits" xml:space="preserve">
 				<target>Zeige Diagramm</target>
