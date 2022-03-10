@@ -332,28 +332,25 @@ requirejs(['jquery'], function ($) {
         /* PROGRESS BAR */
         lh.pbReset();
         lh.setPbStatus('progress');
-
         /* !!! ONLY FOR TESTING !!!*/
         targetUrl = 'https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json';
-
         /* FETCH LIGHTHOUSE DATA */
         fetch(targetUrl)
           .then(response => response.json())
           .then(json => {
             if (!json.hasOwnProperty('error')){
-              const lighthouse      = json.lighthouseResult, 
-                    auditResults    = lighthouse.audits,
-                    auditScreenshots= auditResults['screenshot-thumbnails'],
-                    auditCategories = lighthouse.categories;
-              var   lhCategoryList  = lh.getCategoryList().split(',');
-              var   lhCategoryListLength = $(lhCategoryList).length;
+              const lighthouse            = json.lighthouseResult, 
+                    auditResults          = lighthouse.audits,
+                    auditCategories       = lighthouse.categories,
+                    auditScreenshots      = auditResults['screenshot-thumbnails'];
+              var   lhCategoryList        = lh.getCategoryList().split(',');
+              var   lhCategoryListLength  = $(lhCategoryList).length;
 
               lh.pbReset();
               lh.setPbStatus('success');
               $('.list-audits,.list-Addtional-Audits,.list-performance-audits').html('');
               /* SET DEVICE HIDDEN FIELD */
               $('#device').val(lh.firstLetterUp(lh.getDevice()));
-                console.log(auditResults);
               var auditsListHtml = document.createElement('ul'); 
               auditsListHtml.classList.add('list-lighthouse', 'list-score', 'list-main', 'list-group');
 
@@ -379,7 +376,7 @@ requirejs(['jquery'], function ($) {
                       lh.createCharts(window.pac,'bar','audits');
                       var performanceAuditsList  = document.createElement('ul'); 
                       performanceAuditsList.classList.add('list-lighthouse', 'list-lighthouse-'+curCategory, 'list-group');
-                      performanceAuditsList.appendChild(lh.getPerformanceAudits(mainAuditsPerformance,auditResults));
+                      performanceAuditsList.appendChild(lh.getPerfAudits(mainAuditsPerformance,auditResults));
                       performanceAudits.appendChild(performanceAuditsList);
                       $('.list-performance-audits').append(performanceAudits);
                       $('.performance,.performanceAudits,.performanceHeadline,.performanceListHeader').css({display:'block'});
@@ -411,7 +408,6 @@ requirejs(['jquery'], function ($) {
           var htmlAuditsOut = new DocumentFragment();
           $(mainAudits).each(function(key,value){
             if (value[0]==auditItem){
-              //auditsHtml        = '';
               var htmlAuditsListOut = document.createElement('li');
               score                 = auditResult[auditItem].score;
               speed                 = lh.getSpeedClass(score);
@@ -428,22 +424,16 @@ requirejs(['jquery'], function ($) {
       }
 
       /* GET PERFORMANCE AUDITS */
-      lh.getPerformanceAudits = function(auditItemList,auditResults){
+      lh.getPerfAudits = function(auditItemList,auditResults){
           var speed, score, color, displayValue, chartVal;
           var mainCounter = 1;
-          var htmlPerformanceOut = new DocumentFragment();
+          var htmlPerfOut = new DocumentFragment();
           auditItemList.forEach(function(value){
             auditName             = value[0].replace('-',' ');
             displayValue          = auditResults[value[0]].displayValue;
             score                 = auditResults[value[0]].score;
             speed                 = lh.getSpeedClass(score);
             color                 = lh.getSpeedColor(score);
-
-            var htmlPerformanceListOut = document.createElement('li');
-            htmlPerformanceListOut.classList.add('list-group-item', 'list-'+((value[1])?value[1]:''));
-            htmlPerformanceListOut.appendChild(lh.addSpan('label',auditName));
-            htmlPerformanceListOut.appendChild(lh.addSpan('value', displayValue));
-            htmlPerformanceListOut.appendChild(lh.addSpan('score '+speed,score));
             $('#'+value[1]).val(parseFloat(displayValue.replace(',', '.')));
             $('#'+value[1]+'s').val(parseFloat(score)); 
             /* ADD CHARTS DATA TO ARRAY */
@@ -453,10 +443,20 @@ requirejs(['jquery'], function ($) {
             }else{
               lh.addDataSet(window.auditsChart,auditName,color,chartVal,((mainCounter==1) ? '1' : '0'),0);
             }
+            htmlPerfOut.appendChild(lh.getPerfAuditsList(value,speed,score,displayValue));
             mainCounter++;
-            htmlPerformanceOut.appendChild(htmlPerformanceListOut);
           });
-          return htmlPerformanceOut;
+          return htmlPerfOut;
+      }
+
+      /* GET LIST FOR PERFORMANCE AUDITS */
+      lh.getPerfAuditsList = function(value,speed,score,displayValue){
+        var htmlPerfListOut = document.createElement('li');
+        htmlPerfListOut.classList.add('list-group-item', 'list-'+((value[1])?value[1]:''));
+        htmlPerfListOut.appendChild(lh.addSpan('label',auditName));
+        htmlPerfListOut.appendChild(lh.addSpan('value', displayValue));
+        htmlPerfListOut.appendChild(lh.addSpan('score '+speed,score));
+        return htmlPerfListOut;
       }
 
       /* ADDTIONAL AUDIT PROPERTIES*/
@@ -464,13 +464,12 @@ requirejs(['jquery'], function ($) {
        var AAOut  = new DocumentFragment();
        var AADiv  = lh.getAdditionalAuditsDiv(auditCats,curCat);
        var AAList = lh.getAdditionalAuditsOl(auditRes,auditCats,curCat);
-
        AAOut.append(AADiv);
        AAOut.append(AAList);
-
        return AAOut;
       }
 
+      /* ADDTIONAL AUDIT AKKORDION LABEL DIV*/
       lh.getAdditionalAuditsDiv = function(auditCats,curCat){
         var AADiv = document.createElement('div'); 
         AADiv.classList.add('label', 'toggle', 'list-lighthouse','collapsed');
@@ -491,6 +490,7 @@ requirejs(['jquery'], function ($) {
         return AADiv;
       }
 
+      /* ADDTIONAL AUDIT PROPERTIES*/
       lh.getAdditionalAuditsOl = function(auditRes,auditCats,curCat){
         var AAList = document.createElement('ol');
         AAList.classList.add('list-group', 'list-lighthouse','collapse');
@@ -499,62 +499,60 @@ requirejs(['jquery'], function ($) {
         return AAList;
       }
 
-      /* GET ADDITIONAL AUDITS */
+      /* GET ADDITIONAL AUDITS LIST*/
       lh.getAdditionalAuditsList = function(auditResults,auditResultsInCategory){
         var additional = new DocumentFragment();
         var auditRefs = auditResultsInCategory['auditRefs'];
-        var speed, score, displayValue, screenshot, type, displayMode, description, currentAudit;
+        var score, displayValue, screenshot, type, displayMode, description, currentAudit;
         auditRefs = lh.sortKeys(auditRefs);
-        
         Object.keys(auditRefs).sort().forEach(function(key){
           type                               = auditResultsInCategory.auditRefs[key].id;
           currentAudit                       = auditResults[type];
           description                        = currentAudit.description;
           displayMode                        = String(currentAudit.scoreDisplayMode);
-
+          ((currentAudit.score!=null)?score=currentAudit.score:score='');
           if (currentAudit.hasOwnProperty('details.screenshot')){
             screenshot = currentAudit.details.screenshot;
           }
           displayValue                       = currentAudit.displayValue;
-          if (currentAudit.score!=null){
-            score                            = currentAudit.score;
-          } else {
-            score = '';
-          }
-
           auditName                         = type.replace('-',' ');
-            //console.log(auditName);
-          var additionalList                = document.createElement('li');
-          additionalList.id                 = type;
-          additionalList.classList.add('list-group-item');
-          additionalList.appendChild(lh.addSpan('label',auditName));
-
-          ((description) ? additionalList.children[0].insertAdjacentHTML('afterbegin',chevronDown): '') 
-
-          if (displayValue!=undefined){
-            additionalList.appendChild(lh.addSpan('value',displayValue));
-          }
-          if (score!=''){
-            speed                         =  lh.getSpeedClass(score);
-            additionalList.appendChild(lh.addSpan('score '+speed,score));
-          } else if (score=='0'){
-            let scoreIcon, scoreIconSpan;
-            scoreIcon = document.createElement('span');
-            scoreIcon.classList.add('score','icon');
-            scoreIconSpan = document.createElement('span');
-            scoreIcon.appendChild(scoreIconSpan);
-            additionalList.appendChild(scoreIcon);
-          }
-          if (currentAudit.description){  
-            var additionalDescription       = lh.getAADDesc(currentAudit);
-            if ((typeof currentAudit.details != 'undefined') && (lh.getAAD(currentAudit.details))){
-              additionalDescription.append(lh.getAAD(currentAudit.details));
-            }
-            additionalList.append(additionalDescription);
-          }
-          additional.append(additionalList);
+          additional.append(lh.getAdditionalAuditsListEntry(auditName,score,type,displayValue,description,currentAudit));
         });
         return additional;
+      }
+
+      /* GET ADDITIONAL AUDITS LIST ENTRIES */
+      lh.getAdditionalAuditsListEntry = function(auditName,score,type,displayValue,description,currentAudit){
+        var speed;
+        var additionalList                = document.createElement('li');
+        additionalList.id                 = type;
+        additionalList.classList.add('list-group-item');
+        additionalList.appendChild(lh.addSpan('label',auditName));
+
+        ((description) ? additionalList.children[0].insertAdjacentHTML('afterbegin',chevronDown): '') 
+
+        if (displayValue!=undefined){
+          additionalList.appendChild(lh.addSpan('value',displayValue));
+        }
+        if (score!=''){
+          speed                         =  lh.getSpeedClass(score);
+          additionalList.appendChild(lh.addSpan('score '+speed,score));
+        } else if (score=='0'){
+          let scoreIcon, scoreIconSpan;
+          scoreIcon = document.createElement('span');
+          scoreIcon.classList.add('score','icon');
+          scoreIconSpan = document.createElement('span');
+          scoreIcon.appendChild(scoreIconSpan);
+          additionalList.appendChild(scoreIcon);
+        }
+        if (description){  
+          var additionalDescription       = lh.getAADDesc(currentAudit);
+          if ((typeof currentAudit.details != 'undefined') && (lh.getAAD(currentAudit.details))){
+            additionalDescription.append(lh.getAAD(currentAudit.details));
+          }
+          additionalList.append(additionalDescription);
+        }
+        return additionalList;
       }
 
       /* GET DETAILS OF ADDITIONAL AUDITS */
@@ -674,15 +672,10 @@ requirejs(['jquery'], function ($) {
       /* GET RECURSIVE TABLE BODY CONTENTS */
       lh.getAADTableRecursive = function(detailItems,headings,isSub,cssClass,type){
         let detailTbl       = new DocumentFragment();
-        /*if (lh.checkAudit(auditDebug)){
-          console.log(detailItems);
-          console.log(type);
-        }*/
         detailItems.forEach(function(item,indexDetail){
           if (typeof item!=undefined){
             var detailTblRow = document.createElement('tr');
             if (headings){
-              //console.log(headings);
               /* OUTPUT TABLE CELLS IN ORDER FROM TABLE HEADINGS */
               headings.forEach(function(headeritem,headerindex){
                 var orderedVal;
