@@ -23,7 +23,7 @@ requirejs(['jquery'], function ($) {
       var additionalAudits      = new DocumentFragment();
 
       /* TEST-AUDITS FOR DEBUGGING */
-      var auditDebug = 'inspector issues';
+      var auditDebug = 'third party-summary';
 
       /* BOOTSTRAP VERSION */
       var bsversion = $.fn.tooltip.Constructor.VERSION.charAt(0);
@@ -538,12 +538,7 @@ requirejs(['jquery'], function ($) {
           speed                         =  lh.getSpeedClass(score);
           additionalList.appendChild(lh.addSpan('score '+speed,score));
         } else if (score=='0'){
-          let scoreIcon, scoreIconSpan;
-          scoreIcon = document.createElement('span');
-          scoreIcon.classList.add('score','icon');
-          scoreIconSpan = document.createElement('span');
-          scoreIcon.appendChild(scoreIconSpan);
-          additionalList.appendChild(scoreIcon);
+          additionalList.appendChild(lh.getAdditionalAuditsListIcon());
         }
         if (description){  
           var additionalDescription       = lh.getAADDesc(currentAudit);
@@ -553,6 +548,16 @@ requirejs(['jquery'], function ($) {
           additionalList.append(additionalDescription);
         }
         return additionalList;
+      }
+
+      /* GET DETAILS ICON OF ADDITIONAL AUDITS */
+      lh.getAdditionalAuditsListIcon = function(){
+        var scoreIcon, scoreIconSpan;
+        scoreIcon = document.createElement('span');
+        scoreIcon.classList.add('score','icon');
+        scoreIconSpan = document.createElement('span');
+        scoreIcon.appendChild(scoreIconSpan);
+        return scoreIcon;
       }
 
       /* GET DETAILS OF ADDITIONAL AUDITS */
@@ -594,6 +599,9 @@ requirejs(['jquery'], function ($) {
       lh.getAADDescLink = function(descriptionText){
         var descriptionLink     = lh.filterLink(descriptionText);
         var descriptionLinkText = lh.filterLinkText(descriptionText);
+        if (lh.checkAudit(auditDebug)){
+          console.log(descriptionLinkText);
+        }
         if ((descriptionLink) && (descriptionLinkText)){
           var linkMore = document.createElement('a');
           linkMore.setAttribute('href',descriptionLink);
@@ -695,7 +703,7 @@ requirejs(['jquery'], function ($) {
                   headerKey = headeritem.subItemsHeading.key;
                   orderedVal = item.entity[headerKey];
                 }
-                if (orderedVal) {
+                if ((orderedVal) || (orderedVal=='0')) {
                   switch (headerKey){
                     case 'node':
                       cssClass = 'row-main';
@@ -872,7 +880,7 @@ requirejs(['jquery'], function ($) {
       /* FILTER LINK TEXT FROM AUDIT DETAIL TEXT */
       lh.filterLinkText = function(text){
         if ((text.indexOf('[') > -1) && (text.indexOf(']') > -1)){
-          var linkText = text.split('[')[1].split(']')[0];
+          var linkText = text.split(' [')[1].split(']')[0];
           return linkText;
         } else return false;
       }
@@ -880,7 +888,7 @@ requirejs(['jquery'], function ($) {
       /* KILL LINK TEXT AND LINK FROM DESCRIPTION */
       lh.cleanDescription = function(text){
         if ((text.indexOf('[') > -1) && (text.indexOf(']') > -1)){
-          var linkText = text.split('[')[0];
+          var linkText = text.split(' [')[0];
           return linkText;
         } else return text;
       }
