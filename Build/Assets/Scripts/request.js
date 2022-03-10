@@ -5,8 +5,7 @@ requirejs(['jquery'], function ($) {
   require(['moment', 'chart.js','roughjs'], function(moment, chart) {
     
     /* REQUIRED ICONS */
-    var chevronDown,
-        chartsBar;
+    var chevronDown, chartsBar;
     requirejs(['TYPO3/CMS/Backend/Icons'], function(Icons) {
       Icons.getIcon('actions-chevron-down', Icons.sizes.small).done(function(icon) {
         chevronDown = icon;
@@ -68,8 +67,9 @@ requirejs(['jquery'], function ($) {
             /* SETTING DATA FORMAT */
             var format = 'html'; 
             if($(this).data('format')){
-                format = $(this).data('format');
-            } 
+              format = $(this).data('format');
+            }
+
             /* CALL LIGHTHOUSE REQUEST FUNCTION */
             lh.fetchLighthouseData(lh.getTargetUrl());
         });
@@ -196,12 +196,12 @@ requirejs(['jquery'], function ($) {
 
       /* ADD CATEGORY TO URL */
       lh.addCategoriesToTargetUrl = function(categoriesUrl){
-          var curTargetUrl =''; 
-          var categoryUrl = categoriesUrl.split(',');
-          $(categoryUrl).each(function(key,category){
-              curTargetUrl = lh.addUrlParam(curTargetUrl,'category',category);
-          });
-          lh.setTargetUrl(lh.getDeviceUrl(lh.getDevice())+curTargetUrl);
+        var curTargetUrl =''; 
+        var categoryUrl = categoriesUrl.split(',');
+        $(categoryUrl).each(function(key,category){
+            curTargetUrl = lh.addUrlParam(curTargetUrl,'category',category);
+        });
+        lh.setTargetUrl(lh.getDeviceUrl(lh.getDevice())+curTargetUrl);
       }
 
       /* ADD URL PARAM */
@@ -253,6 +253,7 @@ requirejs(['jquery'], function ($) {
 
       /* SET PROGRESS BAR STATUS */
       lh.setPbStatus = function(status){
+          lh.pbReset();
           $(cc).addClass(status);
           if ((status=='success') || (status=='error'))
               $(cc).find('.counterAmount').css({width:'100%'});
@@ -265,7 +266,6 @@ requirejs(['jquery'], function ($) {
 
       /* ERROR HANDLING */
       lh.errorHandling = function(errorMessage){
-        lh.pbReset();
         lh.setPbStatus('error');
         $(pb).find('.errorMessage').append(': '+errorMessage.substring(0, 130));
         lh.fetchLighthouseData(lh.getTargetUrl());
@@ -306,11 +306,7 @@ requirejs(['jquery'], function ($) {
 
       /* ESCAPING SPECIALS CHARS */
       lh.htmlEnc = function(string){
-        return string.replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/'/g, '&#39;')
-        .replace(/"/g, '&#34;');
+        return string.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&#34;');
       }
 
       /* GETTING DEPTH OF OBJECT */
@@ -327,10 +323,8 @@ requirejs(['jquery'], function ($) {
         return depth + 1;
       }
 
-      /* FETCH API REQUEST */
+      /* FETCH LIGHTHOUSE API REQUEST */
       lh.fetchLighthouseData = function(targetUrl) {
-        /* PROGRESS BAR */
-        lh.pbReset();
         lh.setPbStatus('progress');
         /* !!! ONLY FOR TESTING !!!*/
         targetUrl = 'https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json';
@@ -339,52 +333,20 @@ requirejs(['jquery'], function ($) {
           .then(response => response.json())
           .then(json => {
             if (!json.hasOwnProperty('error')){
-              const lighthouse            = json.lighthouseResult, 
-                    auditResults          = lighthouse.audits,
-                    auditCategories       = lighthouse.categories,
-                    auditScreenshots      = auditResults['screenshot-thumbnails'];
-              var   lhCategoryList        = lh.getCategoryList().split(',');
-              var   lhCategoryListLength  = $(lhCategoryList).length;
-
-              lh.pbReset();
               lh.setPbStatus('success');
+              const lighthouse            = json.lighthouseResult;
+              const {['audits']:auditResults,['categories']:auditCategories} = lighthouse;
+              const auditScreenshots      = auditResults['screenshot-thumbnails'];
+              var   categoryList        = lh.getCategoryList().split(',');
               $('.list-audits,.list-Addtional-Audits,.list-performance-audits').html('');
               /* SET DEVICE HIDDEN FIELD */
               $('#device').val(lh.firstLetterUp(lh.getDevice()));
               var auditsListHtml = document.createElement('ul'); 
               auditsListHtml.classList.add('list-lighthouse', 'list-score', 'list-main', 'list-group');
 
-              $(lhCategoryList).each(function(catIt,category){
+              $(categoryList).each(function(catIt,category){
                   catIt++;
-                  var curCategory   = category.toLowerCase().replace('_','-');
-                  var curChart      = 'oac'+curCategory.substring(0,3);
-                  var overallScore  = lighthouse.categories[curCategory].score;
-
-                  /* CREATE CHARTS OUTPUT */
-                  var missingScore  = 1-overallScore;
-                  var speedColor    = lh.getSpeedColor(overallScore);
-                  lh.createCharts(window[curChart],'pie',curCategory,curCategory+' Score');
-                  lh.addDataSet(window[curCategory+'Chart'],'Score',speedColor,overallScore*100,1,0);
-                  lh.addDataSet(window[curCategory+'Chart'],'','rgba(255, 255, 255, 1)',missingScore*100,0,1);
-
-                  /* OVERALL AUDIT PROPERTIES */
-                  auditsListHtml.appendChild(lh.getMainAudits(curCategory,auditCategories,catIt,lhCategoryListLength));
-
-                  /* PERFORMANCE AUDIT PROPERTIES */
-                  if (category=='PERFORMANCE'){
-                      lh.createCharts(window.pac,'bar','audits');
-                      var performanceAuditsList  = document.createElement('ul'); 
-                      performanceAuditsList.classList.add('list-lighthouse', 'list-lighthouse-'+curCategory, 'list-group');
-                      performanceAuditsList.appendChild(lh.getPerfAudits(mainAuditsPerformance,auditResults));
-                      performanceAudits.appendChild(performanceAuditsList);
-                      $('.list-performance-audits').append(performanceAudits);
-                      $('.performance,.performanceAudits,.performanceHeadline,.performanceListHeader').css({display:'block'});
-                      $('.performanceAuditCharts').css({display:'none'});
-                  }
-                  /* ADDTIONAL AUDIT PROPERTIES*/
-                  additionalAudits.append(lh.getAdditionalAudits(auditResults,auditCategories,curCategory));
-                  $('.list-Addtional-Audits').append(additionalAudits);
-                  $('.newLighthouseStatistics').css({display:'block'});
+                  auditsListHtml.append(lh.getAuditsForCategory(catIt,category,categoryList,lighthouse,auditResults,auditCategories));
               });
 
               auditsHtml.appendChild(auditsListHtml);
@@ -399,6 +361,43 @@ requirejs(['jquery'], function ($) {
             }
           });
       } 
+
+      lh.getAuditsForCategory = function(catIt,category,categoryList,lighthouse,auditResults,auditCategories) {
+        var curCategory     = category.toLowerCase().replace('_','-');
+        var curChart        = 'oac'+curCategory.substring(0,3);
+        var overallScore    = lighthouse.categories[curCategory].score;
+        var categoryLength  = $(categoryList).length;
+        var auditsListHtml  = new DocumentFragment();
+
+        /* CREATE CHARTS OUTPUT */
+        var missingScore  = 1-overallScore;
+        var speedColor    = lh.getSpeedColor(overallScore);
+        lh.createCharts(window[curChart],'pie',curCategory,curCategory+' Score');
+        lh.addDataSet(window[curCategory+'Chart'],'Score',speedColor,overallScore*100,1,0);
+        lh.addDataSet(window[curCategory+'Chart'],'','rgba(255, 255, 255, 1)',missingScore*100,0,1);
+
+        /* OVERALL AUDIT PROPERTIES */
+        auditsListHtml.appendChild(lh.getMainAudits(curCategory,auditCategories,catIt,categoryLength));
+
+        /* PERFORMANCE AUDIT PROPERTIES */
+        if (category=='PERFORMANCE'){
+            lh.createCharts(window.pac,'bar','audits');
+            var performanceAuditsList  = document.createElement('ul'); 
+            performanceAuditsList.classList.add('list-lighthouse', 'list-lighthouse-'+curCategory, 'list-group');
+            performanceAuditsList.appendChild(lh.getPerfAudits(mainAuditsPerformance,auditResults));
+            performanceAudits.appendChild(performanceAuditsList);
+            $('.list-performance-audits').append(performanceAudits);
+            $('.performance,.performanceAudits,.performanceHeadline,.performanceListHeader').css({display:'block'});
+            $('.performanceAuditCharts').css({display:'none'});
+        }
+
+        /* ADDTIONAL AUDIT PROPERTIES*/
+        additionalAudits.append(lh.getAdditionalAudits(auditResults,auditCategories,curCategory));
+        $('.list-Addtional-Audits').append(additionalAudits);
+        $('.newLighthouseStatistics').css({display:'block'});
+
+        return auditsListHtml;
+      }
 
       /* GET MAIN AUDITS */
       lh.getMainAudits = function(auditItem,auditResult,mainIteration,mainCounter){
@@ -803,8 +802,6 @@ requirejs(['jquery'], function ($) {
 
       /* GET NODE WRAP */
       lh.getAADTableCellNode = function(node,colWidth){
-        //if (auditDebug)
-        //  console.log(node);
         var tblCell = document.createElement('td');
         tblCell.style.width= colWidth; 
         tblCell.setAttribute('title', node.path);
