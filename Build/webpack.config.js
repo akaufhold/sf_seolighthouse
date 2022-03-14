@@ -327,12 +327,13 @@ if (Encore.isProduction()) {
 
 Encore.addPlugin(
   new TerserPlugin({
+    extractComments: "all",
     terserOptions: {
       sourceMap: !Encore.isProduction(),
       //cache: !Encore.isProduction(),
       //parallel: true,
       output: {
-          // comments: false,
+        comments: false,
       },
     },
   }),

@@ -12,3 +12,5 @@ Build/yarn.lock
 
 /vendor/
 /Tests/
+
+*.txt
