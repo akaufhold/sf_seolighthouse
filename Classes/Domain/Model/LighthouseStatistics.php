@@ -566,4 +566,25 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
         $this->device = $device;
     }
 
+    /**
+     * Returns the audit
+     * 
+     * @return string $audit
+     */
+    public function getAudit()
+    {
+        return $this->audit;
+    }
+
+    /**
+     * Sets the audit
+     * 
+     * @param string $audit
+     * @return void
+     */
+    public function setAudit($audit)
+    {
+        $this->audit = $audit;
+    }
+
 }

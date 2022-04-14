@@ -337,7 +337,8 @@ requirejs(['jquery'], function ($) {
               const lighthouse            = json.lighthouseResult;
               const {['audits']:auditResults,['categories']:auditCategories} = lighthouse;
               const auditScreenshots      = auditResults['screenshot-thumbnails'];
-              var   categoryList        = lh.getCategoryList().split(',');
+              var   categoryList          = lh.getCategoryList().split(',');
+              var   jsonDB                = JSON.stringify(json);
               $('.list-audits,.list-Addtional-Audits,.list-performance-audits').html('');
               /* SET DEVICE HIDDEN FIELD */
               $('#device').val(lh.firstLetterUp(lh.getDevice()));
@@ -348,7 +349,8 @@ requirejs(['jquery'], function ($) {
                   catIt++;
                   auditsListHtml.append(lh.getAuditsForCategory(catIt,category,categoryList,lighthouse,auditResults,auditCategories));
               });
-
+              
+              $('#audit').val(jsonDB);
               auditsHtml.appendChild(auditsListHtml);
               $('.list-audits').html('');
               $('.list-audits').append(auditsHtml);
