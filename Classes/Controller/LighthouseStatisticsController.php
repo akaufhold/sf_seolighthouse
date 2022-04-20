@@ -179,6 +179,15 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $ajaxGetUrlDesktop  = $this->getTargetUrl($lang,$lightHouseGetUrl,"desktop");
         $ajaxGetUrlMobile  = $this->getTargetUrl($lang,$lightHouseGetUrl,"mobile");
 
+        // $arguments = $this->request->getArguments(); // OR
+
+        if ($this->request->hasArgument('uid')) {
+            $uid = $this->request->getArgument('uid');
+            $lighthouseStatisticsForUid = $this->lighthouseStatisticsRepository->findByUids($uid);
+            $lighthouseStatisticsAudit  = $lighthouseStatisticsForUid->getFirst()->getAudit();
+            $this->view->assign('audit', $lighthouseStatisticsAudit);
+        }
+
         $this->view->assign('pageId', $this->getSelectedPage());
         $this->view->assign('ajaxGetUrlDesktop', $ajaxGetUrlDesktop);
         $this->view->assign('ajaxGetUrlMobile', $ajaxGetUrlMobile);

@@ -1,12 +1,18 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<html 
+xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+xmlns:sf="http://typo3.org/ns/Stackfactory/SfSeolighthouse/ViewHelpers" 
+data-namespace-typo3-fluid="true">
+
 <f:layout name="Default" />
 
 <f:section name="content">
+
     <f:be.pageRenderer pageTitle="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.page.title.analyse' />" 
       includeCssFiles="{0: '{f:uri.resource(path:\'StyleSheet/request.css\')}'}"
       includeJsFiles="{0: '{f:uri.resource(path:\'JavaScript/runtime.js\')}',
                        1: '{f:uri.resource(path:\'JavaScript/request.js\')}'}"/>
     <f:flashMessages />
+    
     <div class="tx_sfseolighthouse container-fluid">
         <f:render partial="LighthouseStatistics/AnalyseFormPreselection" arguments="{_all}"/>
         <div class="row">
