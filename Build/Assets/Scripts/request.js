@@ -52,79 +52,97 @@ requirejs(['jquery'], function ($) {
         categoryUrl =  lh.getCategoryList();
         lh.addCategoriesToTargetUrl(categoryUrl);
         //console.log(mainAudits);
-        $('.getLighthouseData').on('click', function(){
-            /* PREFILL TARGET INPUT */
-            $('#target').val($('.newLighthouseStatistics').attr('id'));
+        lh.getLHDataOnClick();
+        lh.deviceChange();
+        lh.categoryClick();
 
-            /* INIT CHARTS CANVAS */
-            window.oacacc = document.getElementById('overallChartAccessibilty').getContext('2d');
-            window.oacbes = document.getElementById('overallChartBestPractices').getContext('2d');
-            window.oacper = document.getElementById('overallChartPerformance').getContext('2d');
-            window.oacpwa = document.getElementById('overallChartPwa').getContext('2d');
-            window.oacseo = document.getElementById('overallChartSeo').getContext('2d');
-            window.pac    = document.getElementById('performanceAuditsChart').getContext('2d');
+        if (parseInt(lh.checkAuditJSON())){
+          var jsonFromUid = lh.getAuditJSON();
+          lh.evaluateLHData(jsonFromUid);
+        }
 
-            /* SETTING DATA FORMAT */
-            var format = 'html'; 
-            if($(this).data('format')){
-              format = $(this).data('format');
-            }
-
-            /* CALL LIGHTHOUSE REQUEST FUNCTION */
-            lh.fetchLighthouseData(lh.getTargetUrl());
-        });
-
-        /* DEVICE RADIO BUTTON ON CHANGE */
-        $('input[type=radio][name=device]').change(function(){
-            $('.tx_sfseolighthouse').find('.custom-radio').find('label').removeClass('active');
-            $(this).parents('.custom-radio').find('label').addClass('active');
-            deviceUrl = lh.getDeviceUrl(lh.getDevice());
-            lh.setTargetUrl(deviceUrl);
-            categoryUrl =  lh.getCategoryList();
-            lh.addCategoriesToTargetUrl(categoryUrl);
-        });
-
-        /* CATEGORY CLICK EVENT */  
-        $('.categoriesCheck').find('.custom-check').find('label').click(function(){
-            var curVal = $(this).parents('.custom-check').find('.form-check-input').val();
-            if (curVal == 'all'){
-                $('.form-check-label').removeClass('active');
-            }
-            else{
-                $('input[value="all"]').parents('.custom-check').find('.form-check-label').removeClass('active');
-            }
-            $(this).toggleClass('active'); 
-            categoryUrl =  lh.getCategoryList();
-            lh.addCategoriesToTargetUrl(categoryUrl);
-        });
-        
         lh.showAddionalAudits();
         lh.performanceMenu();
       };
 
-      /* function for sorting json object through child keys */
+      /* CLICK EVENT FOR START BUTTON */
+      lh.getLHDataOnClick = function(o) {
+        $('.getLighthouseData').on('click', function(){
+          /* PREFILL TARGET INPUT */
+          $('#target').val($('.newLighthouseStatistics').attr('id'));
+
+          /* INIT CHARTS CANVAS */
+          window.oacacc = document.getElementById('overallChartAccessibilty').getContext('2d');
+          window.oacbes = document.getElementById('overallChartBestPractices').getContext('2d');
+          window.oacper = document.getElementById('overallChartPerformance').getContext('2d');
+          window.oacpwa = document.getElementById('overallChartPwa').getContext('2d');
+          window.oacseo = document.getElementById('overallChartSeo').getContext('2d');
+          window.pac    = document.getElementById('performanceAuditsChart').getContext('2d');
+
+          /* SETTING DATA FORMAT */
+          var format = 'html'; 
+          if($(this).data('format')){
+            format = $(this).data('format');
+          }
+
+          /* CALL LIGHTHOUSE REQUEST FUNCTION */
+          lh.fetchLHDataFromUrl(lh.getTargetUrl());
+        });
+      }
+
+      /* BUILD NEW TARGET URL AFTER CHANGING DEVICE RADIO */
+      lh.deviceChange = function(o) {
+        /* DEVICE RADIO BUTTON ON CHANGE */
+        $('input[type=radio][name=device]').change(function(){
+          $('.tx_sfseolighthouse').find('.custom-radio').find('label').removeClass('active');
+          $(this).parents('.custom-radio').find('label').addClass('active');
+          deviceUrl = lh.getDeviceUrl(lh.getDevice());
+          lh.setTargetUrl(deviceUrl);
+          categoryUrl =  lh.getCategoryList();
+          lh.addCategoriesToTargetUrl(categoryUrl);
+        });
+      }
+
+      /* BUILD NEW TARGET URL AFTER CHANGING DEVICE RADIO */      
+      lh.categoryClick = function(o) {
+        /* CATEGORY CLICK EVENT */  
+        $('.categoriesCheck').find('.custom-check').find('label').click(function(){
+          var curVal = $(this).parents('.custom-check').find('.form-check-input').val();
+          if (curVal == 'all'){
+              $('.form-check-label').removeClass('active');
+          }
+          else{
+              $('input[value="all"]').parents('.custom-check').find('.form-check-label').removeClass('active');
+          }
+          $(this).toggleClass('active'); 
+          categoryUrl =  lh.getCategoryList();
+          lh.addCategoriesToTargetUrl(categoryUrl);
+        });
+      }
+
+      /* FUNCTION FOR SORTING JSON OBJECT THROUGH CHILD KEYS */
       lh.sortKeys = function(o) {
         if (Array.isArray(o)) {
             return o.map(lh.sortKeys)
         } else if (o instanceof Object) {
             var _ret = function() {
-                var numeric = [];
-                var nonNumeric = [];
-                Object.keys(o).forEach(function(key) {
-                    if (/^(0|[1-9][0-9]*)$/.test(key)) {
-                        numeric.push(+key)
-                    } else {
-                        nonNumeric.push(key)
-                    }
-                });
-                return {
-                    v: numeric.sort(function(a, b) {
-                        return a - b
-                    }).concat(nonNumeric.sort()).reduce(function(result, key) {
-                        result[key] = lh.sortKeys(o[key]);
-                        return result
-                    }, {})
+              var numeric = [];
+              var nonNumeric = [];
+              Object.keys(o).forEach(function(key) {
+                if (/^(0|[1-9][0-9]*)$/.test(key)) {
+                  numeric.push(+key)
+                } else {
+                  nonNumeric.push(key)
                 }
+              });
+              return {
+                v: numeric.sort(function(a, b) {
+                  return a - b
+                }).concat(nonNumeric.sort()).reduce(function(result, key) {
+                  result[key] = lh.sortKeys(o[key]);
+                  return result
+                }, {})
+              }
             }();
             if (typeof _ret === 'object') return _ret.v
         }
@@ -142,9 +160,9 @@ requirejs(['jquery'], function ($) {
           var idTarget = $(this).attr('id').split('show')[1].charAt(0).toLowerCase()+$(this).attr('id').split('show')[1].substring(1);
           $('.performanceAudits').css({display:'none'});
           if (idTarget=='performanceAuditCharts'){
-              $('.performanceListHeader').css({display:'none'});
+            $('.performanceListHeader').css({display:'none'});
           }else{
-              $('.performanceListHeader').css({display:'block'});
+            $('.performanceListHeader').css({display:'block'});
           }
           $('.'+idTarget).css({display:'block'});
         }) 
@@ -161,11 +179,11 @@ requirejs(['jquery'], function ($) {
       /* CLICK EVENT => SETS ACTIVE CLASS FOR AUDITIONAL AUDIT LIST ENTRIES */ 
       lh.activeListClick = function(){
         $('.list-lighthouse').on('click','li',function(){
-            var listItem = $(this);
-            $('.list-lighthouse').find('li').removeClass('active');
-            if (!$(listItem).hasClass('active')){
-                $(listItem).addClass('active');
-            }
+          var listItem = $(this);
+          $('.list-lighthouse').find('li').removeClass('active');
+          if (!$(listItem).hasClass('active')){
+            $(listItem).addClass('active');
+          }
         });
       }
 
@@ -175,21 +193,21 @@ requirejs(['jquery'], function ($) {
         var category = $('.categoriesCheck').find('.form-check-label.active');
         
         $(category).each(function(key,label){
-            var val = $(label).parents('.custom-check').find('.category').val().toUpperCase();
-            if (val!='ALL'){
-                $('.saveCharts').css({display:'none'});
-                targetCategory += val;
-                targetCategory += (((key+1)!=category.length)?',':'');
-            }
-            else{
-              var allCategory = $('.categoriesCheck').find('.form-check-label').not('.active');
-              $('.saveCharts').css({display:'block'});
-              $(allCategory).each(function(key,label){
-                val = $(label).parents('.custom-check').find('.category').val().toUpperCase();
-                targetCategory += val;
-                targetCategory += (((key+1)!=allCategory.length)?',':'');
-              });
-            }
+          var val = $(label).parents('.custom-check').find('.category').val().toUpperCase();
+          if (val!='ALL'){
+            $('.saveCharts').css({display:'none'});
+            targetCategory += val;
+            targetCategory += (((key+1)!=category.length)?',':'');
+          }
+          else{
+            var allCategory = $('.categoriesCheck').find('.form-check-label').not('.active');
+            $('.saveCharts').css({display:'block'});
+            $(allCategory).each(function(key,label){
+              val = $(label).parents('.custom-check').find('.category').val().toUpperCase();
+              targetCategory += val;
+              targetCategory += (((key+1)!=allCategory.length)?',':'');
+            });
+          }
         });
         return targetCategory;
       }
@@ -217,46 +235,56 @@ requirejs(['jquery'], function ($) {
 
       /* GET TARGET URL */
       lh.getTargetUrl = function(){
-          return $('.targetUrl')[0].innerText;
+        return $('.targetUrl')[0].innerText;
       }
 
       /* SET TARGET URL */
       lh.setTargetUrl = function(targetUrlInput){
-          $('.targetUrl').html(targetUrlInput);
+        $('.targetUrl').html(targetUrlInput);
       }
 
       /* GET DEVICE */
       lh.getDevice = function(){  
-          return $('.deviceRadio').find('.active').parents('.custom-radio').find('.device').val();
+        return $('.deviceRadio').find('.active').parents('.custom-radio').find('.device').val();
       }
 
       /* GET URL DEPENDING ON DEVICE */
       lh.getDeviceUrl = function(deviceTarget){
-          return $('.getLighthouseData').data(deviceTarget);
+        return $('.getLighthouseData').data(deviceTarget);
       }
 
+      /* GET AUDIT JSON FROM HIDDEN FIELD */
+      lh.getAuditJSON = function(){
+        return JSON.parse($('#audit').val());
+      }
+
+      /* CHECK IF AUDIT JSON EXISTS */
+      lh.checkAuditJSON = function(){
+        return ($('#audit').val()!=''?'1':'0');
+      }
+    
       /* COLOR FOR SPEED STATUS */
       lh.getSpeedColor = function(scoreIn){
-          let speedOut;
-          if (scoreIn < 0.5){speedOut = '#d8000c';} 
-          else if (scoreIn < 0.9){speedOut = '#ffa400';} 
-          else if (scoreIn <= 1){speedOut = '#28a745';}
-          return speedOut;
+        let speedOut;
+        if (scoreIn < 0.5){speedOut = '#d8000c';} 
+        else if (scoreIn < 0.9){speedOut = '#ffa400';} 
+        else if (scoreIn <= 1){speedOut = '#28a745';}
+        return speedOut;
       }
 
       /* PROGRESS BAR */
       lh.pbReset = function(){
-          $(cc).find('.counterAmount').css({width:'0%'});
-          $(cc).removeClass('progress').removeClass('error').removeClass('success');
-          $(cc).find('.counterTitle').find('.errorMessage').html('error');
+        $(cc).find('.counterAmount').css({width:'0%'});
+        $(cc).removeClass('progress').removeClass('error').removeClass('success');
+        $(cc).find('.counterTitle').find('.errorMessage').html('error');
       }
 
       /* SET PROGRESS BAR STATUS */
       lh.setPbStatus = function(status){
-          lh.pbReset();
-          $(cc).addClass(status);
-          if ((status=='success') || (status=='error'))
-              $(cc).find('.counterAmount').css({width:'100%'});
+        lh.pbReset();
+        $(cc).addClass(status);
+        if ((status=='success') || (status=='error'))
+          $(cc).find('.counterAmount').css({width:'100%'});
       }
       
       /* CHANGE FIRST LETTER FROM STRING */
@@ -268,7 +296,7 @@ requirejs(['jquery'], function ($) {
       lh.errorHandling = function(errorMessage){
         lh.setPbStatus('error');
         $(pb).find('.errorMessage').append(': '+errorMessage.substring(0, 130));
-        lh.fetchLighthouseData(lh.getTargetUrl());
+        lh.fetchLHDataFromUrl(lh.getTargetUrl());
       }
 
       /* SET TOTAL TIME 4 PROGRESS BAR */
@@ -324,46 +352,55 @@ requirejs(['jquery'], function ($) {
       }
 
       /* FETCH LIGHTHOUSE API REQUEST */
-      lh.fetchLighthouseData = function(targetUrl) {
+      lh.fetchLHDataFromUrl = function(targetUrl) {
         lh.setPbStatus('progress');
+
         /* !!! ONLY FOR TESTING !!!*/
-        targetUrl = 'https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json';
+        //targetUrl = 'https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json';
+
         /* FETCH LIGHTHOUSE DATA */
         fetch(targetUrl)
           .then(response => response.json())
           .then(json => {
-            if (!json.hasOwnProperty('error')){
-              lh.setPbStatus('success');
-              const lighthouse            = json.lighthouseResult;
-              const {['audits']:auditResults,['categories']:auditCategories} = lighthouse;
-              const auditScreenshots      = auditResults['screenshot-thumbnails'];
-              var   categoryList          = lh.getCategoryList().split(',');
-              var   jsonDB                = JSON.stringify(json);
-              $('.list-audits,.list-Addtional-Audits,.list-performance-audits').html('');
-              /* SET DEVICE HIDDEN FIELD */
-              $('#device').val(lh.firstLetterUp(lh.getDevice()));
-              var auditsListHtml = document.createElement('ul'); 
-              auditsListHtml.classList.add('list-lighthouse', 'list-score', 'list-main', 'list-group');
-
-              $(categoryList).each(function(catIt,category){
-                  catIt++;
-                  auditsListHtml.append(lh.getAuditsForCategory(catIt,category,categoryList,lighthouse,auditResults,auditCategories));
-              });
-              
-              $('#audit').val(jsonDB);
-              auditsHtml.appendChild(auditsListHtml);
-              $('.list-audits').html('');
-              $('.list-audits').append(auditsHtml);
-              $('.list-Addtional-Audits').append(lh.getScreenshots(auditScreenshots));
-              lh.setTotalTime(lighthouse.timing.total);
-              lh.activeListClick();
-            }else{
-              /* ERROR HANDLING */
-              lh.errorHandling(json.error.message);
-            }
+            lh.evaluateLHData(json);
           });
-      } 
+      }
 
+      /* EVALIUATE JSON DATA FROM API REQUEST OR DB ENTRY */
+      lh.evaluateLHData = function(json){
+        if (!json.hasOwnProperty('error')){
+          lh.setPbStatus('success');
+          const lighthouse            = json.lighthouseResult;
+          const {['audits']:auditResults,['categories']:auditCategories} = lighthouse;
+          const auditScreenshots      = auditResults['screenshot-thumbnails'];
+          var   categoryList          = lh.getCategoryList().split(',');
+          var   jsonDB                = JSON.stringify(json);
+
+          $('.list-audits,.list-Addtional-Audits,.list-performance-audits').html('');
+          /* SET DEVICE HIDDEN FIELD */
+          $('#device').val(lh.firstLetterUp(lh.getDevice()));
+          var auditsListHtml = document.createElement('ul'); 
+          auditsListHtml.classList.add('list-lighthouse', 'list-score', 'list-main', 'list-group');
+
+          $(categoryList).each(function(catIt,category){
+              catIt++;
+              auditsListHtml.append(lh.getAuditsForCategory(catIt,category,categoryList,lighthouse,auditResults,auditCategories));
+          });
+          
+          $('#audit').val(jsonDB);
+          auditsHtml.appendChild(auditsListHtml);
+          $('.list-audits').html('');
+          $('.list-audits').append(auditsHtml);
+          $('.list-Addtional-Audits').append(lh.getScreenshots(auditScreenshots));
+          lh.setTotalTime(lighthouse.timing.total);
+          lh.activeListClick();
+        }else{
+          /* ERROR HANDLING */
+          lh.errorHandling(json.error.message);
+        }
+      }
+
+      /* GET AUDITS FOR LIGHTHOUSE CATEGORIES */
       lh.getAuditsForCategory = function(catIt,category,categoryList,lighthouse,auditResults,auditCategories) {
         var curCategory     = category.toLowerCase().replace('_','-');
         var curChart        = 'oac'+curCategory.substring(0,3);
@@ -383,14 +420,14 @@ requirejs(['jquery'], function ($) {
 
         /* PERFORMANCE AUDIT PROPERTIES */
         if (category=='PERFORMANCE'){
-            lh.createCharts(window.pac,'bar','audits');
-            var performanceAuditsList  = document.createElement('ul'); 
-            performanceAuditsList.classList.add('list-lighthouse', 'list-lighthouse-'+curCategory, 'list-group');
-            performanceAuditsList.appendChild(lh.getPerfAudits(mainAuditsPerformance,auditResults));
-            performanceAudits.appendChild(performanceAuditsList);
-            $('.list-performance-audits').append(performanceAudits);
-            $('.performance,.performanceAudits,.performanceHeadline,.performanceListHeader').css({display:'block'});
-            $('.performanceAuditCharts').css({display:'none'});
+          lh.createCharts(window.pac,'bar','audits');
+          var performanceAuditsList  = document.createElement('ul'); 
+          performanceAuditsList.classList.add('list-lighthouse', 'list-lighthouse-'+curCategory, 'list-group');
+          performanceAuditsList.appendChild(lh.getPerfAudits(mainAuditsPerformance,auditResults));
+          performanceAudits.appendChild(performanceAuditsList);
+          $('.list-performance-audits').append(performanceAudits);
+          $('.performance,.performanceAudits,.performanceHeadline,.performanceListHeader').css({display:'block'});
+          $('.performanceAuditCharts').css({display:'none'});
         }
 
         /* ADDTIONAL AUDIT PROPERTIES*/
@@ -598,9 +635,6 @@ requirejs(['jquery'], function ($) {
       lh.getAADDescLink = function(descriptionText){
         var descriptionLink     = lh.filterLink(descriptionText);
         var descriptionLinkText = lh.filterLinkText(descriptionText);
-        if (lh.checkAudit(auditDebug)){
-          console.log(descriptionLinkText);
-        }
         if ((descriptionLink) && (descriptionLinkText)){
           var linkMore = document.createElement('a');
           linkMore.setAttribute('href',descriptionLink);
