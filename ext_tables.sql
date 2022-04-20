@@ -19,5 +19,5 @@ CREATE TABLE tx_sfseolighthouse_domain_model_lighthousestatistics (
 	tbts double(11,2) DEFAULT '0.00' NOT NULL,
 	clss double(11,2) DEFAULT '0.00' NOT NULL,
 	device varchar(255) NOT NULL DEFAULT '',
-	audit JSON NOT NULL DEFAULT ''
+	audit longtext NOT NULL DEFAULT ''
 );

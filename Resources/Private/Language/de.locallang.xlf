@@ -75,6 +75,12 @@
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.device" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.device" xml:space="preserve">
 				<target>Gerät</target>
 			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.audit" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.audit" xml:space="preserve">
+				<target>Zeige Details</target>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.showResult" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.showResult" xml:space="preserve">
+				<target>Lighthouse-Test Ergebnis</target>
+			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.list.Header" resname="tx_sf_seolighthouse_showlighthouse.list.header" xml:space="preserve">
 				<target>Auflistung Lighthouse-Daten</target>
 			</trans-unit>

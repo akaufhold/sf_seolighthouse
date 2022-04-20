@@ -158,6 +158,13 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     protected $device = '';
 
     /**
+     * Audit 
+     * 
+     * @var string
+     */
+    protected $audit = '';
+
+    /**
      * Returns the Creation Date
      * 
      * @return int $crdate
