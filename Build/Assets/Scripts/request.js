@@ -26,8 +26,10 @@ requirejs(['jquery'], function ($) {
 
       /* BOOTSTRAP VERSION */
       var bsversion = $.fn.tooltip.Constructor.VERSION.charAt(0);
+
       /* LIGHTHOUSE */
       var auditName,categoryUrl; 
+
       /* DECLARATION AUDIT CONSTANTS */
       const mainAudits        = [
         ['accessibility', 'acs'],
@@ -44,20 +46,23 @@ requirejs(['jquery'], function ($) {
         ['total-blocking-time', 'tbt',0.25,'rgba(54, 162, 235, 1)'],
         ['cumulative-layout-shift', 'cls',0.05,'rgba(153, 102, 255, 1)']
       ];
+
       /* PROGRESS BAR */
       var pb = $('.progressBar');
       var cc = $('.progressBar').find('.counterContainer');
 
+
       lh.init = function () {
         categoryUrl =  lh.getCategoryList();
         lh.addCategoriesToTargetUrl(categoryUrl);
-        //console.log(mainAudits);
+
         lh.getLHDataOnClick();
         lh.deviceChange();
         lh.categoryClick();
 
-        if (parseInt(lh.checkAuditJSON())){
+        if (lh.checkAuditJSON()){
           var jsonFromUid = lh.getAuditJSON();
+          lh.initChartsCanvas();
           lh.evaluateLHData(jsonFromUid);
         }
 
@@ -65,19 +70,23 @@ requirejs(['jquery'], function ($) {
         lh.performanceMenu();
       };
 
-      /* CLICK EVENT FOR START BUTTON */
-      lh.getLHDataOnClick = function(o) {
-        $('.getLighthouseData').on('click', function(){
-          /* PREFILL TARGET INPUT */
-          $('#target').val($('.newLighthouseStatistics').attr('id'));
-
-          /* INIT CHARTS CANVAS */
+      /* INIT CHARTS CANVAS */
+      lh.initChartsCanvas = function(o) {
           window.oacacc = document.getElementById('overallChartAccessibilty').getContext('2d');
           window.oacbes = document.getElementById('overallChartBestPractices').getContext('2d');
           window.oacper = document.getElementById('overallChartPerformance').getContext('2d');
           window.oacpwa = document.getElementById('overallChartPwa').getContext('2d');
           window.oacseo = document.getElementById('overallChartSeo').getContext('2d');
           window.pac    = document.getElementById('performanceAuditsChart').getContext('2d');
+      }
+
+      /* CLICK EVENT FOR START BUTTON */
+      lh.getLHDataOnClick = function(o) {
+        $('.getLighthouseData').on('click', function(){
+
+          lh.initChartsCanvas();
+          /* PREFILL TARGET INPUT */
+          $('#target').val($('.newLighthouseStatistics').attr('id'));
 
           /* SETTING DATA FORMAT */
           var format = 'html'; 
@@ -260,9 +269,9 @@ requirejs(['jquery'], function ($) {
 
       /* CHECK IF AUDIT JSON EXISTS */
       lh.checkAuditJSON = function(){
-        return ($('#audit').val()!=''?'1':'0');
+        return parseInt($('#audit').val()!=''?'1':'0');
       }
-    
+
       /* COLOR FOR SPEED STATUS */
       lh.getSpeedColor = function(scoreIn){
         let speedOut;
@@ -286,7 +295,7 @@ requirejs(['jquery'], function ($) {
         if ((status=='success') || (status=='error'))
           $(cc).find('.counterAmount').css({width:'100%'});
       }
-      
+
       /* CHANGE FIRST LETTER FROM STRING */
       lh.firstLetterUp = function(stringIn){
         return stringIn.charAt(0).toUpperCase() + stringIn.slice(1).toLowerCase();
@@ -319,7 +328,8 @@ requirejs(['jquery'], function ($) {
         classes.forEach(element => {
           span.classList.add(element);
         });
-        span.appendChild(document.createTextNode(value));
+        span.appendChild(document.createTextNode(String(value)));
+        console.log(span);
         return span;
       }
 
@@ -327,7 +337,7 @@ requirejs(['jquery'], function ($) {
       lh.getSpeedClass = function(scoreIn){
         var speedOut;
         if (scoreIn < 0.5){speedOut = 'slow';} 
-        else if (scoreIn < 0.9){speedOut = 'average';} 
+        else if (scoreIn < 0.9){speedOut = 'average';}
         else if (scoreIn <= 1){speedOut = 'fast';}
         return speedOut;
       }
@@ -355,15 +365,15 @@ requirejs(['jquery'], function ($) {
       lh.fetchLHDataFromUrl = function(targetUrl) {
         lh.setPbStatus('progress');
 
-        /* !!! ONLY FOR TESTING !!!*/
+        /* ONLY FOR TESTING */
         //targetUrl = 'https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json';
 
         /* FETCH LIGHTHOUSE DATA */
         fetch(targetUrl)
-          .then(response => response.json())
-          .then(json => {
-            lh.evaluateLHData(json);
-          });
+        .then(response => response.json())
+        .then(json => {
+          lh.evaluateLHData(json);
+        });
       }
 
       /* EVALIUATE JSON DATA FROM API REQUEST OR DB ENTRY */
@@ -377,6 +387,7 @@ requirejs(['jquery'], function ($) {
           var   jsonDB                = JSON.stringify(json);
 
           $('.list-audits,.list-Addtional-Audits,.list-performance-audits').html('');
+
           /* SET DEVICE HIDDEN FIELD */
           $('#device').val(lh.firstLetterUp(lh.getDevice()));
           var auditsListHtml = document.createElement('ul'); 
