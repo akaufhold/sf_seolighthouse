@@ -13,33 +13,33 @@ data-namespace-typo3-fluid="true">
     includeCssFiles="{0: '{f:uri.resource(path:\'StyleSheet/list.css\')}'}"
     includeJsFiles="{0: '{f:uri.resource(path:\'JavaScript/runtime.js\')}',
                      1: '{f:uri.resource(path:\'JavaScript/list.js\')}'}"/>
-  
+
   <f:if condition="{lighthouseStatistics}">
     <f:then>
       <div class="container-fluid outputControl">
         <div class="row">
           <div class="col-md-2">
             <div class="custom-control custom-radio" >
-                <f:form.radio name="valueType" id="val1" class="custom-control-input valueType" value="score" />
-                <label class="custom-control-label btn btn-primary active" for="val1">
-                    <f:translate key="tx_sf_seolighthouse_showlighthouse.list.score" />
-                </label>
+              <f:form.radio name="valueType" id="val1" class="custom-control-input valueType" value="score" />
+              <label class="custom-control-label btn btn-primary active" for="val1">
+                <f:translate key="tx_sf_seolighthouse_showlighthouse.list.score" />
+              </label>
             </div>
           </div>
           <div class="col-md-2">
             <div class="custom-control custom-radio" >
-                <f:form.radio name="valueType" id="val2" class="custom-control-input valueType" value="score-performance" />
-                <label class="custom-control-label btn btn-primary" for="val2">
-                    <f:translate key="tx_sf_seolighthouse_showlighthouse.list.performance.score" />
-                </label>
+              <f:form.radio name="valueType" id="val2" class="custom-control-input valueType" value="score-performance" />
+              <label class="custom-control-label btn btn-primary" for="val2">
+                <f:translate key="tx_sf_seolighthouse_showlighthouse.list.performance.score" />
+              </label>
             </div>
           </div>
           <div class="col-md-2">
               <div class="custom-control custom-radio" >
-                  <f:form.radio name="valueType" id="val3" class="custom-control-input valueType" value="vals-performance" />
-                  <label class="custom-control-label btn btn-primary" for="val3">
-                      <f:translate key="tx_sf_seolighthouse_showlighthouse.list.performance.vals" />
-                  </label>
+                <f:form.radio name="valueType" id="val3" class="custom-control-input valueType" value="vals-performance" />
+                <label class="custom-control-label btn btn-primary" for="val3">
+                  <f:translate key="tx_sf_seolighthouse_showlighthouse.list.performance.vals" />
+                </label>
               </div>
           </div>
         </div>
