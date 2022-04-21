@@ -30,4 +30,21 @@ class LighthouseStatisticsRepository extends \TYPO3\CMS\Extbase\Persistence\Repo
         $query->setLimit($limit);
         return $query->execute();
     }
+
+    public function findByUids($uids) {
+        $uidArray = explode(",", $uids);
+        $query = $this->createQuery();
+        foreach ($uidArray as $key => $value) {
+            $constraints[] =  $query->equals('uid', $value);
+        }
+        return $query->matching(
+            $query->logicalAnd(
+                $query->logicalOr(
+                    $constraints
+                ),
+                $query->equals('hidden', 0),
+                $query->equals('deleted', 0)
+            )
+        )->execute();
+    }
 }

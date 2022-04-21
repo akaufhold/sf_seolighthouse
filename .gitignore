@@ -4,8 +4,9 @@
 **/.sass-cache
 **/node_modules
 **/StyleSheets/*
+/Build/node_modules/
 
-/Resources/Public/
+Resources/Public/
 
 Build/yarn.lock
 .gitconfig

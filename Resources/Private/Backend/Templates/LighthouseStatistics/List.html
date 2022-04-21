@@ -1,6 +1,10 @@
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
 
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<html 
+xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" 
+xmlns:sf="http://typo3.org/ns/Stackfactory/SfSeolighthouse/ViewHelpers"
+data-namespace-typo3-fluid="true">
+
 <f:layout name="Default" />
 
 <f:section name="content">
@@ -16,26 +20,26 @@
         <div class="row">
           <div class="col-md-2">
             <div class="custom-control custom-radio" >
-                <f:form.radio name="valueType" id="val1" class="custom-control-input valueType" value="score" />
-                <label class="custom-control-label btn btn-primary active" for="val1">
-                    <f:translate key="tx_sf_seolighthouse_showlighthouse.list.score" />
-                </label>
+              <f:form.radio name="valueType" id="val1" class="custom-control-input valueType" value="score" />
+              <label class="custom-control-label btn btn-primary active" for="val1">
+                <f:translate key="tx_sf_seolighthouse_showlighthouse.list.score" />
+              </label>
             </div>
           </div>
           <div class="col-md-2">
             <div class="custom-control custom-radio" >
-                <f:form.radio name="valueType" id="val2" class="custom-control-input valueType" value="score-performance" />
-                <label class="custom-control-label btn btn-primary" for="val2">
-                    <f:translate key="tx_sf_seolighthouse_showlighthouse.list.performance.score" />
-                </label>
+              <f:form.radio name="valueType" id="val2" class="custom-control-input valueType" value="score-performance" />
+              <label class="custom-control-label btn btn-primary" for="val2">
+                <f:translate key="tx_sf_seolighthouse_showlighthouse.list.performance.score" />
+              </label>
             </div>
           </div>
           <div class="col-md-2">
               <div class="custom-control custom-radio" >
-                  <f:form.radio name="valueType" id="val3" class="custom-control-input valueType" value="vals-performance" />
-                  <label class="custom-control-label btn btn-primary" for="val3">
-                      <f:translate key="tx_sf_seolighthouse_showlighthouse.list.performance.vals" />
-                  </label>
+                <f:form.radio name="valueType" id="val3" class="custom-control-input valueType" value="vals-performance" />
+                <label class="custom-control-label btn btn-primary" for="val3">
+                  <f:translate key="tx_sf_seolighthouse_showlighthouse.list.performance.vals" />
+                </label>
               </div>
           </div>
         </div>
@@ -55,6 +59,7 @@
               <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.pwas' />"><b>PWA <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
               <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.seos' />"><b>SEO <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
               <th class="device"><b><f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.device' /></b></th>
+              <th class="result"><b><f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.audit' /></b></th>
               <th class="delete">Delete</th>
             </tr>
             <tr class="row-score-performance">
@@ -66,6 +71,7 @@
               <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.tbts' />"><b>TBT <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
               <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.clss' />"><b>CLS <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
               <th class="device"><b><f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.device' /></b></th>
+              <th class="result"><b><f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.audit' /></b></th>
               <th class="delete">Delete</th>
             </tr>
             <tr class="row-vals-performance">
@@ -77,6 +83,7 @@
               <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.tbt' />"><b>TBT</b></th>
               <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.cls' />"><b>CLS</b></th>
               <th class="device"><b><f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.device' /></b></th>
+              <th class="result"><b><f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.audit' /></b></th>
               <th class="delete">Delete</th>
             </tr>
           </thead>
@@ -90,6 +97,11 @@
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.pwas})}">{lighthouseStatistics.pwas}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.seos})}">{lighthouseStatistics.seos}</td>
                 <td class="device">{lighthouseStatistics.device}</td>
+                <td class="result">
+                  <f:link.action action="analyse" controller="LighthouseStatistics" arguments="{uid:lighthouseStatistics.uid}">
+                    <core:icon identifier="actions-document" size="small" />
+                  </f:link.action>
+                </td>
                 <td class="delete">
                   <f:link.action action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">
                     <core:icon identifier="actions-delete" size="small" />
@@ -105,6 +117,11 @@
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.tbts})}">{lighthouseStatistics.tbts}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.clss})}">{lighthouseStatistics.clss}</td>
                 <td class="device">{lighthouseStatistics.device}</td>
+                <td class="result">
+                  <f:link.action action="analyse" controller="LighthouseStatistics" arguments="{uid:lighthouseStatistics.uid}">
+                    <core:icon identifier="actions-document" size="small" />
+                  </f:link.action>
+                </td>
                 <td class="delete">
                   <f:link.action action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">
                     <core:icon identifier="actions-delete" size="small" />
@@ -120,6 +137,11 @@
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.tbts})}">{lighthouseStatistics.tbt}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.clss})}">{lighthouseStatistics.cls}</td>
                 <td class="device">{lighthouseStatistics.device}</td>
+                <td class="result">
+                  <f:link.action action="analyse" controller="LighthouseStatistics" arguments="{uid:lighthouseStatistics.uid}">
+                    <core:icon identifier="actions-document" size="small" />
+                  </f:link.action>
+                </td>
                 <td class="delete">
                   <f:link.action action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">
                     <core:icon identifier="actions-delete" size="small" />

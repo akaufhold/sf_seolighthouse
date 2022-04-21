@@ -291,5 +291,12 @@ return [
                 'size' => 30,
             ]
         ],
+        'audit' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang_db.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.audit',
+            'config' => [
+                'type' => 'text',
+            ]
+        ],
     ],
 ];

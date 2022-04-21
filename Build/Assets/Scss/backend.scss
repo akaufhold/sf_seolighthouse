@@ -236,9 +236,12 @@ h5 {
     position: relative;
 
     tr {
-      > td:last-child,
-      > th:last-child {
-        text-align: center;
+      > td,
+      > th {
+        &.result,
+        &.delete {
+          text-align: center;
+        }
       }
     }
   }
@@ -663,8 +666,9 @@ h5 {
         }
 
         &.device,
+        &.result,
         &.delete {
-          width: 120px;
+          width: 60px;
         }
 
         &.fast {

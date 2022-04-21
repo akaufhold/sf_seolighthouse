@@ -158,6 +158,13 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     protected $device = '';
 
     /**
+     * Audit 
+     * 
+     * @var string
+     */
+    protected $audit = '';
+
+    /**
      * Returns the Creation Date
      * 
      * @return int $crdate
@@ -564,6 +571,27 @@ class LighthouseStatistics extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntit
     public function setDevice($device)
     {
         $this->device = $device;
+    }
+
+    /**
+     * Returns the audit
+     * 
+     * @return string $audit
+     */
+    public function getAudit()
+    {
+        return $this->audit;
+    }
+
+    /**
+     * Sets the audit
+     * 
+     * @param string $audit
+     * @return void
+     */
+    public function setAudit($audit)
+    {
+        $this->audit = $audit;
     }
 
 }

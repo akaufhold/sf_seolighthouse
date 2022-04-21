@@ -61,7 +61,10 @@
 				<source>Score Cumulative Layout Shift</source>
 			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.device" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.device">
-				<source>Cumulative Layout Shift</source>
+				<source>Device</source>
+			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.audit" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.audit" xml:space="preserve">
+				<source>Lighthouse-Test Result</source>
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.listHeader" resname="tx_sf_seolighthouse_showlighthouse.listHeader">
 				<source>Listing Lighthouse Data</source>
