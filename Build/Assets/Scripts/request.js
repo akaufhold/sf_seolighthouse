@@ -2,18 +2,10 @@ import '../Scss/backend.scss';
 import Chart from 'chart.js/auto';
 
 requirejs(['jquery'], function ($) {
-  require(['moment', 'chart.js','roughjs'], function(moment, chart) {
+  require(['chart.js'], function(moment, chart) {
     
     /* REQUIRED ICONS */
     var chevronDown, chartsBar;
-    requirejs(['TYPO3/CMS/Backend/Icons'], function(Icons) {
-      Icons.getIcon('actions-chevron-down', Icons.sizes.small).done(function(icon) {
-        chevronDown = icon;
-      });
-      Icons.getIcon('content-widget-chart-bar', Icons.sizes.default).done(function(icon) {
-        chartsBar = icon;
-      });
-    });
 
     var LighthouseData = function () {
       var lh = this;
@@ -328,8 +320,8 @@ requirejs(['jquery'], function ($) {
         classes.forEach(element => {
           span.classList.add(element);
         });
+        //console.log(span);
         span.appendChild(document.createTextNode(String(value)));
-        console.log(span);
         return span;
       }
 
@@ -366,7 +358,7 @@ requirejs(['jquery'], function ($) {
         lh.setPbStatus('progress');
 
         /* ONLY FOR TESTING */
-        //targetUrl = 'https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json';
+        targetUrl = 'https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json';
 
         /* FETCH LIGHTHOUSE DATA */
         fetch(targetUrl)
@@ -562,7 +554,7 @@ requirejs(['jquery'], function ($) {
             screenshot = currentAudit.details.screenshot;
           }
           displayValue                       = currentAudit.displayValue;
-          auditName                         = type.replace('-',' ');
+          auditName                          = type.replace('-',' ');
           additional.append(lh.getAdditionalAuditsListEntry(auditName,score,type,displayValue,description,currentAudit));
         });
         return additional;
@@ -1039,6 +1031,14 @@ requirejs(['jquery'], function ($) {
     }
 
     var lighthouseData = new LighthouseData();
-    lighthouseData.init();
+    requirejs(['TYPO3/CMS/Backend/Icons'], function(Icons) {
+      Icons.getIcon('actions-chevron-down', Icons.sizes.small).done(function(icon) {
+        chevronDown = icon;
+        lighthouseData.init();
+      });
+      Icons.getIcon('content-widget-chart-bar', Icons.sizes.default).done(function(icon) {
+        chartsBar = icon;
+      });
+    });
   });  
 });
