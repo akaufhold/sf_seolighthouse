@@ -358,7 +358,7 @@ requirejs(['jquery'], function ($) {
         lh.setPbStatus('progress');
 
         /* ONLY FOR TESTING */
-        targetUrl = 'https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json';
+        //targetUrl = 'https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json';
 
         /* FETCH LIGHTHOUSE DATA */
         fetch(targetUrl)
@@ -546,6 +546,7 @@ requirejs(['jquery'], function ($) {
         auditRefs = lh.sortKeys(auditRefs);
         Object.keys(auditRefs).sort().forEach(function(key){
           type                               = auditResultsInCategory.auditRefs[key].id;
+          //console.log(type);
           currentAudit                       = auditResults[type];
           description                        = currentAudit.description;
           displayMode                        = String(currentAudit.scoreDisplayMode);
@@ -555,17 +556,18 @@ requirejs(['jquery'], function ($) {
           }
           displayValue                       = currentAudit.displayValue;
           auditName                          = type.replace('-',' ');
-          additional.append(lh.getAdditionalAuditsListEntry(auditName,score,type,displayValue,description,currentAudit));
+          additional.append(lh.getAdditionalAuditsListEntry(auditName,score,type,displayValue,description,currentAudit,displayMode));
         });
         return additional;
       }
 
       /* GET ADDITIONAL AUDITS LIST ENTRIES */
-      lh.getAdditionalAuditsListEntry = function(auditName,score,type,displayValue,description,currentAudit){
+      lh.getAdditionalAuditsListEntry = function(auditName,score,type,displayValue,description,currentAudit,displayMode){
         var speed;
         var additionalList                = document.createElement('li');
         additionalList.id                 = type;
         additionalList.classList.add('list-group-item');
+        ((displayMode=='notApplicable')?additionalList.classList.add('notApplicable'):"");
         additionalList.appendChild(lh.addSpan('label',auditName));
 
         ((description) ? additionalList.children[0].insertAdjacentHTML('afterbegin',chevronDown): '') 
@@ -639,10 +641,17 @@ requirejs(['jquery'], function ($) {
         var descriptionLink     = lh.filterLink(descriptionText);
         var descriptionLinkText = lh.filterLinkText(descriptionText);
         if ((descriptionLink) && (descriptionLinkText)){
+          //console.log(descriptionLinkText);
           var linkMore = document.createElement('a');
           linkMore.setAttribute('href',descriptionLink);
           linkMore.setAttribute('target','_blank');
-          linkMore.classList.add('more-link');
+          if (descriptionLinkText.toLowerCase()=='learn more'){
+            linkMore.classList.add('more-link');
+            linkMore.classList.add('btn');
+            linkMore.classList.add('btn-primary');
+          }else {
+            linkMore.classList.add('more-link-text');
+          }
           linkMore.appendChild(document.createTextNode(descriptionLinkText));
           return linkMore;
         }

@@ -20,6 +20,8 @@ $iconSize:16px;
 $borderColor:#aaa;
 $background-color-bs: #0078e6;
 
+$whiteColor: #fff;
+
 $fontSnippet: 'Roboto Mono', 'Menlo', 'dejavu sans mono', 'Consolas', 'Lucida Console', monospace;
 
 @keyframes runProgressBar {
@@ -315,6 +317,8 @@ h5 {
       }
 
       .saveCharts {
+        background: $successColor;
+        color: $whiteColor;
         display: none;
       }
     }
@@ -373,6 +377,10 @@ h5 {
         cursor: pointer;
         height: 3.3em;
         padding: 0;
+
+        &.notApplicable {
+          display: none;
+        }
 
         &:hover {
           background-color: $highlightColor;
@@ -525,8 +533,15 @@ h5 {
             display: block;
             font-size: 12px;
             margin-top: 8px;
-            color: $snippetColor;
-            text-decoration: underline;
+            color: $whiteColor;
+            text-decoration: none;
+            max-width: 150px;
+
+            &-text {
+              padding-left: 5px;
+              color: $progressColor;
+              text-decoration: underline;
+            }
           }
         }
 
