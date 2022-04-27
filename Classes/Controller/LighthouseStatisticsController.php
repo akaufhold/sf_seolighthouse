@@ -174,7 +174,7 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         $lang = $this->getBeUserLang();
         /* GET FE URL OF SELECTED PAGE IN PAGETREE*/
         $lightHouseGetUrl   = $this->getBaseUrl()."/index.php?id=".$this->getSelectedPage();
-        //$lightHouseGetUrl   = "https://www.stackfactory.de";
+        $lightHouseGetUrl   = "https://www.stackfactory.de";
 
         $ajaxGetUrlDesktop  = $this->getTargetUrl($lang,$lightHouseGetUrl,"desktop");
         $ajaxGetUrlMobile  = $this->getTargetUrl($lang,$lightHouseGetUrl,"mobile");
