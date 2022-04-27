@@ -45,17 +45,15 @@ requirejs(['jquery'], function ($) {
 
 
       lh.init = function () {
-        categoryUrl =  lh.getCategoryList();
-        lh.addCategoriesToTargetUrl(categoryUrl);
+        lh.addCategoriesToTargetUrl(lh.getCategoryList());
 
         lh.getLHDataOnClick();
         lh.deviceChange();
         lh.categoryClick();
 
         if (lh.checkAuditJSON()){
-          var jsonFromUid = lh.getAuditJSON();
           lh.initChartsCanvas();
-          lh.evaluateLHData(jsonFromUid);
+          lh.evaluateLHData(lh.getAuditJSON());
         }
 
         lh.showAddionalAudits();
@@ -64,12 +62,12 @@ requirejs(['jquery'], function ($) {
 
       /* INIT CHARTS CANVAS */
       lh.initChartsCanvas = function(o) {
-          window.oacacc = document.getElementById('overallChartAccessibilty').getContext('2d');
-          window.oacbes = document.getElementById('overallChartBestPractices').getContext('2d');
-          window.oacper = document.getElementById('overallChartPerformance').getContext('2d');
-          window.oacpwa = document.getElementById('overallChartPwa').getContext('2d');
-          window.oacseo = document.getElementById('overallChartSeo').getContext('2d');
-          window.pac    = document.getElementById('performanceAuditsChart').getContext('2d');
+        window.oacacc = document.getElementById('overallChartAccessibilty').getContext('2d');
+        window.oacbes = document.getElementById('overallChartBestPractices').getContext('2d');
+        window.oacper = document.getElementById('overallChartPerformance').getContext('2d');
+        window.oacpwa = document.getElementById('overallChartPwa').getContext('2d');
+        window.oacseo = document.getElementById('overallChartSeo').getContext('2d');
+        window.pac    = document.getElementById('performanceAuditsChart').getContext('2d');
       }
 
       /* CLICK EVENT FOR START BUTTON */
@@ -320,7 +318,6 @@ requirejs(['jquery'], function ($) {
         classes.forEach(element => {
           span.classList.add(element);
         });
-        //console.log(span);
         span.appendChild(document.createTextNode(String(value)));
         return span;
       }
@@ -337,6 +334,11 @@ requirejs(['jquery'], function ($) {
       /* ESCAPING SPECIALS CHARS */
       lh.htmlEnc = function(string){
         return string.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&#34;');
+      }
+
+      /* CLEARING AUDITS HTML */
+      lh.resetAuditLists = function(){
+        $('.list-audits,.list-Addtional-Audits,.list-performance-audits').html('');
       }
 
       /* GETTING DEPTH OF OBJECT */
@@ -378,18 +380,20 @@ requirejs(['jquery'], function ($) {
           var   categoryList          = lh.getCategoryList().split(',');
           var   jsonDB                = JSON.stringify(json);
 
-          $('.list-audits,.list-Addtional-Audits,.list-performance-audits').html('');
+          lh.resetAuditLists();
 
-          /* SET DEVICE HIDDEN FIELD */
+          /* SET DEVICE FOR INPUT HIDDEN FIELD */
           $('#device').val(lh.firstLetterUp(lh.getDevice()));
           var auditsListHtml = document.createElement('ul'); 
           auditsListHtml.classList.add('list-lighthouse', 'list-score', 'list-main', 'list-group');
 
+          /* APPEND AUDITS HTML PER CATEGORY */
           $(categoryList).each(function(catIt,category){
               catIt++;
               auditsListHtml.append(lh.getAuditsForCategory(catIt,category,categoryList,lighthouse,auditResults,auditCategories));
           });
           
+          /* WRITE COMPLETE JSON TO INPUT HIDDEN FIELD */
           $('#audit').val(jsonDB);
           auditsHtml.appendChild(auditsListHtml);
           $('.list-audits').html('');
@@ -434,7 +438,7 @@ requirejs(['jquery'], function ($) {
         }
 
         /* ADDTIONAL AUDIT PROPERTIES*/
-        additionalAudits.append(lh.getAdditionalAudits(auditResults,auditCategories,curCategory));
+        additionalAudits.append(lh.getAA(auditResults,auditCategories,curCategory));
         $('.list-Addtional-Audits').append(additionalAudits);
         $('.newLighthouseStatistics').css({display:'block'});
 
@@ -482,14 +486,14 @@ requirejs(['jquery'], function ($) {
             }else{
               lh.addDataSet(window.auditsChart,auditName,color,chartVal,((mainCounter==1) ? '1' : '0'),0);
             }
-            htmlPerfOut.appendChild(lh.getPerfAuditsList(value,speed,score,displayValue));
+            htmlPerfOut.appendChild(lh.getPAList(value,speed,score,displayValue));
             mainCounter++;
           });
           return htmlPerfOut;
       }
 
       /* GET LIST FOR PERFORMANCE AUDITS */
-      lh.getPerfAuditsList = function(value,speed,score,displayValue){
+      lh.getPAList = function(value,speed,score,displayValue){
         var htmlPerfListOut = document.createElement('li');
         htmlPerfListOut.classList.add('list-group-item', 'list-'+((value[1])?value[1]:''));
         htmlPerfListOut.appendChild(lh.addSpan('label',auditName));
@@ -499,17 +503,17 @@ requirejs(['jquery'], function ($) {
       }
 
       /* ADDTIONAL AUDIT PROPERTIES*/
-      lh.getAdditionalAudits = function(auditRes,auditCats,curCat){
+      lh.getAA = function(auditRes,auditCats,curCat){
        var AAOut  = new DocumentFragment();
-       var AADiv  = lh.getAdditionalAuditsDiv(auditCats,curCat);
-       var AAList = lh.getAdditionalAuditsOl(auditRes,auditCats,curCat);
+       var AADiv  = lh.getAADiv(auditCats,curCat);
+       var AAList = lh.getAAOl(auditRes,auditCats,curCat);
        AAOut.append(AADiv);
        AAOut.append(AAList);
        return AAOut;
       }
 
       /* ADDTIONAL AUDIT AKKORDION LABEL DIV*/
-      lh.getAdditionalAuditsDiv = function(auditCats,curCat){
+      lh.getAADiv = function(auditCats,curCat){
         var AADiv = document.createElement('div'); 
         AADiv.classList.add('label', 'toggle', 'list-lighthouse','collapsed');
         AADiv.setAttribute('aria-expanded','false');
@@ -530,16 +534,16 @@ requirejs(['jquery'], function ($) {
       }
 
       /* ADDTIONAL AUDIT PROPERTIES*/
-      lh.getAdditionalAuditsOl = function(auditRes,auditCats,curCat){
+      lh.getAAOl = function(auditRes,auditCats,curCat){
         var AAList = document.createElement('ol');
         AAList.classList.add('list-group', 'list-lighthouse','collapse');
         AAList.id = 'list-additional-'+curCat;
-        AAList.append(lh.getAdditionalAuditsList(auditRes,auditCats[curCat]));
+        AAList.append(lh.getAAL(auditRes,auditCats[curCat]));
         return AAList;
       }
 
       /* GET ADDITIONAL AUDITS LIST*/
-      lh.getAdditionalAuditsList = function(auditResults,auditResultsInCategory){
+      lh.getAAL = function(auditResults,auditResultsInCategory){
         var additional = new DocumentFragment();
         var auditRefs = auditResultsInCategory['auditRefs'];
         var score, displayValue, screenshot, type, displayMode, description, currentAudit;
@@ -556,13 +560,13 @@ requirejs(['jquery'], function ($) {
           }
           displayValue                       = currentAudit.displayValue;
           auditName                          = type.replace('-',' ');
-          additional.append(lh.getAdditionalAuditsListEntry(auditName,score,type,displayValue,description,currentAudit,displayMode));
+          additional.append(lh.getAALEntry(auditName,score,type,displayValue,description,currentAudit,displayMode));
         });
         return additional;
       }
 
       /* GET ADDITIONAL AUDITS LIST ENTRIES */
-      lh.getAdditionalAuditsListEntry = function(auditName,score,type,displayValue,description,currentAudit,displayMode){
+      lh.getAALEntry = function(auditName,score,type,displayValue,description,currentAudit,displayMode){
         var speed;
         var additionalList                = document.createElement('li');
         additionalList.id                 = type;
@@ -576,13 +580,13 @@ requirejs(['jquery'], function ($) {
           additionalList.appendChild(lh.addSpan('value',displayValue));
         }
         if (score!=''){
-          speed                         =  lh.getSpeedClass(score);
+          speed =  lh.getSpeedClass(score);
           additionalList.appendChild(lh.addSpan('score '+speed,score));
         } else if (score=='0'){
-          additionalList.appendChild(lh.getAdditionalAuditsListIcon());
+          additionalList.appendChild(lh.getAALIcon());
         }
         if (description){  
-          var additionalDescription       = lh.getAADDesc(currentAudit);
+          var additionalDescription = lh.getAADDesc(currentAudit);
           if ((typeof currentAudit.details != 'undefined') && (lh.getAAD(currentAudit.details))){
             additionalDescription.append(lh.getAAD(currentAudit.details));
           }
@@ -592,7 +596,7 @@ requirejs(['jquery'], function ($) {
       }
 
       /* GET DETAILS ICON OF ADDITIONAL AUDITS */
-      lh.getAdditionalAuditsListIcon = function(){
+      lh.getAALIcon = function(){
         var scoreIcon, scoreIconSpan;
         scoreIcon = document.createElement('span');
         scoreIcon.classList.add('score','icon');
@@ -638,10 +642,9 @@ requirejs(['jquery'], function ($) {
 
       /* BUILD DESCRIPTION LINK OF ADDITIONAL AUDITS */
       lh.getAADDescLink = function(descriptionText){
-        var descriptionLink     = lh.filterLink(descriptionText);
+        var descriptionLink = lh.filterLink(descriptionText);
         var descriptionLinkText = lh.filterLinkText(descriptionText);
         if ((descriptionLink) && (descriptionLinkText)){
-          //console.log(descriptionLinkText);
           var linkMore = document.createElement('a');
           linkMore.setAttribute('href',descriptionLink);
           linkMore.setAttribute('target','_blank');
@@ -660,7 +663,7 @@ requirejs(['jquery'], function ($) {
 
       /* GET DETAILS OF ADDITIONAL AUDITS FROM TYPE TABLE*/
       lh.getAADTable = function(details,type){
-        let tbl     = document.createElement('table');
+        let tbl = document.createElement('table');
         tbl.classList.add('table','table-striped', 'table-hover');
         if (type=='opportunity'){tbl.classList.add('table-opportunity');}
         if (details.hasOwnProperty('headings'))
@@ -681,12 +684,11 @@ requirejs(['jquery'], function ($) {
         headings.forEach(function(headeritem,headerindex){
           var tblHeadLabel = '';
           if (typeof headeritem.text!=='undefined'){
-            tblHeadLabel =  headeritem.text;
+            tblHeadLabel = headeritem.text;
           } else if (typeof headeritem.label!=='undefined'){
-            tblHeadLabel =  headeritem.label;
+            tblHeadLabel = headeritem.label;
           }
           var tblHeadCell         = document.createElement('th');
-          //tblHeadCell.style.width = (100/headings.length)+'%';
           tblHeadCell.appendChild(document.createTextNode(tblHeadLabel));
           tblHeadRow.appendChild(tblHeadCell);
         });
