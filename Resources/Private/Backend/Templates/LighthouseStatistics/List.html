@@ -91,7 +91,7 @@ data-namespace-typo3-fluid="true">
             <f:for each="{lighthouseStatistics}" as="lighthouseStatistics">
               <tr class="row row-score list-group active">
                 <td class="date"><f:format.date format="d.m.Y - H:i">{lighthouseStatistics.crdate}</f:format.date></td>
-                <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.fcp})}">{lighthouseStatistics.acs}</td>
+                <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.acs})}">{lighthouseStatistics.acs}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.bps})}">{lighthouseStatistics.bps}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.pes})}">{lighthouseStatistics.pes}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.pwas})}">{lighthouseStatistics.pwas}</td>
@@ -163,6 +163,7 @@ data-namespace-typo3-fluid="true">
 <f:section name="SpeedClass">
     <f:alias map="{speedPercent: '{speedVal-> f:format.number()}'}">
       <f:alias map="{speedPercent: '{speedPercent*100}'}">
+        <f:debug>{speedPercent}</f:debug>
         <f:if condition="{speedPercent} > 90">
           <f:then>fast</f:then>
           <f:else if="{speedPercent} > 50">average</f:else>
