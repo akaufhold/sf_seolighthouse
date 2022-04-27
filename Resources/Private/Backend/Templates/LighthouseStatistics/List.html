@@ -163,7 +163,6 @@ data-namespace-typo3-fluid="true">
 <f:section name="SpeedClass">
     <f:alias map="{speedPercent: '{speedVal-> f:format.number()}'}">
       <f:alias map="{speedPercent: '{speedPercent*100}'}">
-        <f:debug>{speedPercent}</f:debug>
         <f:if condition="{speedPercent} > 90">
           <f:then>fast</f:then>
           <f:else if="{speedPercent} > 50">average</f:else>
