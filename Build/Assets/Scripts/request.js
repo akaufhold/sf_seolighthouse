@@ -20,7 +20,7 @@ requirejs(['jquery'], function ($) {
       var bsversion = $.fn.tooltip.Constructor.VERSION.charAt(0);
 
       /* LIGHTHOUSE */
-      var auditName,categoryUrl; 
+      var auditName,categoryUrl,finalScreen;
 
       /* DECLARATION AUDIT CONSTANTS */
       const mainAudits        = [
@@ -95,9 +95,9 @@ requirejs(['jquery'], function ($) {
         $('input[type=radio][name=device]').change(function(){
           $('.tx_sfseolighthouse').find('.custom-radio').find('label').removeClass('active');
           $(this).parents('.custom-radio').find('label').addClass('active');
-          deviceUrl = lh.getDeviceUrl(lh.getDevice());
-          lh.setTargetUrl(deviceUrl);
+          var deviceUrl = lh.getDeviceUrl(lh.getDevice());
           categoryUrl =  lh.getCategoryList();
+          lh.setTargetUrl(deviceUrl);
           lh.addCategoriesToTargetUrl(categoryUrl);
         });
       }
@@ -331,6 +331,22 @@ requirejs(['jquery'], function ($) {
         return speedOut;
       }
 
+      lh.getImageCrop = function(src){
+        var image  = new Image();
+        image.src = src;
+            /*canvas = document.getElementById('canvas'),
+            ctx = canvas.getContext('2d');*/
+        console.log(image);
+        /*image.onload = function(){
+            ctx.drawImage(image,
+                70, 20,   // Start at 70/20 pixels from the left and the top of the image (crop),
+                50, 50,   // "Get" a `50 * 50` (w * h) area from the source image (crop),
+                0, 0,     // Place the result at 0, 0 in the canvas,
+                100, 100); // With as width / height: 100 * 100 (scale)
+        }*/
+        return image;
+      }
+      
       /* ESCAPING SPECIALS CHARS */
       lh.htmlEnc = function(string){
         return string.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&#34;');
@@ -375,11 +391,13 @@ requirejs(['jquery'], function ($) {
         if (!json.hasOwnProperty('error')){
           lh.setPbStatus('success');
           const lighthouse            = json.lighthouseResult;
+          console.log(lighthouse);
           const {['audits']:auditResults,['categories']:auditCategories} = lighthouse;
           const auditScreenshots      = auditResults['screenshot-thumbnails'];
+          finalScreen                 = auditResults['final-screenshot'].details.data;
           var   categoryList          = lh.getCategoryList().split(',');
           var   jsonDB                = JSON.stringify(json);
-
+          
           lh.resetAuditLists();
 
           /* SET DEVICE FOR INPUT HIDDEN FIELD */
@@ -663,6 +681,12 @@ requirejs(['jquery'], function ($) {
 
       /* GET DETAILS OF ADDITIONAL AUDITS FROM TYPE TABLE*/
       lh.getAADTable = function(details,type){
+        
+        if (lh.checkAudit("color contrast")){
+          console.log(details.items);
+          console.log($(".list-Addtional-Audits"));       
+          //$(".list-Addtional-Audits").append(lh.getImageCrop(finalScreen));
+        }
         let tbl = document.createElement('table');
         tbl.classList.add('table','table-striped', 'table-hover');
         if (type=='opportunity'){tbl.classList.add('table-opportunity');}
