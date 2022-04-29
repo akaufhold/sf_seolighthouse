@@ -1,0 +1,15 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+
+<html 
+xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" 
+xmlns:sf="http://typo3.org/ns/Stackfactory/SfSeolighthouse/ViewHelpers"
+data-namespace-typo3-fluid="true">
+
+<f:layout name="Default" />
+
+<f:section name="content">
+  <f:flashMessages />
+
+	<f:debug title="" inline="1">
+		{_all}
+	</f:debug>
