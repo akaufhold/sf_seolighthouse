@@ -14,11 +14,19 @@ services:
       $link: 'https://typo3.org/project/news'
       $target: '_blank'
 
+  dashboard.provider.seolighthouse:
+    class: 'Stackfactory\SfSeolighthouse\Widgets\Provider\ListOfRecordsDataProvider'
+    arguments:
+      $table: 'tx_sfseolighthouse_domain_model_lighthousestatistics'
+      $orderField: 'crdate'
+      $limit: 10
+
   dashboard.widget.seolighthouse:
     class: 'Stackfactory\SfSeolighthouse\Widgets\ListOfRecordsWidget'
     arguments:
       $buttonProvider: '@dashboard.buttons.seolighthouse'
-      $table: 'tx_sfseolighthouse_domain_model_lighthousestatistics'
+      $dataProvider: '@dashboard.provider.seolighthouse'
+      $view: '@dashboard.views.widget'
     tags:
       - name: dashboard.widget
         identifier: 'seolighthouse'

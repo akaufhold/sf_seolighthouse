@@ -18,25 +18,25 @@ class ListOfRecordsWidget implements WidgetInterface
      */
     private $configuration;
 
+    /** 
+     * @var ListOfRecordsDataProviderInterface 
+     */
+    private $dataProvider;
+
     /**
      * @var StandaloneView
      */
     private $view;
 
-    /**
-     * @var Cache
+    /** 
+     * @var ButtonProviderInterface|null 
      */
-    private $cache;
+    private $buttonProvider;
 
     /**
      * @var array
      */
     private $options;
-
-    /**
-     * @var string
-     */
-    private $table;
 
     private ServerRequestInterface $request;
 
@@ -45,7 +45,6 @@ class ListOfRecordsWidget implements WidgetInterface
         ListOfRecordsDataProviderInterface $dataProvider,
         StandaloneView $view,
         $buttonProvider = null,
-        $table,
         array $options = []
     ) {
         $this->configuration = $configuration;
