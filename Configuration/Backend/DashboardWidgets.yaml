@@ -15,18 +15,16 @@ services:
       $target: '_blank'
 
   dashboard.widget.seolighthouse:
-    class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
+    class: 'Stackfactory\SfSeolighthouse\Widgets\ListOfRecordsWidget'
     arguments:
       $buttonProvider: '@dashboard.buttons.seolighthouse'
-      $cache: '@cache.dashboard.rss'
-      $options:
-        feedUrl: 'https://www.typo3.org/rss'
+      $table: 'tx_sfseolighthouse_domain_model_lighthousestatistics'
     tags:
       - name: dashboard.widget
         identifier: 'seolighthouse'
-        groupNames: 'news'
-        title: 'LLL:EXT:sf_seolighthouse//Resources/Private/Language/locallang.xlf:widgets.seolighthouse.title'
-        description: 'LLL:EXT:sf_seolighthouse//Resources/Private/Language/locallang.xlf:widgets.seolighthouse.description'
-        iconIdentifier: 'content-widget-rss'
+        groupNames: 'seo'
+        title: 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:tx_sf_seolighthouse_showlighthouse.widget.title'
+        description: 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:tx_sf_seolighthouse_showlighthouse.widget.description'
+        iconIdentifier: 'actions-viewmode-list'
         height: 'large'
         width: 'medium'
