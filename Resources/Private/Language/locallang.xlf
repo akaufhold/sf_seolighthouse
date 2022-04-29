@@ -234,6 +234,15 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.error.emptyList" resname="tx_sf_seolighthouse_showlighthouse.error.emptyList" xml:space="preserve">
 				<source>No Lighthouse Data found.</source>
 			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.widget.title" resname="tx_sf_seolighthouse_showlighthouse.widget.title" xml:space="preserve">
+				<source>Seo-Lighthouse</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.widget.description" resname="tx_sf_seolighthouse_showlighthouse.widget.description" xml:space="preserve">
+				<source>List of Audits</source>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.widget.tab.seo" resname="tx_sf_seolighthouse_showlighthouse.widget.tab.seo" xml:space="preserve">
+				<source>Seo</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
