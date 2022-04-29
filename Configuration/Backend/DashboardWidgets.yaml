@@ -1,0 +1,32 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Stackfactory\SfSeolighthouse\Widgets\:
+    resource: '../Classes/Widgets/*'
+
+  dashboard.buttons.seolighthouse:
+    class: 'TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider'
+    arguments:
+      $title: 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:widgets.seolighthouse.moreItems'
+      $link: 'https://typo3.org/project/news'
+      $target: '_blank'
+
+  dashboard.widget.seolighthouse:
+    class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
+    arguments:
+      $buttonProvider: '@dashboard.buttons.seolighthouse'
+      $cache: '@cache.dashboard.rss'
+      $options:
+        feedUrl: 'https://www.typo3.org/rss'
+    tags:
+      - name: dashboard.widget
+        identifier: 'seolighthouse'
+        groupNames: 'news'
+        title: 'LLL:EXT:sf_seolighthouse//Resources/Private/Language/locallang.xlf:widgets.seolighthouse.title'
+        description: 'LLL:EXT:sf_seolighthouse//Resources/Private/Language/locallang.xlf:widgets.seolighthouse.description'
+        iconIdentifier: 'content-widget-rss'
+        height: 'large'
+        width: 'medium'

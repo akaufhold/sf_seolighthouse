@@ -1,0 +1,2 @@
+imports:
+  - { resource: Backend/DashboardWidgets.yaml }
