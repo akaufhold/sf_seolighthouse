@@ -5,12 +5,13 @@ namespace Stackfactory\SfSeolighthouse\Widgets;
 
 use TYPO3\CMS\Dashboard\Widgets\AdditionalCssInterface;
 use TYPO3\CMS\Dashboard\Widgets\ButtonProviderInterface;
+use TYPO3\CMS\Dashboard\Widgets\RequireJsModuleInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class ListOfRecordsWidget implements WidgetInterface
+class ListOfRecordsWidget implements WidgetInterface, RequireJsModuleInterface, AdditionalCssInterface
  {
 
     /**
@@ -81,9 +82,17 @@ class ListOfRecordsWidget implements WidgetInterface
 
     public function getCssFiles(): array
     {
-        return ['EXT:sf_seolighhouse/Resources/Public/Stylesheet/widgets.css'];
+        return ['EXT:sf_seolighthouse/Resources/Public/StyleSheet/widget.css'];
+        
     }
  
+    public function getRequireJsModules(): array
+    {
+        return [
+            'TYPO3/CMS/Stackfactory/SfSeolighthouse/Widgets/Widget',
+        ];
+    }
+
     public function getOptions(): array
     {
         return $this->options;

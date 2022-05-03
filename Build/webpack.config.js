@@ -40,6 +40,7 @@ Encore
   .addEntry('request', './Assets/Scripts/request.js')
   .addEntry('list', './Assets/Scripts/list.js')
   .addEntry('charts', './Assets/Scripts/charts.js')
+  .addEntry('widget', './Assets/Scripts/widget.js')
 
   .splitEntryChunks()
 
