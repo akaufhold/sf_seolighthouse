@@ -68,7 +68,7 @@ class ListOfRecordsWidget implements WidgetInterface, RequireJsModuleInterface, 
             $this->options['titleField'] = $GLOBALS['TCA'][$recordTable]['ctrl']['label'] ?? '';
         }
 
-        $this->view->setTemplate('Widget/ListOfRecordsWidget');
+        $this->view->setTemplate('Widget/ListWidget');
         $this->view->assignMultiple([
             'configuration' => $this->configuration,
             'records' => $this->dataProvider->getItems(),
