@@ -10,9 +10,9 @@ services:
   dashboard.buttons.seolighthouse:
     class: 'TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider'
     arguments:
-      $title: 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:widgets.seolighthouse.moreItems'
-      $link: 'https://typo3.org/project/news'
-      $target: '_blank'
+      $title: 'LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:tx_sf_seolighthouse_showlighthouse.widget.moreItems'
+      $link: '/typo3/module/web/SfSeolighthouseLighthouse'
+      $target: '_top'
 
   dashboard.provider.seolighthouse:
     class: 'Stackfactory\SfSeolighthouse\Widgets\Provider\ListOfRecordsDataProvider'

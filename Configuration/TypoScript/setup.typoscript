@@ -6,6 +6,11 @@ plugin.tx_sfseolighthouse_showlighthouse {
         partialRootPaths.1 = {$plugin.tx_sfseolighthouse_showlighthouse.view.partialRootPath}
         layoutRootPaths.0 = EXT:sf_seolighthouse/Resources/Private/Layouts/
         layoutRootPaths.1 = {$plugin.tx_sfseolighthouse_showlighthouse.view.layoutRootPath}
+        widget {
+            TYPO3\CMS\Fluid\ViewHelpers\Widget\PaginateViewHelper {
+                templateRootPath = {$module.tx_sfseolighthouse_lighthouse.view.templateRootPath}
+            }
+        }
     }
     persistence {
         storagePid = {$plugin.tx_sfseolighthouse_showlighthouse.persistence.storagePid}
@@ -68,6 +73,14 @@ plugin.tx_sfseolighthouse._CSS_DEFAULT_STYLE (
 )
 
 # Module configuration
+module.tx_dashboard {
+    view {
+        templateRootPaths {
+            110 = EXT:sf_seolighthouse/Resources/Private/Backend/Templates/
+        }
+    }
+}
+
 module.tx_sfseolighthouse {
     persistence {
         storagePid  = {$module.tx_sfseolighthouse_lighthouse.persistence.storagePid}
@@ -80,6 +93,11 @@ module.tx_sfseolighthouse {
         partialRootPaths.1 = {$module.tx_sfseolighthouse_lighthouse.view.partialRootPath}
         layoutRootPaths.0 = EXT:sf_seolighthouse/Resources/Private/Backend/Layouts/
         layoutRootPaths.1 = {$module.tx_sfseolighthouse_lighthouse.view.layoutRootPath}
+        widget {
+            TYPO3\CMS\Fluid\ViewHelpers\Widget\PaginateViewHelper {
+                templateRootPath = EXT:sf_seolighthouse/Resources/Private/Backend/Templates/
+            }
+        }
     }
 }
 

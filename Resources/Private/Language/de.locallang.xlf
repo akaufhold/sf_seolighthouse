@@ -78,6 +78,9 @@
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.audit" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.audit" xml:space="preserve">
 				<target>Zeige Details</target>
 			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.auditShort" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.auditShort" xml:space="preserve">
+				<target>Details</target>
+			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.showResult" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.showResult" xml:space="preserve">
 				<target>Lighthouse-Test Ergebnis</target>
 			</trans-unit>
@@ -224,6 +227,9 @@
 			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.widget.tab.seo" resname="tx_sf_seolighthouse_showlighthouse.widget.tab.seo" xml:space="preserve">
 				<target>Seo</target>
+			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.widget.moreItems" resname="tx_sf_seolighthouse_showlighthouse.widget.moreItems" xml:space="preserve">
+				<target>Weitere Testergebnisse</target>
 			</trans-unit>
 		</body>
 	</file>
