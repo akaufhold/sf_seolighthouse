@@ -1,0 +1,66 @@
+@import "variables";
+
+.widget-identifier-seolighthouse {
+  .widget-content-main {
+    table {
+      width: 100%;
+      background: #fff;
+
+      .row-head {
+        th {
+          &.datetime {
+            min-width: 120px;
+          }
+        }
+      }
+
+      .row-score {
+        td {
+          &.datetime {
+            display: flex;
+            flex-direction: row;
+
+            .date {
+              display: flex;
+              flex-direction: column;
+
+              .day {
+                font-size: 2.25em;
+                line-height: .9;
+              }
+
+              .month {
+                font-size: 1.6em;
+                line-height: .9;
+              }
+
+              .year {
+                font-size: 1em;
+              }
+            }
+
+            .time {
+              font-size: 1em;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-grow: 1;
+            }
+          }
+
+          &.fast {
+            background-color: $successColor_50;
+          }
+
+          &.average {
+            background-color: $averageColor_50;
+          }
+
+          &.slow {
+            background-color: $errorColor_50;
+          }
+        }
+      }
+    }
+  }
+}
