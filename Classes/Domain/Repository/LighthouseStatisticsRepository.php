@@ -23,7 +23,7 @@ class LighthouseStatisticsRepository extends \TYPO3\CMS\Extbase\Persistence\Repo
         $query = $this->createQuery();
         $query->setOrderings(
             [
-                'crdate' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
+                'crdate' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING,
             ]
         );
         $query->matching($query->equals('target', $target));
