@@ -9,17 +9,17 @@ use TYPO3\CMS\Core\Context\Context;
 use Stackfactory\SfSeolighthouse\Domain\Model\LighthouseStatistics;
 use Stackfactory\SfSeolighthouse\Domain\Repository\LighthouseStatisticsRepository;
 use Stackfactory\SfSeolighthouse\Domain\Repository\LogEntryLighthouseRepository;
+
 use TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository;
 use TYPO3\CMS\Belog\Domain\BackendLog;
-
+use \TYPO3\CMS\Backend\Utility\BackendUtility;
+use \TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\SysLog\Action\Database;
 use TYPO3\CMS\Beuser;
-
-
 
 /**
  *
@@ -58,7 +58,6 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     {
         $this->lighthouseStatisticsRepository = $lighthouseStatisticsRepository;
     }
-
     /**
      * @var LogEntryLighthouseRepository
      */
@@ -187,6 +186,11 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
         }
 
         $this->view->assign('pageId', $this->getSelectedPage());
+
+        if (($this->request->hasArgument('targetpid')) && (!$this->getSelectedPage())) {
+            $this->view->assign('pageId', $this->request->hasArgument('targetpid'));
+        }
+
         $this->view->assign('ajaxGetUrlDesktop', $ajaxGetUrlDesktop);
         $this->view->assign('ajaxGetUrlMobile', $ajaxGetUrlMobile);
     }
@@ -200,8 +204,12 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     {
         $lighthouseStatistics = $this->lighthouseStatisticsRepository->findLimitedEntries(20, $this->getSelectedPage());
         $pageId     = $this->getSelectedPage();
+        //$slug = BackendUtility::getPreviewUrl($pageId);
+        //DebugUtility::debug($slug);
+
         $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
         $this->view->assign('pageId', $pageId);
+
         /*$constraint = null;
         $constraint->setPageId($pageId);
         $beLogOutput = $this->beLogRepository->findByConstraint($constraint);*/
