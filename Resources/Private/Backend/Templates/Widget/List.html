@@ -1,0 +1,119 @@
+<html 
+xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" 
+xmlns:sf="http://typo3.org/ns/Stackfactory/SfSeolighthouse/ViewHelpers"
+data-namespace-typo3-fluid="true">
+
+<f:layout name="Widget/Widget" />
+
+<f:section name="main">
+
+    <f:if condition="{records}">
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr class="row-head active">
+						<th class="datetime">
+							<b><f:translate key="LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.crdate" /></b>
+						</th>
+						<th class="page">
+							<b><f:translate key="LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.target" /></b>
+						</th>
+						<th class="score" title="<f:translate key='LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.acs' />">
+							<b>AC <f:translate key='LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b>
+						</th>
+						<th class="score" title="<f:translate key='LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.bps' />">
+							<b>BP <f:translate key='LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b>
+						</th>
+						<th class="score" title="<f:translate key='LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.pes' />">
+							<b>PE <f:translate key='LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b>
+						</th>
+						<th class="score" title="<f:translate key='LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.pwas' />">
+							<b>PWA <f:translate key='LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b>
+						</th>
+						<th class="score" title="<f:translate key='LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.seos' />">
+							<b>SEO <f:translate key='LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b>
+						</th>
+						<th class="device">
+							<b><f:translate key='LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.device' /></b>
+						</th>
+						<th class="result">
+							<b><f:translate key='LLL:EXT:sf_seolighthouse/Resources/Private/Language/locallang.xlf:tx_sfseolighthouse_domain_model_lighthousestatistics.auditShort' /></b>
+						</th>
+						<!--th class="delete">Delete</th-->
+					</tr>
+				</thead>
+				<tbody>
+					<f:for each="{records}" as="lighthouseStatistics">
+						<tr class="row-score active">
+							<td class="datetime">
+								<div class="date">
+									<span class="month">
+										<f:format.date format="M">
+											{lighthouseStatistics.crdate}
+										</f:format.date>
+									</span>
+									<span class="day">
+										<f:format.date format="d">
+											{lighthouseStatistics.crdate}
+										</f:format.date>
+									</span>
+									<span class="year">
+										<f:format.date format="Y">
+											{lighthouseStatistics.crdate}
+										</f:format.date>
+									</span>
+								</div>
+								<span class="time">
+									<f:format.date format="H:i">
+										{lighthouseStatistics.crdate}
+									</f:format.date>
+								</span>
+							</td>
+							<td class="url">{lighthouseStatistics.target}</td>
+							<td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.acs})}">{lighthouseStatistics.acs}</td>
+							<td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.bps})}">{lighthouseStatistics.bps}</td>
+							<td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.pes})}">{lighthouseStatistics.pes}</td>
+							<td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.pwas})}">{lighthouseStatistics.pwas}</td>
+							<td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.seos})}">{lighthouseStatistics.seos}</td>
+							<td class="device">
+								<f:variable name="deviceIconString" value="{lighthouseStatistics.device -> f:format.case(mode:'lower')}" />
+								<core:icon identifier="actions-device-{deviceIconString}" size="default" />
+							</td>
+							<td class="result">
+
+								<f:variable name="ShowLink" value="{f:be.uri(route:'web_SfSeolighthouseLighthouse', parameters: '{tx_sfseolighthouse_web_sfseolighthouselighthouse:{uid:lighthouseStatistics.uid,action:\'analyse\', controller:\'LighthouseStatistics\',targetpid:lighthouseStatistics.target}}')}" />
+
+								<a href="{ShowLink}" class="btn btn-default btn-borderless modulemenu-action-active" aria-current="location" role="menuitem" data-modulename="web_SfSeolighthouseLighthouse" data-component="TYPO3/CMS/Backend/Module/Iframe" data-navigationcomponentid="TYPO3/CMS/Backend/PageTree/PageTreeElement">
+									<core:icon identifier="actions-document" size="small" />
+								</a>
+
+							</td>
+							<!--td class="delete">
+
+								<f:variable name="deleteLink" value="{f:be.uri(route:'web_SfSeolighthouseLighthouse', parameters: '{tx_sfseolighthouse_web_sfseolighthouselighthouse:{lighthouseStatistics:lighthouseStatistics.uid,action:\'delete\', controller:\'LighthouseStatistics\'}}')}" />
+								
+								<a href="{deleteLink}" class="btn btn-default btn-borderless">
+									<core:icon identifier="actions-delete" size="small" />
+								</a>
+							</td-->
+						</tr>
+					</f:for>
+				</table>
+    </f:if>
+
+</f:section>
+
+<f:section name="SpeedClass">
+    <f:alias map="{speedPercent: '{speedVal-> f:format.number()}'}">
+      <f:alias map="{speedPercent: '{speedPercent*100}'}">
+        <f:if condition="{speedPercent} > 89">
+          <f:then>fast</f:then>
+          <f:else if="{speedPercent} > 49">average</f:else>
+          <f:else if="{speedPercent} > 0">slow</f:else>
+        </f:if>
+      </f:alias>
+    </f:alias>
+</f:section>
+
+<f:section name="footer">
+    <f:render partial="Widget/Button" arguments="{button: button}"/>
+</f:section>
