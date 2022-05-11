@@ -4,38 +4,75 @@
   .widget-content-main {
     table {
       width: 100%;
-      background: #fff;
 
-      .row-head {
-        th {
+      th {
+        text-align: center;
+      }
+
+      .row-head,
+      .row-score {
+        th,
+        td {
           &.datetime {
+            text-align: left;
             min-width: 120px;
+          }
+
+          &.score {
+            width: 20px;
+          }
+
+          &.device {
+            .icon {
+              max-width: 24px;
+            }
           }
         }
       }
 
       .row-score {
         td {
+          text-align: center;
+
+          &.device,
+          &.result {
+            border-right: 1px solid $borderColor2;
+          }
+
           &.datetime {
             display: flex;
             flex-direction: row;
+            padding: .3em;
 
             .date {
               display: flex;
               flex-direction: column;
+              background: $whiteColor;
+              border: 1px solid $borderColor2;
+              min-width: 40px;
 
               .day {
-                font-size: 2.25em;
-                line-height: .9;
+                font-size: 1.2em;
+                line-height: .8;
+                text-align: center;
+                font-weight: bold;
+                padding-top: 1px;
               }
 
               .month {
-                font-size: 1.6em;
+                font-size: 1em;
                 line-height: .9;
+                background: linear-gradient($gradientColor 0%, $gradientColor2 100%);
+                text-align: center;
+                padding-top: 1px;
+                padding-bottom: 2px;
+                text-transform: uppercase;
+                color: $whiteColor;
               }
 
               .year {
-                font-size: 1em;
+                font-size: .8em;
+                text-align: center;
               }
             }
 
