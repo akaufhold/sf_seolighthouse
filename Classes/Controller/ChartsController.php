@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Context\Context;
 /*----------------------------------------------------------*/
 
 /**
- * LighthouseStatisticsController
+ * ChartsController
  */
 class ChartsController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController{
     /**
