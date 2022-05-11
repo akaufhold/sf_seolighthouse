@@ -31,11 +31,6 @@ use TYPO3\CMS\Beuser;
  * (c) 2021 Andreas Kauhold <info@stackfactory.de>, Stackfactory
  */
 
-/*------------------------- DEBUG --------------------------*/
-/*----------------------------------------------------------*/
-/*-     \TYPO3\CMS\Core\Utility\DebugUtility::debug();     -*/
-/*----------------------------------------------------------*/
-
 /**
  * LighthouseStatisticsController
  */
