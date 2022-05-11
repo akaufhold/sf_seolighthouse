@@ -232,6 +232,11 @@ requirejs(['jquery'], function ($) {
         return params;
       };
 
+      /* GET PERCENT VALUE */
+      lh.getPercentValue= function(val){
+        return parseFloat(val*100)+"%";
+      }
+
       /* GET TARGET URL */
       lh.getTargetUrl = function(){
         return $('.targetUrl')[0].innerText;
@@ -465,49 +470,49 @@ requirejs(['jquery'], function ($) {
 
       /* GET MAIN AUDITS */
       lh.getMainAudits = function(auditItem,auditResult,mainIteration,mainCounter){
-          var speed, score, color;
-          var htmlAuditsOut = new DocumentFragment();
-          $(mainAudits).each(function(key,value){
-            if (value[0]==auditItem){
-              var htmlAuditsListOut = document.createElement('li');
-              score                 = auditResult[auditItem].score;
-              speed                 = lh.getSpeedClass(score);
-              color                 = lh.getSpeedColor(score);
-              auditName             = auditResult[auditItem].title.replace('-',' ');
-              htmlAuditsListOut.classList.add('list-group-item', 'list-'+auditItem);
-              htmlAuditsListOut.appendChild(lh.addSpan('label',auditName));
-              htmlAuditsListOut.appendChild(lh.addSpan('score '+speed,score));
-              htmlAuditsOut.appendChild(htmlAuditsListOut);
-              $('#'+value[1]).val(score);
-            }
-          })
-          return htmlAuditsOut;
+        var speed, score, color;
+        var htmlAuditsOut = new DocumentFragment();
+        $(mainAudits).each(function(key,value){
+          if (value[0]==auditItem){
+            var htmlAuditsListOut = document.createElement('li');
+            score                 = auditResult[auditItem].score;
+            speed                 = lh.getSpeedClass(score);
+            color                 = lh.getSpeedColor(score);
+            auditName             = auditResult[auditItem].title.replace('-',' ');
+            htmlAuditsListOut.classList.add('list-group-item', 'list-'+auditItem);
+            htmlAuditsListOut.appendChild(lh.addSpan('label',auditName));
+            htmlAuditsListOut.appendChild(lh.addSpan('score '+speed,score));
+            htmlAuditsOut.appendChild(htmlAuditsListOut);
+            $('#'+value[1]).val(score);
+          }
+        })
+        return htmlAuditsOut;
       }
 
       /* GET PERFORMANCE AUDITS */
       lh.getPerfAudits = function(auditItemList,auditResults){
-          var speed, score, color, displayValue, chartVal;
-          var mainCounter = 1;
-          var htmlPerfOut = new DocumentFragment();
-          auditItemList.forEach(function(value){
-            auditName             = value[0].replace('-',' ');
-            displayValue          = auditResults[value[0]].displayValue;
-            score                 = auditResults[value[0]].score;
-            speed                 = lh.getSpeedClass(score);
-            color                 = lh.getSpeedColor(score);
-            $('#'+value[1]).val(parseFloat(displayValue.replace(',', '.')));
-            $('#'+value[1]+'s').val(parseFloat(score)); 
-            /* ADD CHARTS DATA TO ARRAY */
-            chartVal = score*100;
-            if (mainAuditsPerformance.length==mainCounter){
-              lh.addDataSet(window.auditsChart,auditName,color,chartVal,((mainCounter==1) ? '1' : '0'),1);
-            }else{
-              lh.addDataSet(window.auditsChart,auditName,color,chartVal,((mainCounter==1) ? '1' : '0'),0);
-            }
-            htmlPerfOut.appendChild(lh.getPAList(value,speed,score,displayValue));
-            mainCounter++;
-          });
-          return htmlPerfOut;
+        var speed, score, color, displayValue, chartVal;
+        var mainCounter = 1;
+        var htmlPerfOut = new DocumentFragment();
+        auditItemList.forEach(function(value){
+          auditName             = value[0].replace('-',' ');
+          displayValue          = auditResults[value[0]].displayValue;
+          score                 = auditResults[value[0]].score;
+          speed                 = lh.getSpeedClass(score);
+          color                 = lh.getSpeedColor(score);
+          $('#'+value[1]).val(parseFloat(displayValue.replace(',', '.')));
+          $('#'+value[1]+'s').val(parseFloat(score)); 
+          /* ADD CHARTS DATA TO ARRAY */
+          chartVal = score*100;
+          if (mainAuditsPerformance.length==mainCounter){
+            lh.addDataSet(window.auditsChart,auditName,color,chartVal,((mainCounter==1) ? '1' : '0'),1);
+          }else{
+            lh.addDataSet(window.auditsChart,auditName,color,chartVal,((mainCounter==1) ? '1' : '0'),0);
+          }
+          htmlPerfOut.appendChild(lh.getPAList(value,speed,score,displayValue));
+          mainCounter++;
+        });
+        return htmlPerfOut;
       }
 
       /* GET LIST FOR PERFORMANCE AUDITS */
@@ -522,12 +527,12 @@ requirejs(['jquery'], function ($) {
 
       /* ADDTIONAL AUDIT PROPERTIES*/
       lh.getAA = function(auditRes,auditCats,curCat){
-       var AAOut  = new DocumentFragment();
-       var AADiv  = lh.getAADiv(auditCats,curCat);
-       var AAList = lh.getAAOl(auditRes,auditCats,curCat);
-       AAOut.append(AADiv);
-       AAOut.append(AAList);
-       return AAOut;
+        var AAOut  = new DocumentFragment();
+        var AADiv  = lh.getAADiv(auditCats,curCat);
+        var AAList = lh.getAAOl(auditRes,auditCats,curCat);
+        AAOut.append(AADiv);
+        AAOut.append(AAList);
+        return AAOut;
       }
 
       /* ADDTIONAL AUDIT AKKORDION LABEL DIV*/
