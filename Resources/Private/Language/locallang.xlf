@@ -18,6 +18,9 @@
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.crdate" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.crdate" xml:space="preserve">
 				<source>Creation Date</source>
 			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.url" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.url" xml:space="preserve">
+				<source>Url</source>
+			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.target" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.target" xml:space="preserve">
 				<source>Page ID</source>
 			</trans-unit>
