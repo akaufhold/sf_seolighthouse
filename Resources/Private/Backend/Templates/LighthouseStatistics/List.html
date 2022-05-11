@@ -52,63 +52,70 @@ data-namespace-typo3-fluid="true">
         <table class="tx_sfseolighthouse table table-striped table-hover">
           <thead>
             <tr class="row-score active">
+              <th class="device"><!--b><f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.device' /></b--></th>
               <th class="date"><b><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.crdate" /></b></th>
-              <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.acs' />"><b>AC <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
-              <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.bps' />"><b>BP <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
-              <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.pes' />"><b>PE <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
-              <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.pwas' />"><b>PWA <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
-              <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.seos' />"><b>SEO <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
-              <th class="device"><b><f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.device' /></b></th>
-              <th class="result"><b><f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.audit' /></b></th>
-              <th class="delete">Delete</th>
+              <th class="score" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.acs' />"><b>AC <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
+              <th class="score" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.bps' />"><b>BP <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
+              <th class="score" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.pes' />"><b>PE <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
+              <th class="score" ="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.pwas' />"><b>PWA <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
+              <th class="score" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.seos' />"><b>SEO <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
+              <th class="result"><!--b><f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.audit' /></b--></th>
+              <th class="delete"></th>
             </tr>
             <tr class="row-score-performance">
+              <th class="device"><!--b><f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.device' /></b--></th>
               <th class="date"><b><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.crdate" /></b></th>
-              <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.fcps' />"><b>FCP <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
-              <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.sis' />"><b>SI <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
-              <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.lcps' />"><b>LCP <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
-              <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.ttis' />"><b>TTI <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
-              <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.tbts' />"><b>TBT <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
-              <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.clss' />"><b>CLS <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
-              <th class="device"><b><f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.device' /></b></th>
-              <th class="result"><b><f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.audit' /></b></th>
-              <th class="delete">Delete</th>
+              <th class="score" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.fcps' />"><b>FCP <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
+              <th class="score" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.sis' />"><b>SI <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
+              <th class="score" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.lcps' />"><b>LCP <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
+              <th class="score" ="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.ttis' />"><b>TTI <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
+              <th class="score" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.tbts' />"><b>TBT <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
+              <th class="score" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.clss' />"><b>CLS <f:translate key='tx_sf_seolighthouse_showlighthouse.analyseHeader.score' /></b></th>
+              <th class="result"><!--b><f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.audit' /></b--></th>
+              <th class="delete"></th>
             </tr>
             <tr class="row-vals-performance">
+              <th class="device"><!--b><f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.device' /></b--></th>
               <th class="date"><b><f:translate key="tx_sfseolighthouse_domain_model_lighthousestatistics.crdate" /></b></th>
-              <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.fcp' />"><b>FCP</b></th>
-              <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.si' />"><b>SI</b></th>
-              <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.lcp' />"><b>LCP</b></th>
-              <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.tti' />"><b>TTI</b></th>
-              <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.tbt' />"><b>TBT</b></th>
-              <th title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.cls' />"><b>CLS</b></th>
-              <th class="device"><b><f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.device' /></b></th>
-              <th class="result"><b><f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.audit' /></b></th>
-              <th class="delete">Delete</th>
+              <th class="score" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.fcp' />"><b>FCP</b></th>
+              <th class="score" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.si' />"><b>SI</b></th>
+              <th class="score" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.lcp' />"><b>LCP</b></th>
+              <th class="score" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.tti' />"><b>TTI</b></th>
+              <th class="score" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.tbt' />"><b>TBT</b></th>
+              <th class="score" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.cls' />"><b>CLS</b></th>
+              <th class="result"><!--b><f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.audit' /></b--></th>
+              <th class="delete"></th>
             </tr>
           </thead>
           <tbody>
             <f:for each="{lighthouseStatistics}" as="lighthouseStatistics">
               <tr class="row row-score list-group active">
+                <td class="device" title="{lighthouseStatistics.device}">
+                  <f:variable name="deviceIconString" value="{lighthouseStatistics.device -> f:format.case(mode:'lower')}" />
+                  <core:icon identifier="actions-device-{deviceIconString}" size="default" />
+                </td>
                 <td class="date"><f:format.date format="d.m.Y - H:i">{lighthouseStatistics.crdate}</f:format.date></td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.acs})}">{lighthouseStatistics.acs}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.bps})}">{lighthouseStatistics.bps}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.pes})}">{lighthouseStatistics.pes}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.pwas})}">{lighthouseStatistics.pwas}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.seos})}">{lighthouseStatistics.seos}</td>
-                <td class="device">{lighthouseStatistics.device}</td>
-                <td class="result">
-                  <f:link.action action="analyse" controller="LighthouseStatistics" arguments="{uid:lighthouseStatistics.uid}">
+                <td class="result" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.audit' />">
+                  <f:link.action class="btn btn-default btn-borderless" action="analyse" controller="LighthouseStatistics" arguments="{uid:lighthouseStatistics.uid}">
                     <core:icon identifier="actions-document" size="small" />
                   </f:link.action>
                 </td>
                 <td class="delete">
-                  <f:link.action action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">
+                  <f:link.action class="btn btn-default btn-borderless" action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">
                     <core:icon identifier="actions-delete" size="small" />
                   </f:link.action>
                 </td>
               </tr>
               <tr class="row row-score-performance list-group">
+                <td class="device" title="{lighthouseStatistics.device}">
+                  <f:variable name="deviceIconString" value="{lighthouseStatistics.device -> f:format.case(mode:'lower')}" />
+                  <core:icon identifier="actions-device-{deviceIconString}" size="default" />
+                </td>
                 <td class="date"><f:format.date format="d.m.Y - H:i">{lighthouseStatistics.crdate}</f:format.date></td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.fcps})}">{lighthouseStatistics.fcps}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.sis})}">{lighthouseStatistics.sis}</td>
@@ -116,19 +123,22 @@ data-namespace-typo3-fluid="true">
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.ttis})}">{lighthouseStatistics.ttis}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.tbts})}">{lighthouseStatistics.tbts}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.clss})}">{lighthouseStatistics.clss}</td>
-                <td class="device">{lighthouseStatistics.device}</td>
-                <td class="result">
-                  <f:link.action action="analyse" controller="LighthouseStatistics" arguments="{uid:lighthouseStatistics.uid}">
+                <td class="result" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.audit' />">
+                  <f:link.action class="btn btn-default btn-borderless" action="analyse" controller="LighthouseStatistics" arguments="{uid:lighthouseStatistics.uid}">
                     <core:icon identifier="actions-document" size="small" />
                   </f:link.action>
                 </td>
                 <td class="delete">
-                  <f:link.action action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">
+                  <f:link.action class="btn btn-default btn-borderless" action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">
                     <core:icon identifier="actions-delete" size="small" />
                   </f:link.action>
                 </td>
               </tr>
               <tr class="row row-vals-performance list-group">
+                <td class="device" title="{lighthouseStatistics.device}">
+                  <f:variable name="deviceIconString" value="{lighthouseStatistics.device -> f:format.case(mode:'lower')}" />
+                  <core:icon identifier="actions-device-{deviceIconString}" size="default" />
+                </td>
                 <td class="date"><f:format.date format="d.m.Y - H:i">{lighthouseStatistics.crdate}</f:format.date></td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.fcps})}">{lighthouseStatistics.fcp}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.sis})}">{lighthouseStatistics.si}</td>
@@ -136,14 +146,13 @@ data-namespace-typo3-fluid="true">
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.ttis})}">{lighthouseStatistics.tti}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.tbts})}">{lighthouseStatistics.tbt}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.clss})}">{lighthouseStatistics.cls}</td>
-                <td class="device">{lighthouseStatistics.device}</td>
-                <td class="result">
-                  <f:link.action action="analyse" controller="LighthouseStatistics" arguments="{uid:lighthouseStatistics.uid}">
+                <td class="result" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.audit' />">
+                  <f:link.action class="btn btn-default btn-borderless" action="analyse" controller="LighthouseStatistics" arguments="{uid:lighthouseStatistics.uid}">
                     <core:icon identifier="actions-document" size="small" />
                   </f:link.action>
                 </td>
                 <td class="delete">
-                  <f:link.action action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">
+                  <f:link.action class="btn btn-default btn-borderless" action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">
                     <core:icon identifier="actions-delete" size="small" />
                   </f:link.action>
                 </td>
