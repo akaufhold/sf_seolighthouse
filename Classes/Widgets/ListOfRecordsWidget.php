@@ -10,10 +10,10 @@ use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
+use \TYPO3\CMS\Backend\Utility\BackendUtility;
+use Stackfactory\SfSeolighthouse\Controller;
 class ListOfRecordsWidget implements WidgetInterface, RequireJsModuleInterface, AdditionalCssInterface
  {
-
     /**
      * @var WidgetConfigurationInterface
      */
@@ -63,16 +63,27 @@ class ListOfRecordsWidget implements WidgetInterface, RequireJsModuleInterface, 
     public function renderWidgetContent(): string
     {
         $recordTable = $this->dataProvider->getTable();
+        $LighthouseStatisticsController = GeneralUtility::makeInstance(\Stackfactory\SfSeolighthouse\Controller\LighthouseStatisticsController::class);
+        $baseUrl = $LighthouseStatisticsController->getBaseUrl();
+        //$slug = BackendUtility::getPreviewUrl($this->dataProvider->getItems("target"));
+
+        $slug = $this->dataProvider->getItems("target");
+
+        //DebugUtility::debug($LighthouseStatisticsController->getBaseUrl());
 
         if (!($this->options['titleField'] ?? false)) {
             $this->options['titleField'] = $GLOBALS['TCA'][$recordTable]['ctrl']['label'] ?? '';
         }
 
-        $this->view->setTemplate('Widget/ListWidget');
+        /*BackendUtility::getPreviewUrl($pid)*/
+        
+
+        $this->view->setTemplate('Widget/List');
         $this->view->assignMultiple([
             'configuration' => $this->configuration,
             'records' => $this->dataProvider->getItems(),
             'table' => $recordTable,
+            'slug' => $slug[0],
             'button' => $this->buttonProvider,
             'options' => $this->options
         ]);
