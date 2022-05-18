@@ -101,13 +101,15 @@ data-namespace-typo3-fluid="true">
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.pwas})}">{lighthouseStatistics.pwas}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.seos})}">{lighthouseStatistics.seos}</td>
                 <td class="result" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.audit' />">
-                  <f:link.action class="btn btn-default btn-borderless" action="analyse" controller="LighthouseStatistics" arguments="{uid:lighthouseStatistics.uid}">
+                  <f:link.action class="btn btn-default text-start" action="analyse" controller="LighthouseStatistics" arguments="{uid:lighthouseStatistics.uid}">
                     <core:icon identifier="actions-document" size="small" />
+                    <f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.auditShort'/>
                   </f:link.action>
                 </td>
                 <td class="delete">
-                  <f:link.action class="btn btn-default btn-borderless" action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">
+                  <f:link.action class="btn btn-default text-start" action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">
                     <core:icon identifier="actions-delete" size="small" />
+                    <f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.auditDelete'/>
                   </f:link.action>
                 </td>
               </tr>
@@ -124,13 +126,15 @@ data-namespace-typo3-fluid="true">
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.tbts})}">{lighthouseStatistics.tbts}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.clss})}">{lighthouseStatistics.clss}</td>
                 <td class="result" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.audit' />">
-                  <f:link.action class="btn btn-default btn-borderless" action="analyse" controller="LighthouseStatistics" arguments="{uid:lighthouseStatistics.uid}">
+                  <f:link.action class="btn btn-default text-start" action="analyse" controller="LighthouseStatistics" arguments="{uid:lighthouseStatistics.uid}">
                     <core:icon identifier="actions-document" size="small" />
+                    <f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.auditShort' />
                   </f:link.action>
                 </td>
                 <td class="delete">
-                  <f:link.action class="btn btn-default btn-borderless" action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">
+                  <f:link.action class="btn btn-default text-start" action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">
                     <core:icon identifier="actions-delete" size="small" />
+                    <f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.auditDelete' />
                   </f:link.action>
                 </td>
               </tr>
@@ -147,13 +151,15 @@ data-namespace-typo3-fluid="true">
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.tbts})}">{lighthouseStatistics.tbt}</td>
                 <td class="{f:spaceless() -> f:render(section:'SpeedClass',arguments:{speedVal:lighthouseStatistics.clss})}">{lighthouseStatistics.cls}</td>
                 <td class="result" title="<f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.audit' />">
-                  <f:link.action class="btn btn-default btn-borderless" action="analyse" controller="LighthouseStatistics" arguments="{uid:lighthouseStatistics.uid}">
+                  <f:link.action class="btn btn-default text-start" action="analyse" controller="LighthouseStatistics" arguments="{uid:lighthouseStatistics.uid}">
                     <core:icon identifier="actions-document" size="small" />
+                    <f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.auditShort' />
                   </f:link.action>
                 </td>
                 <td class="delete">
-                  <f:link.action class="btn btn-default btn-borderless" action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">
+                  <f:link.action class="btn btn-default text-start" action="delete" arguments="{lighthouseStatistics : lighthouseStatistics}">
                     <core:icon identifier="actions-delete" size="small" />
+                    <f:translate key='tx_sfseolighthouse_domain_model_lighthousestatistics.auditDelete' />
                   </f:link.action>
                 </td>
               </tr>

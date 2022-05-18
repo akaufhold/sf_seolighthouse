@@ -81,6 +81,9 @@
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.audit" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.audit" xml:space="preserve">
 				<source>Show Details</source>
 			</trans-unit>
+			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.auditDelete" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.auditDelete" xml:space="preserve">
+				<source>Delete</source>
+			</trans-unit>
 			<trans-unit id="tx_sfseolighthouse_domain_model_lighthousestatistics.auditShort" resname="tx_sfseolighthouse_domain_model_lighthousestatistics.auditShort" xml:space="preserve">
 				<source>Details</source>
 			</trans-unit>
