@@ -1,5 +1,5 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:form.textfield type="hidden" property="target" id="target" />
+<f:form.textfield type="hidden" property="target" id="target" value="{pageId}" />
 <f:form.textfield type="hidden" property="acs" id="acs" />
 <f:form.textfield type="hidden" property="bps" id="bps" />
 <f:form.textfield type="hidden" property="pes" id="pes" />
@@ -17,6 +17,6 @@
 <f:form.textfield type="hidden" property="ttis" id="ttis" />
 <f:form.textfield type="hidden" property="tbts" id="tbts" />
 <f:form.textfield type="hidden" property="clss" id="clss" />
-<f:form.textfield type="hidden" property="device" id="device" />
+<f:form.textfield type="hidden" property="device" id="device" value="{lighthouseStatistics.0.device}"/>
 <f:form.textfield type="hidden" property="audit" id="audit" value="{audit}"/>
 </html>
