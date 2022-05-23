@@ -192,6 +192,9 @@
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.formSubmit" resname="tx_sf_seolighthouse_showlighthouse.formSubmit" xml:space="preserve">
 				<source>Start Lighthouse Test</source>
 			</trans-unit>
+			<trans-unit id="tx_sf_seolighthouse_showlighthouse.formBack" resname="tx_sf_seolighthouse_showlighthouse.formBack" xml:space="preserve">
+				<source>Back to Previous Page</source>
+			</trans-unit>
 			<trans-unit id="tx_sf_seolighthouse_showlighthouse.noPageInfo" resname="tx_sf_seolighthouse_showlighthouse.noPageInfo" xml:space="preserve">
 				<source>No Page Selected</source>
 			</trans-unit>		

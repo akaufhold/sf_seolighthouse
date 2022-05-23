@@ -14,7 +14,17 @@ data-namespace-typo3-fluid="true">
     <f:flashMessages />
     
     <div class="tx_sfseolighthouse container-fluid">
-        <f:render partial="LighthouseStatistics/AnalyseFormPreselection" arguments="{_all}"/>
+
+        <f:if condition="{lighthouseStatistics.0.audit}}">
+            <button class="btn btn-primary" onclick="history.back()">
+                <f:translate key="tx_sf_seolighthouse_showlighthouse.formBack" />
+            </button>
+        </f:if>
+
+        <div class="preselection {f:if(condition: '{lighthouseStatistics.0.audit}', then: 'hidden', else: '')}">
+            <f:render partial="LighthouseStatistics/AnalyseFormPreselection" arguments="{_all}"/>
+        </div>
+
         <div class="row">
             <div class="col-md-9">
                 <f:render partial="FormErrors" />
