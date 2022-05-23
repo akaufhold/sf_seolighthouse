@@ -43,7 +43,6 @@ requirejs(['jquery'], function ($) {
       var pb = $('.progressBar');
       var cc = $('.progressBar').find('.counterContainer');
 
-
       lh.init = function () {
         lh.addCategoriesToTargetUrl(lh.getCategoryList());
 
@@ -381,7 +380,7 @@ requirejs(['jquery'], function ($) {
         lh.setPbStatus('progress');
 
         /* ONLY FOR TESTING */
-        //targetUrl = 'https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json';
+        targetUrl = 'https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json';
 
         /* FETCH LIGHTHOUSE DATA */
         fetch(targetUrl)
@@ -396,17 +395,18 @@ requirejs(['jquery'], function ($) {
         if (!json.hasOwnProperty('error')){
           lh.setPbStatus('success');
           const lighthouse            = json.lighthouseResult;
-          console.log(lighthouse);
           const {['audits']:auditResults,['categories']:auditCategories} = lighthouse;
           const auditScreenshots      = auditResults['screenshot-thumbnails'];
-          finalScreen                 = auditResults['final-screenshot'].details.data;
+          //finalScreen                 = auditResults['final-screenshot'].details.data;
           var   categoryList          = lh.getCategoryList().split(',');
           var   jsonDB                = JSON.stringify(json);
-          
+
           lh.resetAuditLists();
 
           /* SET DEVICE FOR INPUT HIDDEN FIELD */
-          $('#device').val(lh.firstLetterUp(lh.getDevice()));
+          if (!$('#device').val())
+            $('#device').val(lh.firstLetterUp(lh.getDevice()));
+            
           var auditsListHtml = document.createElement('ul'); 
           auditsListHtml.classList.add('list-lighthouse', 'list-score', 'list-main', 'list-group');
 
@@ -421,7 +421,8 @@ requirejs(['jquery'], function ($) {
           auditsHtml.appendChild(auditsListHtml);
           $('.list-audits').html('');
           $('.list-audits').append(auditsHtml);
-          $('.list-Addtional-Audits').append(lh.getScreenshots(auditScreenshots));
+          if (auditScreenshots)
+            $('.list-Addtional-Audits').append(lh.getScreenshots(auditScreenshots));
           lh.setTotalTime(lighthouse.timing.total);
           lh.activeListClick();
         }else{
@@ -672,9 +673,7 @@ requirejs(['jquery'], function ($) {
           linkMore.setAttribute('href',descriptionLink);
           linkMore.setAttribute('target','_blank');
           if (descriptionLinkText.toLowerCase()=='learn more'){
-            linkMore.classList.add('more-link');
-            linkMore.classList.add('btn');
-            linkMore.classList.add('btn-primary');
+            linkMore.classList.add('more-link','btn','btn-primary');
           }else {
             linkMore.classList.add('more-link-text');
           }
@@ -686,12 +685,6 @@ requirejs(['jquery'], function ($) {
 
       /* GET DETAILS OF ADDITIONAL AUDITS FROM TYPE TABLE*/
       lh.getAADTable = function(details,type){
-        
-        if (lh.checkAudit("color contrast")){
-          console.log(details.items);
-          console.log($(".list-Addtional-Audits"));       
-          //$(".list-Addtional-Audits").append(lh.getImageCrop(finalScreen));
-        }
         let tbl = document.createElement('table');
         tbl.classList.add('table','table-striped', 'table-hover');
         if (type=='opportunity'){tbl.classList.add('table-opportunity');}
