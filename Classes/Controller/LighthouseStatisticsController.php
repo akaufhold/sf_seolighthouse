@@ -12,8 +12,8 @@ use Stackfactory\SfSeolighthouse\Domain\Repository\LogEntryLighthouseRepository;
 
 use TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository;
 use TYPO3\CMS\Belog\Domain\BackendLog;
-use \TYPO3\CMS\Backend\Utility\BackendUtility;
-use \TYPO3\CMS\Core\Utility\DebugUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -53,6 +53,7 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     {
         $this->lighthouseStatisticsRepository = $lighthouseStatisticsRepository;
     }
+    
     /**
      * @var LogEntryLighthouseRepository
      */
@@ -131,14 +132,18 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     }
 
     /**
-     * page base url
-     * 
+     * Prepend current url if url is relative
+     *
+     * @param string $url given url
      * @return string
      */
-    public function getBaseUrl(){
-        $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-        $baseUrl = $protocol."/".$_SERVER["HTTP_HOST"];
-        return $baseUrl;
+    public static function prependDomain(string $url): string
+    {
+        if (!str_starts_with($url, GeneralUtility::getIndpEnv('TYPO3_SITE_URL'))) {
+            $url = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $url;
+        }
+
+        return $url;
     }
 
     /**
@@ -161,31 +166,33 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     public function analyseAction()
     {
         $lighthouseStatistics = $this->lighthouseStatisticsRepository->findAll();
-        $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
         $storagePid = $this->getStoragePid();
-        $this->view->assign('storagePid', $storagePid);
-        /* GET URL PARAMS FOR GENERATING LIGHTHOUSE AJAX GET*/
+
         $lang = $this->getBeUserLang();
-        /* GET FE URL OF SELECTED PAGE IN PAGETREE*/
-        $lightHouseGetUrl   = $this->getBaseUrl()."/index.php?id=".$this->getSelectedPage();
+        $lightHouseGetUrl   = $this->prependDomain("index.php?id=".$this->getSelectedPage());
         $lightHouseGetUrl   = "https://www.stackfactory.de";
 
         $ajaxGetUrlDesktop  = $this->getTargetUrl($lang,$lightHouseGetUrl,"desktop");
         $ajaxGetUrlMobile  = $this->getTargetUrl($lang,$lightHouseGetUrl,"mobile");
+        
+        //$this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
 
         if ($this->request->hasArgument('uid')) {
             $uid = $this->request->getArgument('uid');
             $lighthouseStatisticsForUid = $this->lighthouseStatisticsRepository->findByUids($uid);
+            $this->view->assign('lighthouseStatistics', $lighthouseStatisticsForUid); 
             $lighthouseStatisticsAudit  = $lighthouseStatisticsForUid->getFirst()->getAudit();
             $this->view->assign('audit', $lighthouseStatisticsAudit);
         }
-
+        
         $this->view->assign('pageId', $this->getSelectedPage());
-
         if (($this->request->hasArgument('targetpid')) && (!$this->getSelectedPage())) {
             $this->view->assign('pageId', $this->request->hasArgument('targetpid'));
         }
+        //DebugUtility::debug($this->request->hasArgument('targetpid'));
+        
 
+        $this->view->assign('storagePid', $storagePid);
         $this->view->assign('ajaxGetUrlDesktop', $ajaxGetUrlDesktop);
         $this->view->assign('ajaxGetUrlMobile', $ajaxGetUrlMobile);
     }
@@ -199,16 +206,12 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     {
         $lighthouseStatistics = $this->lighthouseStatisticsRepository->findLimitedEntries(20, $this->getSelectedPage());
         $pageId     = $this->getSelectedPage();
-        //$slug = BackendUtility::getPreviewUrl($pageId);
+        //$slug       = BackendUtility::getPreviewUrl($pageId);
         //DebugUtility::debug($slug);
-
+        //DebugUtility::debug($this->prependDomain("index.php?id=12"));
+        
         $this->view->assign('lighthouseStatistics', $lighthouseStatistics); 
-        $this->view->assign('pageId', $pageId);
-
-        /*$constraint = null;
-        $constraint->setPageId($pageId);
-        $beLogOutput = $this->beLogRepository->findByConstraint($constraint);*/
-        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($pageId);  
+        $this->view->assign('pageId', $pageId); 
     }
 
     /**
@@ -257,6 +260,7 @@ class LighthouseStatisticsController extends \TYPO3\CMS\Extbase\Mvc\Controller\A
     {
         if ($GLOBALS['BE_USER']->isAdmin()){
             $this->lighthouseStatisticsRepository->add($newLighthouseStatistics);
+            DebugUtility::debug($newLighthouseStatistics);
             $this->redirect('list');
         }else{
             $this->addFlashMessage('The object was not created. Please Login as User with administration rights.', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING);
