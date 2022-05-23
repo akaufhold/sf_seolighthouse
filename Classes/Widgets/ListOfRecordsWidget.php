@@ -64,7 +64,7 @@ class ListOfRecordsWidget implements WidgetInterface, RequireJsModuleInterface, 
     {
         $recordTable = $this->dataProvider->getTable();
         $LighthouseStatisticsController = GeneralUtility::makeInstance(\Stackfactory\SfSeolighthouse\Controller\LighthouseStatisticsController::class);
-        $baseUrl = $LighthouseStatisticsController->getBaseUrl();
+        $baseUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
         //$slug = BackendUtility::getPreviewUrl($this->dataProvider->getItems("target"));
 
         $slug = $this->dataProvider->getItems("target");
