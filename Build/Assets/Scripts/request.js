@@ -5,22 +5,22 @@ requirejs(['jquery'], function ($) {
   require(['chart.js'], function(moment, chart) {
     
     /* REQUIRED ICONS */
-    var chevronDown, chartsBar;
+    let chevronDown, chartsBar;
 
-    var LighthouseData = function () {
-      var lh = this;
-      var auditsHtml            = new DocumentFragment();
-      var performanceAudits     = new DocumentFragment();
-      var additionalAudits      = new DocumentFragment();
-
-      /* TEST-AUDITS FOR DEBUGGING */
-      var auditDebug = 'third party-summary';
+    let LighthouseData = function () {
+      let lh = this;
+      let auditsHtml            = new DocumentFragment();
+      let performanceAudits     = new DocumentFragment();
+      let additionalAudits      = new DocumentFragment();
 
       /* BOOTSTRAP VERSION */
-      var bsversion = $.fn.tooltip.Constructor.VERSION.charAt(0);
+      let bsversion = $.fn.tooltip.Constructor.VERSION.charAt(0);
 
       /* LIGHTHOUSE */
-      var auditName,categoryUrl,finalScreen;
+      let auditName,categoryUrl,finalScreen;
+
+      /* TEST-AUDITS FOR DEBUGGING */
+      let auditDebug = 'third party-summary';
 
       /* DECLARATION AUDIT CONSTANTS */
       const mainAudits        = [
@@ -30,6 +30,7 @@ requirejs(['jquery'], function ($) {
         ['pwa', 'pwas'],
         ['seo', 'seos']
       ];
+
       const mainAuditsPerformance        = [
         ['first-contentful-paint', 'fcp',0.15,'rgba(255, 159, 64, 1)'],
         ['speed-index', 'si',0.15,'rgba(255, 99, 132, 1)'],
@@ -39,9 +40,15 @@ requirejs(['jquery'], function ($) {
         ['cumulative-layout-shift', 'cls',0.05,'rgba(153, 102, 255, 1)']
       ];
 
+      const statusColors = {
+        'slow':'#d8000c',
+        'average':'#ffa400',
+        'fast':'#28a745',
+      }
+
       /* PROGRESS BAR */
-      var pb = $('.progressBar');
-      var cc = $('.progressBar').find('.counterContainer');
+      let pb = $('.progressBar');
+      let cc = $('.progressBar').find('.counterContainer');
 
       lh.init = function () {
         lh.addCategoriesToTargetUrl(lh.getCategoryList());
@@ -78,7 +85,7 @@ requirejs(['jquery'], function ($) {
           $('#target').val($('.newLighthouseStatistics').attr('id'));
 
           /* SETTING DATA FORMAT */
-          var format = 'html'; 
+          let format = 'html'; 
           if($(this).data('format')){
             format = $(this).data('format');
           }
@@ -94,7 +101,7 @@ requirejs(['jquery'], function ($) {
         $('input[type=radio][name=device]').change(function(){
           $('.tx_sfseolighthouse').find('.custom-radio').find('label').removeClass('active');
           $(this).parents('.custom-radio').find('label').addClass('active');
-          var deviceUrl = lh.getDeviceUrl(lh.getDevice());
+          let deviceUrl = lh.getDeviceUrl(lh.getDevice());
           categoryUrl =  lh.getCategoryList();
           lh.setTargetUrl(deviceUrl);
           lh.addCategoriesToTargetUrl(categoryUrl);
@@ -105,7 +112,7 @@ requirejs(['jquery'], function ($) {
       lh.categoryClick = function(o) {
         /* CATEGORY CLICK EVENT */  
         $('.categoriesCheck').find('.custom-check').find('label').click(function(){
-          var curVal = $(this).parents('.custom-check').find('.form-check-input').val();
+          let curVal = $(this).parents('.custom-check').find('.form-check-input').val();
           if (curVal == 'all'){
               $('.form-check-label').removeClass('active');
           }
@@ -123,9 +130,9 @@ requirejs(['jquery'], function ($) {
         if (Array.isArray(o)) {
             return o.map(lh.sortKeys)
         } else if (o instanceof Object) {
-            var _ret = function() {
-              var numeric = [];
-              var nonNumeric = [];
+            let _ret = function() {
+              let numeric = [];
+              let nonNumeric = [];
               Object.keys(o).forEach(function(key) {
                 if (/^(0|[1-9][0-9]*)$/.test(key)) {
                   numeric.push(+key)
@@ -155,7 +162,7 @@ requirejs(['jquery'], function ($) {
       /* MENU FOR SWITCHING CHARTS VALUE OUTPUT OF PERFORMANCE AUDIT */
       lh.performanceMenu = function(){
         $('.performanceMenu').find('a').click(function(){
-          var idTarget = $(this).attr('id').split('show')[1].charAt(0).toLowerCase()+$(this).attr('id').split('show')[1].substring(1);
+          let idTarget = $(this).attr('id').split('show')[1].charAt(0).toLowerCase()+$(this).attr('id').split('show')[1].substring(1);
           $('.performanceAudits').css({display:'none'});
           if (idTarget=='performanceAuditCharts'){
             $('.performanceListHeader').css({display:'none'});
@@ -169,7 +176,7 @@ requirejs(['jquery'], function ($) {
       /* CLICK EVENT => SHOWING ROW FOR ADDITIONAL AUDITS */
       lh.showAddionalAudits = function(){
         $('.auditButtons').find('a').click(function(){
-          var idTarget = $(this).attr('id').split('show')[1].charAt(0).toLowerCase()+$(this).attr('id').split('show')[1].substring(1);
+          let idTarget = $(this).attr('id').split('show')[1].charAt(0).toLowerCase()+$(this).attr('id').split('show')[1].substring(1);
           $('.'+idTarget).css({display:'block'});
         })
       }
@@ -177,7 +184,7 @@ requirejs(['jquery'], function ($) {
       /* CLICK EVENT => SETS ACTIVE CLASS FOR AUDITIONAL AUDIT LIST ENTRIES */ 
       lh.activeListClick = function(){
         $('.list-lighthouse').on('click','li',function(){
-          var listItem = $(this);
+          let listItem = $(this);
           $('.list-lighthouse').find('li').removeClass('active');
           if (!$(listItem).hasClass('active')){
             $(listItem).addClass('active');
@@ -187,18 +194,18 @@ requirejs(['jquery'], function ($) {
 
       /* GET CATEGORY URL PARAMS FROM ALL ACTIVE CATEGORIES*/
       lh.getCategoryList = function(){
-        var targetCategory = '';
-        var category = $('.categoriesCheck').find('.form-check-label.active');
+        let targetCategory = '';
+        let category = $('.categoriesCheck').find('.form-check-label.active');
         
         $(category).each(function(key,label){
-          var val = $(label).parents('.custom-check').find('.category').val().toUpperCase();
+          let val = $(label).parents('.custom-check').find('.category').val().toUpperCase();
           if (val!='ALL'){
             $('.saveCharts').css({display:'none'});
             targetCategory += val;
             targetCategory += (((key+1)!=category.length)?',':'');
           }
           else{
-            var allCategory = $('.categoriesCheck').find('.form-check-label').not('.active');
+            let allCategory = $('.categoriesCheck').find('.form-check-label').not('.active');
             $('.saveCharts').css({display:'block'});
             $(allCategory).each(function(key,label){
               val = $(label).parents('.custom-check').find('.category').val().toUpperCase();
@@ -212,8 +219,8 @@ requirejs(['jquery'], function ($) {
 
       /* ADD CATEGORY TO URL */
       lh.addCategoriesToTargetUrl = function(categoriesUrl){
-        var curTargetUrl =''; 
-        var categoryUrl = categoriesUrl.split(',');
+        let curTargetUrl =''; 
+        let categoryUrl = categoriesUrl.split(',');
         $(categoryUrl).each(function(key,category){
             curTargetUrl = lh.addUrlParam(curTargetUrl,'category',category);
         });
@@ -222,7 +229,7 @@ requirejs(['jquery'], function ($) {
 
       /* ADD URL PARAM */
       lh.addUrlParam = function(search, key, val){
-        var newParam = key + '=' + val, 
+        let newParam = key + '=' + val, 
             params = '&' + newParam;
         if (search) {
             params = search.replace(new RegExp('([?&])' + val + '[^&]*'), '$1' + newParam);
@@ -269,9 +276,9 @@ requirejs(['jquery'], function ($) {
       /* COLOR FOR SPEED STATUS */
       lh.getSpeedColor = function(scoreIn){
         let speedOut;
-        if (scoreIn < 0.5){speedOut = '#d8000c';} 
-        else if (scoreIn < 0.9){speedOut = '#ffa400';} 
-        else if (scoreIn <= 1){speedOut = '#28a745';}
+        if (scoreIn < 0.5){speedOut = statusColors.slow;} 
+        else if (scoreIn < 0.9){speedOut = statusColors.average;} 
+        else if (scoreIn <= 1){speedOut = statusColors.fast;}
         return speedOut;
       }
 
@@ -317,8 +324,8 @@ requirejs(['jquery'], function ($) {
 
       /* HTML SPAN OUTPUT */
       lh.addSpan = function(cssClass,value){
-        var span = document.createElement('span');
-        var classes = String(cssClass).split(' ');
+        let span = document.createElement('span');
+        let classes = String(cssClass).split(' ');
         classes.forEach(element => {
           span.classList.add(element);
         });
@@ -328,7 +335,7 @@ requirejs(['jquery'], function ($) {
 
       /* CSS CLASS FOR SPEED STATUS COLOR */
       lh.getSpeedClass = function(scoreIn){
-        var speedOut;
+        let speedOut;
         if (scoreIn < 0.5){speedOut = 'slow';} 
         else if (scoreIn < 0.9){speedOut = 'average';}
         else if (scoreIn <= 1){speedOut = 'fast';}
@@ -336,7 +343,7 @@ requirejs(['jquery'], function ($) {
       }
 
       lh.getImageCrop = function(src){
-        var image  = new Image();
+        let image  = new Image();
         image.src = src;
             /*canvas = document.getElementById('canvas'),
             ctx = canvas.getContext('2d');*/
@@ -398,8 +405,8 @@ requirejs(['jquery'], function ($) {
           const {['audits']:auditResults,['categories']:auditCategories} = lighthouse;
           const auditScreenshots      = auditResults['screenshot-thumbnails'];
           //finalScreen                 = auditResults['final-screenshot'].details.data;
-          var   categoryList          = lh.getCategoryList().split(',');
-          var   jsonDB                = JSON.stringify(json);
+          let   categoryList          = lh.getCategoryList().split(',');
+          let   jsonDB                = JSON.stringify(json);
 
           lh.resetAuditLists();
 
@@ -407,7 +414,7 @@ requirejs(['jquery'], function ($) {
           if (!$('#device').val())
             $('#device').val(lh.firstLetterUp(lh.getDevice()));
             
-          var auditsListHtml = document.createElement('ul'); 
+          let auditsListHtml = document.createElement('ul'); 
           auditsListHtml.classList.add('list-lighthouse', 'list-score', 'list-main', 'list-group');
 
           /* APPEND AUDITS HTML PER CATEGORY */
@@ -433,15 +440,15 @@ requirejs(['jquery'], function ($) {
 
       /* GET AUDITS FOR LIGHTHOUSE CATEGORIES */
       lh.getAuditsForCategory = function(catIt,category,categoryList,lighthouse,auditResults,auditCategories) {
-        var curCategory     = category.toLowerCase().replace('_','-');
-        var curChart        = 'oac'+curCategory.substring(0,3);
-        var overallScore    = lighthouse.categories[curCategory].score;
-        var categoryLength  = $(categoryList).length;
-        var auditsListHtml  = new DocumentFragment();
+        let curCategory     = category.toLowerCase().replace('_','-');
+        let curChart        = 'oac'+curCategory.substring(0,3);
+        let overallScore    = lighthouse.categories[curCategory].score;
+        let categoryLength  = $(categoryList).length;
+        let auditsListHtml  = new DocumentFragment();
 
         /* CREATE CHARTS OUTPUT */
-        var missingScore  = 1-overallScore;
-        var speedColor    = lh.getSpeedColor(overallScore);
+        let missingScore  = 1-overallScore;
+        let speedColor    = lh.getSpeedColor(overallScore);
         lh.createCharts(window[curChart],'pie',curCategory,curCategory+' Score');
         lh.addDataSet(window[curCategory+'Chart'],'Score',speedColor,overallScore*100,1,0);
         lh.addDataSet(window[curCategory+'Chart'],'','rgba(255, 255, 255, 1)',missingScore*100,0,1);
@@ -452,7 +459,7 @@ requirejs(['jquery'], function ($) {
         /* PERFORMANCE AUDIT PROPERTIES */
         if (category=='PERFORMANCE'){
           lh.createCharts(window.pac,'bar','audits');
-          var performanceAuditsList  = document.createElement('ul'); 
+          let performanceAuditsList  = document.createElement('ul'); 
           performanceAuditsList.classList.add('list-lighthouse', 'list-lighthouse-'+curCategory, 'list-group');
           performanceAuditsList.appendChild(lh.getPerfAudits(mainAuditsPerformance,auditResults));
           performanceAudits.appendChild(performanceAuditsList);
@@ -471,11 +478,11 @@ requirejs(['jquery'], function ($) {
 
       /* GET MAIN AUDITS */
       lh.getMainAudits = function(auditItem,auditResult,mainIteration,mainCounter){
-        var speed, score, color;
-        var htmlAuditsOut = new DocumentFragment();
+        let speed, score, color;
+        let htmlAuditsOut = new DocumentFragment();
         $(mainAudits).each(function(key,value){
           if (value[0]==auditItem){
-            var htmlAuditsListOut = document.createElement('li');
+            let htmlAuditsListOut = document.createElement('li');
             score                 = auditResult[auditItem].score;
             speed                 = lh.getSpeedClass(score);
             color                 = lh.getSpeedColor(score);
@@ -492,9 +499,9 @@ requirejs(['jquery'], function ($) {
 
       /* GET PERFORMANCE AUDITS */
       lh.getPerfAudits = function(auditItemList,auditResults){
-        var speed, score, color, displayValue, chartVal;
-        var mainCounter = 1;
-        var htmlPerfOut = new DocumentFragment();
+        let speed, score, color, displayValue, chartVal;
+        let mainCounter = 1;
+        let htmlPerfOut = new DocumentFragment();
         auditItemList.forEach(function(value){
           auditName             = value[0].replace('-',' ');
           displayValue          = auditResults[value[0]].displayValue;
@@ -518,7 +525,7 @@ requirejs(['jquery'], function ($) {
 
       /* GET LIST FOR PERFORMANCE AUDITS */
       lh.getPAList = function(value,speed,score,displayValue){
-        var htmlPerfListOut = document.createElement('li');
+        let htmlPerfListOut = document.createElement('li');
         htmlPerfListOut.classList.add('list-group-item', 'list-'+((value[1])?value[1]:''));
         htmlPerfListOut.appendChild(lh.addSpan('label',auditName));
         htmlPerfListOut.appendChild(lh.addSpan('value', displayValue));
@@ -528,9 +535,9 @@ requirejs(['jquery'], function ($) {
 
       /* ADDTIONAL AUDIT PROPERTIES*/
       lh.getAA = function(auditRes,auditCats,curCat){
-        var AAOut  = new DocumentFragment();
-        var AADiv  = lh.getAADiv(auditCats,curCat);
-        var AAList = lh.getAAOl(auditRes,auditCats,curCat);
+        let AAOut  = new DocumentFragment();
+        let AADiv  = lh.getAADiv(auditCats,curCat);
+        let AAList = lh.getAAOl(auditRes,auditCats,curCat);
         AAOut.append(AADiv);
         AAOut.append(AAList);
         return AAOut;
@@ -538,7 +545,7 @@ requirejs(['jquery'], function ($) {
 
       /* ADDTIONAL AUDIT AKKORDION LABEL DIV*/
       lh.getAADiv = function(auditCats,curCat){
-        var AADiv = document.createElement('div'); 
+        let AADiv = document.createElement('div'); 
         AADiv.classList.add('label', 'toggle', 'list-lighthouse','collapsed');
         AADiv.setAttribute('aria-expanded','false');
         AADiv.setAttribute('aria-controls','list-additional-'+curCat);
@@ -559,7 +566,7 @@ requirejs(['jquery'], function ($) {
 
       /* ADDTIONAL AUDIT PROPERTIES*/
       lh.getAAOl = function(auditRes,auditCats,curCat){
-        var AAList = document.createElement('ol');
+        let AAList = document.createElement('ol');
         AAList.classList.add('list-group', 'list-lighthouse','collapse');
         AAList.id = 'list-additional-'+curCat;
         AAList.append(lh.getAAL(auditRes,auditCats[curCat]));
@@ -568,9 +575,9 @@ requirejs(['jquery'], function ($) {
 
       /* GET ADDITIONAL AUDITS LIST*/
       lh.getAAL = function(auditResults,auditResultsInCategory){
-        var additional = new DocumentFragment();
-        var auditRefs = auditResultsInCategory['auditRefs'];
-        var score, displayValue, screenshot, type, displayMode, description, currentAudit;
+        let additional = new DocumentFragment();
+        let auditRefs = auditResultsInCategory['auditRefs'];
+        let score, displayValue, screenshot, type, displayMode, description, currentAudit;
         auditRefs = lh.sortKeys(auditRefs);
         Object.keys(auditRefs).sort().forEach(function(key){
           type                               = auditResultsInCategory.auditRefs[key].id;
@@ -591,8 +598,8 @@ requirejs(['jquery'], function ($) {
 
       /* GET ADDITIONAL AUDITS LIST ENTRIES */
       lh.getAALEntry = function(auditName,score,type,displayValue,description,currentAudit,displayMode){
-        var speed;
-        var additionalList                = document.createElement('li');
+        let speed;
+        let additionalList                = document.createElement('li');
         additionalList.id                 = type;
         additionalList.classList.add('list-group-item');
         ((displayMode=='notApplicable')?additionalList.classList.add('notApplicable'):"");
@@ -610,7 +617,7 @@ requirejs(['jquery'], function ($) {
           additionalList.appendChild(lh.getAALIcon());
         }
         if (description){  
-          var additionalDescription = lh.getAADDesc(currentAudit);
+          let additionalDescription = lh.getAADDesc(currentAudit);
           if ((typeof currentAudit.details != 'undefined') && (lh.getAAD(currentAudit.details))){
             additionalDescription.append(lh.getAAD(currentAudit.details));
           }
@@ -621,7 +628,7 @@ requirejs(['jquery'], function ($) {
 
       /* GET DETAILS ICON OF ADDITIONAL AUDITS */
       lh.getAALIcon = function(){
-        var scoreIcon, scoreIconSpan;
+        let scoreIcon, scoreIconSpan;
         scoreIcon = document.createElement('span');
         scoreIcon.classList.add('score','icon');
         scoreIconSpan = document.createElement('span');
@@ -650,11 +657,11 @@ requirejs(['jquery'], function ($) {
 
       /* GET DESCRIPTION OF ADDITIONAL AUDITS */
       lh.getAADDesc = function(currentAudit){
-        var descriptionText; 
-        var additionalDescription     = document.createElement('span'); 
+        let descriptionText; 
+        let additionalDescription     = document.createElement('span'); 
         additionalDescription.classList.add('description');
         if (currentAudit.title){
-          var additionalBold          = document.createElement('b');
+          let additionalBold          = document.createElement('b');
           additionalBold.innerHTML    = lh.htmlEnc(currentAudit.title.toString());
           additionalDescription.append(additionalBold);
         }
@@ -666,10 +673,10 @@ requirejs(['jquery'], function ($) {
 
       /* BUILD DESCRIPTION LINK OF ADDITIONAL AUDITS */
       lh.getAADDescLink = function(descriptionText){
-        var descriptionLink = lh.filterLink(descriptionText);
-        var descriptionLinkText = lh.filterLinkText(descriptionText);
+        let descriptionLink = lh.filterLink(descriptionText);
+        let descriptionLinkText = lh.filterLinkText(descriptionText);
         if ((descriptionLink) && (descriptionLinkText)){
-          var linkMore = document.createElement('a');
+          let linkMore = document.createElement('a');
           linkMore.setAttribute('href',descriptionLink);
           linkMore.setAttribute('target','_blank');
           if (descriptionLinkText.toLowerCase()=='learn more'){
@@ -704,13 +711,13 @@ requirejs(['jquery'], function ($) {
         let tblHeadRow  = tblHead.insertRow();
 
         headings.forEach(function(headeritem,headerindex){
-          var tblHeadLabel = '';
+          let tblHeadLabel = '';
           if (typeof headeritem.text!=='undefined'){
             tblHeadLabel = headeritem.text;
           } else if (typeof headeritem.label!=='undefined'){
             tblHeadLabel = headeritem.label;
           }
-          var tblHeadCell         = document.createElement('th');
+          let tblHeadCell         = document.createElement('th');
           tblHeadCell.appendChild(document.createTextNode(tblHeadLabel));
           tblHeadRow.appendChild(tblHeadCell);
         });
@@ -734,7 +741,7 @@ requirejs(['jquery'], function ($) {
 
       /* GET TABLE ROW TYPE */
       lh.getAADTableRowType = function(item){
-        var itemType;
+        let itemType;
         if (item.node){
           itemType = 'node';
         }
@@ -751,13 +758,13 @@ requirejs(['jquery'], function ($) {
         let detailTbl       = new DocumentFragment();
         detailItems.forEach(function(item,indexDetail){
           if (typeof item!=undefined){
-            var detailTblRow = document.createElement('tr');
+            let detailTblRow = document.createElement('tr');
             if (headings){
               /* OUTPUT TABLE CELLS IN ORDER FROM TABLE HEADINGS */
               headings.forEach(function(headeritem,headerindex){
-                var orderedVal;
-                var headerKey  = headeritem.key;
-                var detailType = headeritem.itemType;
+                let orderedVal;
+                let headerKey  = headeritem.key;
+                let detailType = headeritem.itemType;
                 if (type=='opportunity'){
                   detailType = headeritem.valueType;
                 }
@@ -814,7 +821,7 @@ requirejs(['jquery'], function ($) {
 
       /* GET TABLE ROWS */
       lh.getAADTableRows = function(node){
-        var tblRow, cell1, cell2;
+        let tblRow, cell1, cell2;
         Object.entries(node).forEach(entry => {
           const [key, value] = entry;
           tblRow   = document.createElement("tr");
@@ -830,15 +837,15 @@ requirejs(['jquery'], function ($) {
 
       /* GET TABLE CELLS */
       lh.getAADTableCell = function(node,type){
-        var cell1 = document.createElement('td');
+        let cell1 = document.createElement('td');
         cell1.appendChild(lh.getAADTableCellFormattedOut(node,type));
         return cell1;
       }
 
       /* FORMATS TABLE CELL CONTENT DEPENDING ON OBJECT CONTENT TYPE */
       lh.getAADTableCellFormattedOut = function(node,type){
-        var label, calcOut, linkHref;
-        var formatOut = new DocumentFragment();
+        let label, calcOut, linkHref;
+        let formatOut = new DocumentFragment();
         ((node!=='null' && node!=='undefined')?label = node:'');
         ((node?.text)?label = node.text:'');
         ((label!='') && (node?.url)?(label = node.url,linkHref=node.url):linkHref = label);
@@ -874,16 +881,16 @@ requirejs(['jquery'], function ($) {
 
       /* GET NODE WRAP */
       lh.getAADTableCellNode = function(node,colWidth){
-        var tblCell = document.createElement('td');
+        let tblCell = document.createElement('td');
         tblCell.style.width= colWidth; 
         tblCell.setAttribute('title', node.path);
         tblCell.setAttribute('data-path', node.path);
         tblCell.setAttribute('data-selector', node.selector);
         tblCell.setAttribute('data-snippet', node.snippet);
 
-        var nodeLabel = document.createElement('div');
+        let nodeLabel = document.createElement('div');
         nodeLabel.appendChild(document.createTextNode(node.nodeLabel));
-        var nodeCode = document.createElement('div');
+        let nodeCode = document.createElement('div');
         nodeCode.appendChild(document.createTextNode(node.snippet));
         nodeCode.classList.add('lh-node__snippet');
 
@@ -897,11 +904,11 @@ requirejs(['jquery'], function ($) {
       lh.getCriticalChains = function(details){
         let detailChains   = new DocumentFragment();
         details.forEach(function(childItem,childIndex){
-          var divChain = document.createElement('div');
+          let divChain = document.createElement('div');
           divChain.appendChild(document.createTextNode(childItem.request.url));
-          var timeSpan = document.createElement('span');
+          let timeSpan = document.createElement('span');
           timeSpan.appendChild(document.createTextNode(childItem.request.endTime - childItem.request.startTime));
-          var sizeSpan = document.createElement('span');
+          let sizeSpan = document.createElement('span');
           sizeSpan.appendChild(document.createTextNode(childItem.request.transferSize));
           divChain.appendChild(timeSpan);
           divChain.appendChild(sizeSpan);
@@ -913,7 +920,7 @@ requirejs(['jquery'], function ($) {
 
       /* CREATE LINK IN DOM */
       lh.createLink = function(label,href){
-        var link = document.createElement('a');
+        let link = document.createElement('a');
         link.setAttribute('href', href);
         link.setAttribute('target', "_blank");
         link.appendChild(document.createTextNode(lh.shortenString(label)));
@@ -931,14 +938,14 @@ requirejs(['jquery'], function ($) {
       /* FILTER HOST FROM URL */
       lh.filterHost = function(url){
         let regexDomain = window.url;
-        var relativeUrl = url.replace(regexDomain,'');
+        let relativeUrl = url.replace(regexDomain,'');
         return relativeUrl;
       }
 
       /* FILTER LINK FROM AUDIT DETAIL TEXT */
       lh.filterLink = function(text){
         if ((text.indexOf('(') > -1) && (text.indexOf(')') > -1)){
-          var linkHref = text.split('(')[1].split(')')[0];
+          let linkHref = text.split('(')[1].split(')')[0];
           return linkHref;
         } else return false;
       }
@@ -946,7 +953,7 @@ requirejs(['jquery'], function ($) {
       /* FILTER LINK TEXT FROM AUDIT DETAIL TEXT */
       lh.filterLinkText = function(text){
         if ((text.indexOf('[') > -1) && (text.indexOf(']') > -1)){
-          var linkText = text.split(' [')[1].split(']')[0];
+          let linkText = text.split(' [')[1].split(']')[0];
           return linkText;
         } else return false;
       }
@@ -954,7 +961,7 @@ requirejs(['jquery'], function ($) {
       /* KILL LINK TEXT AND LINK FROM DESCRIPTION */
       lh.cleanDescription = function(text){
         if ((text.indexOf('[') > -1) && (text.indexOf(']') > -1)){
-          var linkText = text.split(' [')[0];
+          let linkText = text.split(' [')[0];
           return linkText;
         } else return text;
       }
@@ -1012,7 +1019,7 @@ requirejs(['jquery'], function ($) {
 
       /* CREATE CHARTS */
       lh.createCharts = function (chartIn,typeIn,target,titleText) {
-          var targetChart = target+'Chart';
+          let targetChart = target+'Chart';
           if(typeof window[targetChart] !== 'undefined'){
             window[targetChart].destroy();
           }
@@ -1043,7 +1050,7 @@ requirejs(['jquery'], function ($) {
       }
 
       /* ADD DATASETS TO CHARTS */
-      var newDataset = [];
+      let newDataset = [];
       lh.addDataSet = function (chart, label, color, data, createDataset, datasetReady) {
         chart.data.labels.push(label);
         if (createDataset==1){
@@ -1063,7 +1070,7 @@ requirejs(['jquery'], function ($) {
       }
     }
 
-    var lighthouseData = new LighthouseData();
+    let lighthouseData = new LighthouseData();
     requirejs(['TYPO3/CMS/Backend/Icons'], function(Icons) {
       Icons.getIcon('actions-chevron-down', Icons.sizes.small).done(function(icon) {
         chevronDown = icon;
