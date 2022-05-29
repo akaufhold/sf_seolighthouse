@@ -3,12 +3,12 @@ import Chart from 'chart.js/auto';
 
 requirejs(['jquery'], function ($) {
     require(["moment","chart.js","roughjs"], function(moment, chart) {
-        var LighthouseCharts = function () {
-            var ch = this;
-            /* DECLARATION CHARTS VARS */
+        let LighthouseCharts = function () {
+            let ch = this;
+            /* DECLARATION CHARTS letS */
             let newDataset = [];
-            var lhc,data,ChartObj;
-            var chartColors = {
+            let lhc,data,ChartObj;
+            let chartColors = {
                 acs: 'rgb(46, 204, 113)', fcp: 'rgb(46, 204, 113)', fcps: 'rgb(46, 204, 113)',
                 bps: 'rgb(52, 152, 219)', si:  'rgb(52, 152, 219)', sis:  'rgb(52, 152, 219)',
                 pes: 'rgb(52, 73, 94)', lcp: 'rgb(52, 73, 94)', lcps: 'rgb(52, 73, 94)',
@@ -18,7 +18,7 @@ requirejs(['jquery'], function ($) {
             };
             /* INIT */
             ch.init = function () {
-                var entries = $(".chartsEntries").find(".entry"); 
+                let entries = $(".chartsEntries").find(".entry"); 
 
                 lhc         = document.getElementById('lighthouseChart').getContext('2d');
                 ch.createCharts(lhc,ch.getChartType());
@@ -47,27 +47,27 @@ requirejs(['jquery'], function ($) {
                 ch.entriesToDataset(entriesIn,ch.getDevice(),ch.getChartValueType());
             }
             ch.entriesToDataset = function(entriesIn, deviceIn, valueTypeIn){
-                var entryValues         	    = {};
-                var entryiteration              = 1;
-                var entryCounter                = ch.countEntries($(entriesIn), deviceIn);
+                let entryValues         	    = {};
+                let entryiteration              = 1;
+                let entryCounter                = ch.countEntries($(entriesIn), deviceIn);
                 //console.log($(entriesIn));
-                var lastDate,device,data;
+                let lastDate,device,data;
                 $(entriesIn).each(function(key,value) {
                     data                        = $(this).data();
                     device                      = $(this).data("device").toLowerCase();
                     /* DATES */
-                    var crdate                  = $(this).data("crdate");
-                    var timestamp               = $(this).data("timestamp");
-                    var date                    = new Date(timestamp * 1000);
-                    var dateLabel               = ("0" + date.getDate()).slice(-2)+"."+("0" + (date.getMonth() + 1)).slice(-2)+"."+date.getFullYear();
-                    var dateLabelTime           = dateLabel +" "+ date.getHours()+":"+('0'+date.getMinutes()).slice(-2);
+                    let crdate                  = $(this).data("crdate");
+                    let timestamp               = $(this).data("timestamp");
+                    let date                    = new Date(timestamp * 1000);
+                    let dateLabel               = ("0" + date.getDate()).slice(-2)+"."+("0" + (date.getMonth() + 1)).slice(-2)+"."+date.getFullYear();
+                    let dateLabelTime           = dateLabel +" "+ date.getHours()+":"+('0'+date.getMinutes()).slice(-2);
 
                     if (device==deviceIn){
-                        var auditIteration      = 0;
+                        let auditIteration      = 0;
                         entryValues             = ch.getEntryValues(data, valueTypeIn); 
                         ch.addDataLabel(ChartObj,dateLabelTime);     
                         $.each(entryValues, function(auditKey,auditVal){
-                            var labelChart = $(".entryLabels").attr("data-label-"+auditKey);
+                            let labelChart = $(".entryLabels").attr("data-label-"+auditKey);
                             ch.addDataSet (ChartObj, labelChart, chartColors[auditKey], date, auditVal, ((entryiteration==1) ? '1' : '0'), ((entryiteration==entryCounter) ? '1' : '0'), auditIteration);
                             auditIteration++;
                         });
@@ -77,8 +77,8 @@ requirejs(['jquery'], function ($) {
                 });
             }
             ch.getEntryValues = function(dataIn, vti){
-                var entVal = {};
-                var dataType;
+                let entVal = {};
+                let dataType;
                 if (vti=="value"){
                     /* PERFORMANCE VALUES */
                     $.each(dataIn, function(dataKey,dataVal){
@@ -111,8 +111,8 @@ requirejs(['jquery'], function ($) {
                 return entVal;
             }
             ch.countEntries = function(entriesCountable, deviceCountable){
-                var entryCounter = 0;
-                var deviceSub;
+                let entryCounter = 0;
+                let deviceSub;
                 $(entriesCountable).each(function() {
                     //console.log($(this).data("device"));
                     deviceSub  = $(this).data("device").toLowerCase();
@@ -188,7 +188,7 @@ requirejs(['jquery'], function ($) {
                 });
             }
         }
-        var lighthouseCharts = new LighthouseCharts();
-        lighthouseCharts.init(); 
+        let lighthouseCharts = new LighthouseCharts();
+        lighthouseCharts.init();
     });
 });

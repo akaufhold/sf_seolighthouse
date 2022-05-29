@@ -7,8 +7,8 @@ requirejs(['jquery'], function ($) {
     });
 
     $("input[type=radio][name=valueType]").change(function(){
-        var target  = $(this).val().toLowerCase();
-        var classRow    = "row-"+target;
+        let target  = $(this).val().toLowerCase();
+        let classRow    = "row-"+target;
         $(".recordlist").find("tr").removeClass("active");
         $("."+classRow).addClass("active");
     });

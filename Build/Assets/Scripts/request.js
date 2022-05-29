@@ -240,7 +240,7 @@ requirejs(['jquery'], function ($) {
 
       /* GET PERCENT VALUE */
       lh.getPercentValue= function(val){
-        return parseFloat(val*100)+"%";
+        return parseFloat(val*100)+'%';
       }
 
       /* GET TARGET URL */
@@ -602,7 +602,7 @@ requirejs(['jquery'], function ($) {
         let additionalList                = document.createElement('li');
         additionalList.id                 = type;
         additionalList.classList.add('list-group-item');
-        ((displayMode=='notApplicable')?additionalList.classList.add('notApplicable'):"");
+        ((displayMode=='notApplicable')?additionalList.classList.add('notApplicable'):'');
         additionalList.appendChild(lh.addSpan('label',auditName));
 
         ((description) ? additionalList.children[0].insertAdjacentHTML('afterbegin',chevronDown): '') 
@@ -824,7 +824,7 @@ requirejs(['jquery'], function ($) {
         let tblRow, cell1, cell2;
         Object.entries(node).forEach(entry => {
           const [key, value] = entry;
-          tblRow   = document.createElement("tr");
+          tblRow   = document.createElement('tr');
           cell1 = tblRow.insertCell();
           cell2 = tblRow.insertCell();
           cell1.appendChild(document.createTextNode(key));
@@ -922,7 +922,7 @@ requirejs(['jquery'], function ($) {
       lh.createLink = function(label,href){
         let link = document.createElement('a');
         link.setAttribute('href', href);
-        link.setAttribute('target', "_blank");
+        link.setAttribute('target', '_blank');
         link.appendChild(document.createTextNode(lh.shortenString(label)));
         return link;
       }

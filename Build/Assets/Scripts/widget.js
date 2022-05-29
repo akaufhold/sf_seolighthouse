@@ -1,8 +1,8 @@
 import '../Scss/widget.scss';
 
 define(['require','chart.js'], function(require) {
-	var $ = require('jquery');
-	var chart = require('chart.js');
+	let $ = require('jquery');
+	let chart = require('chart.js');
 
 	Widget.init = function() {
 		 console.log("widget");
