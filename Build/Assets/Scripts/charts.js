@@ -1,3 +1,5 @@
+'use strict';
+
 import '../Scss/backend.scss';
 import Chart from 'chart.js/auto';
 

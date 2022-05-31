@@ -1,3 +1,5 @@
+'use strict';
+
 import '../Scss/backend.scss';
 
 requirejs(['jquery'], function ($) {

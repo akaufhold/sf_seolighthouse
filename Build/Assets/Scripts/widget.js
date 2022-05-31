@@ -1,3 +1,5 @@
+'use strict';
+
 import '../Scss/widget.scss';
 
 define(['require','chart.js'], function(require) {
