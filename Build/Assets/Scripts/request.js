@@ -157,8 +157,8 @@ requirejs(['jquery'], function ($) {
       };
 
       /* FILTER FOR AUDIT DEBUGGING */
-      lh.checkAudit = function(condition){
-        return ((auditName==condition)?true:false);
+      lh.checkAudit = function(c){
+        return ((auditName==c)?true:false);
       }
 
       /* MENU FOR SWITCHING CHARTS VALUE OUTPUT OF PERFORMANCE AUDIT */
@@ -251,8 +251,8 @@ requirejs(['jquery'], function ($) {
       }
 
       /* SET TARGET URL */
-      lh.setTargetUrl = function(targetUrlInput){
-        $('.targetUrl').html(targetUrlInput);
+      lh.setTargetUrl = function(targetUrl){
+        $('.targetUrl').html(targetUrl);
       }
 
       /* GET DEVICE */
@@ -276,11 +276,11 @@ requirejs(['jquery'], function ($) {
       }
 
       /* COLOR FOR SPEED STATUS */
-      lh.getSpeedColor = function(scoreIn){
+      lh.getSpeedColor = function(score){
         let speedOut;
-        if (scoreIn < 0.5){speedOut = statusColors.slow;} 
-        else if (scoreIn < 0.9){speedOut = statusColors.average;} 
-        else if (scoreIn <= 1){speedOut = statusColors.fast;}
+        if (score < 0.5){speedOut = statusColors.slow;} 
+        else if (score < 0.9){speedOut = statusColors.average;} 
+        else if (score <= 1){speedOut = statusColors.fast;}
         return speedOut;
       }
 
@@ -300,8 +300,8 @@ requirejs(['jquery'], function ($) {
       }
 
       /* CHANGE FIRST LETTER FROM STRING */
-      lh.firstLetterUp = function(stringIn){
-        return stringIn.charAt(0).toUpperCase() + stringIn.slice(1).toLowerCase();
+      lh.firstLetterUp = function(string){
+        return stringIn.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
       }
 
       /* ERROR HANDLING */
