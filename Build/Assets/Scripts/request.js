@@ -99,7 +99,6 @@ requirejs(['jquery'], function ($) {
 
       /* BUILD NEW TARGET URL AFTER CHANGING DEVICE RADIO */
       lh.deviceChange = function(o) {
-        /* DEVICE RADIO BUTTON ON CHANGE */
         $('input[type=radio][name=device]').change(function(){
           $('.tx_sfseolighthouse').find('.custom-radio').find('label').removeClass('active');
           $(this).parents('.custom-radio').find('label').addClass('active');
@@ -158,7 +157,7 @@ requirejs(['jquery'], function ($) {
 
       /* FILTER FOR AUDIT DEBUGGING */
       lh.checkAudit = function(c){
-        return ((auditName==c)?true:false);
+        return (auditName==c)?true:false;
       }
 
       /* MENU FOR SWITCHING CHARTS VALUE OUTPUT OF PERFORMANCE AUDIT */
@@ -212,7 +211,7 @@ requirejs(['jquery'], function ($) {
             $(allCategory).each(function(key,label){
               val = $(label).parents('.custom-check').find('.category').val().toUpperCase();
               targetCategory += val;
-              targetCategory += (((key+1)!=allCategory.length)?',':'');
+              targetCategory += ((key+1)!=allCategory.length)?',':'';
             });
           }
         });
@@ -301,7 +300,7 @@ requirejs(['jquery'], function ($) {
 
       /* CHANGE FIRST LETTER FROM STRING */
       lh.firstLetterUp = function(string){
-        return stringIn.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
       }
 
       /* ERROR HANDLING */
@@ -389,7 +388,7 @@ requirejs(['jquery'], function ($) {
         lh.setPbStatus('progress');
 
         /* ONLY FOR TESTING */
-        targetUrl = 'https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json';
+        //targetUrl = 'https://webpacktest.ddev.site/typo3conf/ext/sf_seolighthouse/Resources/Public/Json/runPagespeed.json';
 
         /* FETCH LIGHTHOUSE DATA */
         fetch(targetUrl)
@@ -479,7 +478,7 @@ requirejs(['jquery'], function ($) {
       }
 
       /* GET MAIN AUDITS */
-      lh.getMainAudits = function(auditItem,auditResult,mainIteration,mainCounter){
+      lh.getMainAudits = function(auditItem,auditResult,{mainIteration,mainCounter}){
         let speed, score, color;
         let htmlAuditsOut = new DocumentFragment();
         $(mainAudits).each(function(key,value){
@@ -733,9 +732,9 @@ requirejs(['jquery'], function ($) {
         let tblBody      = document.createElement('tbody');
         //console.log(headings);
         if (headings!=='undefined'){
-          tblBody.append(lh.getAADTableRecursive(detailItems,headings,false,'',type));
+          tblBody.append(lh.getAADTableRecursive(detailItems,headings,{isSub:false,type:type}));
         }else {
-          tblBody.append(lh.getAADTableRecursive(detailItems,headings.length,false,'',type));
+          tblBody.append(lh.getAADTableRecursive(detailItems,headings.length,{isSub:false,type:type}));
         }
         tableContent.appendChild(tblBody);
         return tableContent;
@@ -756,7 +755,7 @@ requirejs(['jquery'], function ($) {
 
 
       /* GET RECURSIVE TABLE BODY CONTENTS */
-      lh.getAADTableRecursive = function(detailItems,headings,isSub,cssClass,type){
+      lh.getAADTableRecursive = function(detailItems,headings,{isSub,cssClass,type}){
         let detailTbl       = new DocumentFragment();
         detailItems.forEach(function(item,indexDetail){
           if (typeof item!=undefined){
@@ -802,7 +801,7 @@ requirejs(['jquery'], function ($) {
                 detailTbl.append(detailTblRow);
               });
               if (item.hasOwnProperty('subItems')){
-                detailTbl.appendChild(lh.getAADTableRecursive(item.subItems.items,headings,true,'row-sub',type));
+                detailTbl.appendChild(lh.getAADTableRecursive(item.subItems.items,headings,{isSub:true,cssClass:'row-sub',type:type}));
               }
             }
           }
@@ -884,7 +883,7 @@ requirejs(['jquery'], function ($) {
       /* GET NODE WRAP */
       lh.getAADTableCellNode = function(node,colWidth){
         let tblCell = document.createElement('td');
-        tblCell.style.width= colWidth; 
+        tblCell.style.width= colWidth;
         tblCell.setAttribute('title', node.path);
         tblCell.setAttribute('data-path', node.path);
         tblCell.setAttribute('data-selector', node.selector);
@@ -1055,13 +1054,7 @@ requirejs(['jquery'], function ($) {
       let newDataset = [];
       lh.addDataSet = function (chart, label, color, data, createDataset, datasetReady) {
         chart.data.labels.push(label);
-        if (createDataset==1){
-          newDataset = {
-            backgroundColor: [],
-            borderColor: [],
-            data:[]
-          };
-        }
+        createDataset==1?newDataset = {backgroundColor: [],borderColor: [],data:[]}:"";
         newDataset.backgroundColor.push(color);
         newDataset.borderColor.push(color);
         newDataset.data.push(data);
