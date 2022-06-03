@@ -326,7 +326,7 @@ if (Encore.isProduction()) {
   );
 }
 
-Encore.addPlugin(
+/*Encore.addPlugin(
   new TerserPlugin({
     extractComments: "all",
     terserOptions: {
@@ -338,7 +338,7 @@ Encore.addPlugin(
       },
     },
   }),
-);
+);*/
 
 if(Encore.isProduction()) {
   Encore.addPlugin(
